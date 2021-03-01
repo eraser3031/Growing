@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		21457CFC25EB349600196CB1 /* FocusEntity in Frameworks */ = {isa = PBXBuildFile; productRef = 21457CFB25EB349600196CB1 /* FocusEntity */; };
 		21B93C2425EA49B200878B47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B93C2325EA49B200878B47 /* AppDelegate.swift */; };
 		21B93C2625EA49B200878B47 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B93C2525EA49B200878B47 /* ContentView.swift */; };
 		21B93C2825EA49B200878B47 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 21B93C2725EA49B200878B47 /* Experience.rcproject */; };
@@ -31,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21457CFC25EB349600196CB1 /* FocusEntity in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +93,9 @@
 			dependencies = (
 			);
 			name = Growing;
+			packageProductDependencies = (
+				21457CFB25EB349600196CB1 /* FocusEntity */,
+			);
 			productName = Growing;
 			productReference = 21B93C2025EA49B200878B47 /* Growing.app */;
 			productType = "com.apple.product-type.application";
@@ -118,6 +123,9 @@
 				Base,
 			);
 			mainGroup = 21B93C1725EA49B200878B47;
+			packageReferences = (
+				21457CFA25EB349600196CB1 /* XCRemoteSwiftPackageReference "FocusEntity" */,
+			);
 			productRefGroup = 21B93C2125EA49B200878B47 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -345,6 +353,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		21457CFA25EB349600196CB1 /* XCRemoteSwiftPackageReference "FocusEntity" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/maxxfrazer/FocusEntity";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		21457CFB25EB349600196CB1 /* FocusEntity */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 21457CFA25EB349600196CB1 /* XCRemoteSwiftPackageReference "FocusEntity" */;
+			productName = FocusEntity;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 21B93C1825EA49B200878B47 /* Project object */;
 }
