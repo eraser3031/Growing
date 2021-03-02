@@ -11,12 +11,11 @@ import RealityKit
 import Combine
 import FocusEntity
 
-class En: ObservableObject {
-    var cancellable: Cancellable?
+class PlacementSetting: ObservableObject {
+    var updateCancellable: Cancellable?
 }
 
 struct ContentView : View {
-    @EnvironmentObject var en: En
     @State var isAR = false
     var body: some View {
         ZStack{
@@ -27,59 +26,47 @@ struct ContentView : View {
         }
         .fullScreenCover(isPresented: $isAR) {
             GrowMeasureView()
-                .environmentObject(en)
         }
         
     }
 }
 
 struct GrowMeasureView: View {
-    @EnvironmentObject var en: En
     @State var test = "none"
+    @StateObject var placeSet = PlacementSetting()
     var body: some View {
         ZStack{
-            ARViewContainer(test: $test).edgesIgnoringSafeArea(.all)
-                .environmentObject(en)
+            ARViewContainer(test: $test, placeSet: placeSet).edgesIgnoringSafeArea(.all)
             
-            GrowMeasureUIView(test: $test)
-                .environmentObject(en)
-            
-        }
-    }
-}
-
-struct GrowMeasureUIView: View {
-    @EnvironmentObject var en: En
-    @Binding var test: String
-    var body: some View {
-        VStack{
-            Text(test)
+            VStack{
+                Text(test)
+            }
         }
     }
 }
 
 struct ARViewContainer: UIViewRepresentable {
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var en: En
     @Binding var test: String
-
+    @ObservedObject var placeSet: PlacementSetting
     
     func makeUIView(context: Context) -> CustomARView {
         let arView = CustomARView(frame: .zero)
-        
-        en.cancellable = arView.scene.subscribe(to: SceneEvents.Update.self) { event in
+        let cameraAnchor = AnchorEntity(.camera)
+        arView.scene.addAnchor(cameraAnchor)
+        placeSet.updateCancellable = arView.scene.subscribe(to: SceneEvents.Update.self) { event in
+            print(#fileID, #function, #line)
             updateScene(arView: arView)
         }
         
-        let anchor = AnchorEntity()
         return arView
     }
     
     func updateUIView(_ uiView: CustomARView, context: Context) {}
     
     func updateScene(arView: CustomARView) {
-        print(#fileID, #function, #line)
-        test = arView.focusEntity!.onPlane ? "yes" : "no"
+        test = arView.focusEntity!.onPlane ? "\(String(describing: arView.focusEntity?.anchor?.position.y)) + \(String(describing: arView.cameraTransform.translation.y))" : "no"
+        
     }
     
 }
