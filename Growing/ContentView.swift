@@ -12,6 +12,8 @@ import Combine
 import FocusEntity
 
 class PlacementSetting: ObservableObject {
+    @Published var placeAnchorPos = SIMD3<Float>(x: 0, y: 0, z: 0)
+    @Published var cameraAnchorPos = SIMD3<Float>(x: 0, y: 0, z: 0)
     var updateCancellable: Cancellable?
 }
 
@@ -32,22 +34,28 @@ struct ContentView : View {
 }
 
 struct GrowMeasureView: View {
-    @State var test = "none"
     @StateObject var placeSet = PlacementSetting()
+    @State var result: Float = 0
     var body: some View {
         ZStack{
-            ARViewContainer(test: $test, placeSet: placeSet).edgesIgnoringSafeArea(.all)
+            ARViewContainer(placeSet: placeSet)
+                .edgesIgnoringSafeArea(.all)
             
             VStack{
-                Text(test)
+                Text("result: \(result)")
             }
+        }.onTapGesture {
+            result = measureHeight(placeSet.placeAnchorPos.y, placeSet.cameraAnchorPos.y)
         }
+    }
+    
+    private func measureHeight(_ a: Float, _ b: Float) -> Float {
+        abs(a - b) * 100 // cm
     }
 }
 
 struct ARViewContainer: UIViewRepresentable {
     @Environment(\.presentationMode) var presentationMode
-    @Binding var test: String
     @ObservedObject var placeSet: PlacementSetting
     
     func makeUIView(context: Context) -> CustomARView {
@@ -65,8 +73,11 @@ struct ARViewContainer: UIViewRepresentable {
     func updateUIView(_ uiView: CustomARView, context: Context) {}
     
     func updateScene(arView: CustomARView) {
-        test = arView.focusEntity!.onPlane ? "\(String(describing: arView.focusEntity?.anchor?.position.y)) + \(String(describing: arView.cameraTransform.translation.y))" : "no"
         
+        if arView.focusEntity!.onPlane {
+            placeSet.placeAnchorPos = arView.focusEntity?.anchor?.position ?? SIMD3(x: 0, y: 0, z: 0)
+            placeSet.cameraAnchorPos = arView.cameraTransform.translation
+        }
     }
     
 }
