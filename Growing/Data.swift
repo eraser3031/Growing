@@ -8,10 +8,11 @@
 import SwiftUI
 
 final class GirinViewModel: ObservableObject {
-    @Published var PersonList: [Person] = Storage.retrive("PersonList.json", from: .documents, as: [Person].self) ?? []
+    @Published var personList: [Person] = Storage.retrive("PersonList.json", from: .documents, as: [Person].self) ?? [Person.samplePerson]
+
 }
 
-struct Person: Codable {
+struct Person: Codable, Identifiable {
     var id = UUID()
     var name: String
     var favColor: SystemColor
@@ -20,9 +21,11 @@ struct Person: Codable {
     }
     var birthday: Date
     var records: [Record]
+    
+    static let samplePerson = Person(name: "우리 주니", favColor: .blue, birthday: Date(), records: [])
 }
 
-struct Record: Codable {
+struct Record: Codable, Identifiable {
     var id = UUID()
     var recordDate: Date
     var height: Float
