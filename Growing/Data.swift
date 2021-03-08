@@ -8,7 +8,7 @@
 import SwiftUI
 
 final class GirinViewModel: ObservableObject {
-    @Published var personList: [Person] = Storage.retrive("PersonList.json", from: .documents, as: [Person].self) ?? [Person.samplePerson]
+    @Published var personList: [Person] = Storage.retrive("PersonList.json", from: .documents, as: [Person].self) ?? [Person.samplePerson, Person.samplePerson]
 
 }
 
@@ -17,12 +17,13 @@ struct Person: Codable, Identifiable {
     var name: String
     var favColor: SystemColor
     var nowHeight: Float {
-        1.0
+        120
     }
+    var thumbnail: String
     var birthday: Date
     var records: [Record]
     
-    static let samplePerson = Person(name: "우리 주니", favColor: .blue, birthday: Date(), records: [])
+    static let samplePerson = Person(name: "우리 주니", favColor: .blue, thumbnail: "TestThumbnail", birthday: Date(), records: [])
 }
 
 struct Record: Codable, Identifiable {

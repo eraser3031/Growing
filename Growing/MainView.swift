@@ -11,17 +11,35 @@ struct MainView: View {
     @EnvironmentObject var girinVM: GirinViewModel
     
     var body: some View {
-        NavigationView{
-            VStack{
-                
-                ARViewButton()
-                
-                PersonListScrollView()
-                
-            }.navigationTitle("둘러보기")
-            .navigationBarTitleDisplayMode(.large)
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
+        TabView{
+            NavigationView{
+                VStack(spacing: 0){
+                    
+                    ARViewButton()
+                    
+                    Divider()
+                        .padding(.horizontal, 20)
+                        .padding(.top, 15)
+                    
+                    PersonListScrollView()
+                    
+                }.navigationTitle("둘러보기")
+                .navigationBarTitleDisplayMode(.large)
+            }
+            .navigationViewStyle(StackNavigationViewStyle())
+            .tabItem {
+                Image(systemName: "ruler")
+                Text("측정")
+            }
+            
+            NavigationView{
+            }
+            .tabItem {
+                Image(systemName: "gear")
+                Text("설정")
+            }
+        }.accentColor(.pink)
+        
     }
 }
 
@@ -62,40 +80,76 @@ extension MainView {
     }
     
     func PersonListScrollView() -> some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack{
-                ForEach(girinVM.personList) { person in
-                    PersonCardView(person: person)
-                }
+        GeometryReader { geometry in
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 20){
+                    Spacer()
+                        .frame(width: 0)
+                    ForEach(girinVM.personList) { person in
+                        PersonCardView(person: person, geo: geometry)
+                            .frame(maxHeight: geometry.frame(in: .global).height)
+                            .frame(maxWidth: geometry.frame(in: .global).height/1.4)
+                            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                            .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.2)), radius: 40, x: 0.0, y: 20)
+                            .padding(.top, 15)
+                            .padding(.bottom, 30)
+                            
+                    }
+                    Spacer()
+                }.frame(width: calScrollWidth(count: girinVM.personList.count,
+                                              height: geometry.frame(in: .global).height),
+                        height: geometry.frame(in: .global).height)
             }
         }
     }
     
-    func PersonCardView(person: Person) -> some View {
-        VStack{
-            Image()
+    private func calScrollWidth(count: Int, height: CGFloat) -> CGFloat {
+        CGFloat(count+1)*20+CGFloat(count)*height/1.4
+    }
+    
+    func PersonCardView(person: Person, geo: GeometryProxy) -> some View {
+        VStack(spacing: 0){
+            Spacer()
             
             HStack(alignment: .top){
-                VStack(alignment: .leading){
+                VStack(alignment: .leading, spacing: 5){
                     Text(person.name)
+                        .font(.title3)
+                        .fontWeight(.semibold)
                     HStack(spacing: 0) {
-                        Text()
-                        Text()
-                    }
+                        Text("\(Date().year - person.birthday.year)살 ")
+                            .fontWeight(.medium)
+                        Text("\(Int(person.nowHeight))cm")
+                            .bold()
+                            .foregroundColor(.pink)
+                    }.font(.subheadline)
                     HStack(spacing: 0) {
-                        Text("최근 기록일")
-                        Text()
-                    }
+                        Text("최근 기록일 ")
+                            .fontWeight(.medium)
+                        Text(person.records.last?.recordDate ?? Date(), style: .date)
+                            .fontWeight(.semibold)
+                    }.font(.caption)
                 }
                 
                 Spacer()
                 
-                ZStack{
+                ZStack {
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .fill(Color(#colorLiteral(red: 1, green: 0.1764705882, blue: 0.4745098039, alpha: 1)))
+                        .frame(width: 44, height: 44)
                     
+                    Image(systemName: "ellipsis")
+                        .font(.system(size: 26, weight: .bold))
+                        .foregroundColor(.white)
                 }
             }
-        }.clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+            .padding(20)
+            .background(Color.white)
+        }.background(
+            Image(person.thumbnail)
+                .resizable()
+                .scaledToFill()
+        )
     }
 }
 
