@@ -80,7 +80,12 @@ extension MainView {
     }
     
     func PersonListScrollView() -> some View {
-        GeometryReader { geometry in
+        
+        func calScrollWidth(count: Int, height: CGFloat) -> CGFloat {
+            CGFloat(count+1)*20+CGFloat(count)*height/1.4
+        }
+        
+        return GeometryReader { geometry in
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 20){
                     Spacer()
@@ -93,7 +98,6 @@ extension MainView {
                             .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.2)), radius: 40, x: 0.0, y: 20)
                             .padding(.top, 15)
                             .padding(.bottom, 30)
-                            
                     }
                     Spacer()
                 }.frame(width: calScrollWidth(count: girinVM.personList.count,
@@ -103,53 +107,63 @@ extension MainView {
         }
     }
     
-    private func calScrollWidth(count: Int, height: CGFloat) -> CGFloat {
-        CGFloat(count+1)*20+CGFloat(count)*height/1.4
-    }
-    
     func PersonCardView(person: Person, geo: GeometryProxy) -> some View {
-        VStack(spacing: 0){
-            Spacer()
-            
-            HStack(alignment: .top){
-                VStack(alignment: .leading, spacing: 5){
-                    Text(person.name)
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                    HStack(spacing: 0) {
-                        Text("\(Date().year - person.birthday.year)살 ")
-                            .fontWeight(.medium)
-                        Text("\(Int(person.nowHeight))cm")
-                            .bold()
-                            .foregroundColor(.pink)
-                    }.font(.subheadline)
-                    HStack(spacing: 0) {
-                        Text("최근 기록일 ")
-                            .fontWeight(.medium)
-                        Text(person.records.last?.recordDate ?? Date(), style: .date)
-                            .fontWeight(.semibold)
-                    }.font(.caption)
-                }
-                
-                Spacer()
-                
-                ZStack {
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(Color(#colorLiteral(red: 1, green: 0.1764705882, blue: 0.4745098039, alpha: 1)))
-                        .frame(width: 44, height: 44)
-                    
-                    Image(systemName: "ellipsis")
-                        .font(.system(size: 26, weight: .bold))
-                        .foregroundColor(.white)
-                }
+        
+        func binding(for item: Person) -> Binding<Person> {
+            guard let index = girinVM.personList.firstIndex(where: { $0.id == item.id }) else {
+                fatalError("Can't find scrum in array")
             }
-            .padding(20)
-            .background(Color.white)
-        }.background(
-            Image(person.thumbnail)
-                .resizable()
-                .scaledToFill()
-        )
+            return $girinVM.personList[index]
+        }
+        
+        return NavigationLink(
+            destination: PersonView(person: binding(for: person)).environmentObject(girinVM),
+            label: {
+                
+                VStack(spacing: 0){
+                    Spacer()
+                    
+                    HStack(alignment: .top){
+                        VStack(alignment: .leading, spacing: 5){
+                            Text(person.name)
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                            HStack(spacing: 0) {
+                                Text("\(Date().year - person.birthday.year)살 ")
+                                    .fontWeight(.medium)
+                                Text("\(Int(person.nowHeight))cm")
+                                    .bold()
+                                    .foregroundColor(.pink)
+                            }.font(.subheadline)
+                            HStack(spacing: 0) {
+                                Text("최근 기록일 ")
+                                    .fontWeight(.medium)
+                                Text(person.records.last?.recordDate ?? Date(), style: .date)
+                                    .fontWeight(.semibold)
+                            }.font(.caption)
+                        }
+                        
+                        Spacer()
+                        
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .fill(Color(#colorLiteral(red: 1, green: 0.1764705882, blue: 0.4745098039, alpha: 1)))
+                                .frame(width: 44, height: 44)
+                            
+                            Image(systemName: "ellipsis")
+                                .font(.system(size: 26, weight: .bold))
+                                .foregroundColor(.white)
+                        }
+                    }
+                    .padding(20)
+                    .background(Color.white)
+                }.background(
+                    Image(person.thumbnail)
+                        .resizable()
+                        .scaledToFill()
+                )
+                
+            }).buttonStyle(PlainButtonStyle())
     }
 }
 
