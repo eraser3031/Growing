@@ -14,7 +14,7 @@ struct PersonView: View {
         VStack(spacing: 0){
                 ScrollView(.vertical) {
                     HStack {
-                        LineView(150, spacing: 14)
+                        LineView(50, spacing: 14)
                         
                         Spacer()
                     }.padding(.horizontal, 20)
@@ -73,6 +73,7 @@ extension PersonView {
                 }
             }
         )
+
     }
     
     func AssistLine() -> some View {
