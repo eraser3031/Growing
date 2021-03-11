@@ -169,6 +169,8 @@ extension MainView {
 
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
-        MainView().environmentObject(GirinViewModel())
+        Group {
+            MainView().environmentObject(GirinViewModel())
+        }
     }
 }

@@ -45,7 +45,31 @@ struct Record: Codable, Identifiable {
         Record(recordDate: Date(), height: 20, pictures: [], text: "울 아들 화이팅"),
         Record(recordDate: Date(), height: 30, pictures: [], text: "울 아들 화이팅"),
         Record(recordDate: Date(), height: 110, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 100, pictures: [], text: "울 아들 화이팅")
+        Record(recordDate: Date(), height: 100, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 41, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 20.6, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 21.3, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 28, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 34, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 40, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 113, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 120, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 53, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 53.6, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 53.3, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 52, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 50, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 60, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 130, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 140, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 133, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 133.6, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 134.3, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 150, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 144, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 137, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 139, pictures: [], text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 101, pictures: [], text: "울 아들 화이팅")
     ]
 }
 
