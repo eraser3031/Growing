@@ -32,12 +32,12 @@ struct MainView: View {
                 Text("측정")
             }
             
-            NavigationView{
-            }
-            .tabItem {
-                Image(systemName: "gear")
-                Text("설정")
-            }
+            SettingView()
+                .navigationViewStyle(StackNavigationViewStyle())
+                .tabItem {
+                    Image(systemName: "gear")
+                    Text("설정")
+                }
         }.accentColor(.pink)
         
     }
@@ -171,6 +171,31 @@ struct MainView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             MainView().environmentObject(GirinViewModel())
+        }
+    }
+}
+
+struct SettingView: View {
+    var body: some View {
+        NavigationView{
+            Form {
+                Section(header: Label("정보", systemImage: "info.circle.fill")) {
+                    NavigationLink(destination: Text("aa")) {
+                        Label("앱 정보", systemImage: "questionmark.circle.fill")
+                    }
+                }
+                
+                Section(header: Label("데이터", systemImage: "cylinder.split.1x2.fill")) {
+                    Button(action: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Action@*/{}/*@END_MENU_TOKEN@*/) {
+                        Label("일기 데이터 초기화", systemImage: "text.badge.xmark")
+                    }.buttonStyle(PlainButtonStyle())
+                    
+                    Button(action: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Action@*/{}/*@END_MENU_TOKEN@*/) {
+                        Label("모든 데이터 초기화", systemImage: "xmark.circle.fill")
+                    }.buttonStyle(PlainButtonStyle())
+                }
+            }.navigationTitle("설정")
+            .navigationBarTitleDisplayMode(.large)
         }
     }
 }
