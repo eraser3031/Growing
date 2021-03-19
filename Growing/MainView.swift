@@ -33,6 +33,7 @@ struct MainView: View {
             }
             
             SettingView()
+                .environmentObject(girinVM)
                 .navigationViewStyle(StackNavigationViewStyle())
                 .tabItem {
                     Image(systemName: "gear")
@@ -140,6 +141,7 @@ extension MainView {
                                     .fontWeight(.medium)
                                 Text(person.records.last?.recordDate ?? Date(), style: .date)
                                     .fontWeight(.semibold)
+                                    .lineLimit(1)
                             }.font(.caption)
                         }
                         

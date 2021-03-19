@@ -44,8 +44,25 @@ extension PersonView {
     func MainLine(_ height: Int, spacing: CGFloat) -> some View {
         
         func calOverlayRecord(_ height: Int) -> [Record] {
-            person.records.filter{abs(Float(height) - $0.height) <= 1}
+            let filterData = person.records.filter{abs(Float(height) - $0.height) <= 1}
+            return filterData.sorted { first, second in
+                first.recordDate.timeIntervalSince1970 < second.recordDate.timeIntervalSince1970
+            }
         }
+        
+        func bindingRecordIndexs(records: [Record]) -> [Int] {
+            var recordIndex: [Int] = []
+            records.forEach { record in
+                guard let index = person.records.firstIndex(where: { $0.id == record.id }) else {
+                    return
+                }
+                recordIndex.append(index)
+            }
+            return recordIndex
+        }
+        
+        let records = calOverlayRecord(height)
+        let heightText = "\(height+1)cm ~ \(height-1)cm"
         
         return HStack(spacing: spacing) {
             Text("\(height)cm")
@@ -53,18 +70,21 @@ extension PersonView {
                 .fontWeight(.semibold)
             
             Spacer()
-            NavigationLink(destination: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Destination@*/Text("Destination")/*@END_MENU_TOKEN@*/) {
+            NavigationLink(destination: 
+                            RecordsView(person: $person, recordIndexs: bindingRecordIndexs(records: records)){return heightText}
+                    .environmentObject(girinVM)
+            ){
                 ZStack {
                     RoundedRectangle(cornerRadius: 8)
                         .fill(Color.pink)
                         .frame(width: 125, height: 35)
                     
-                    Text("\(height+1)cm ~ \(height-1)cm")
+                    Text(heightText)
                         .font(.footnote)
                         .bold()
                         .foregroundColor(.white)
                 }
-            }.opacity(calOverlayRecord(height).count == 0 ? 0 : 1)
+            }.opacity(records.count == 0 ? 0 : 1)
         }
         .overlay(
             ZStack {
@@ -90,7 +110,7 @@ extension PersonView {
         .background(
             ZStack {
                 // Overlay Line
-                ForEach(calOverlayRecord(height)) { record in
+                ForEach(records) { record in
                     OverlayLine()
                         .offset(x:49,
                                 y: CGFloat(Float(height) - record.height) * (spacing+2.64*2))

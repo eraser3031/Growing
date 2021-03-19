@@ -34,7 +34,8 @@ struct Record: Codable, Identifiable {
     var id = UUID()
     var recordDate: Date
     var height: Float
-    var pictures: [String]
+    var pictures: [Picture]
+    var title: String = "제목 없음"
     var text: String
     
     static let sampleRecord: [Record] = [
@@ -71,6 +72,11 @@ struct Record: Codable, Identifiable {
         Record(recordDate: Date(), height: 139, pictures: [], text: "울 아들 화이팅"),
         Record(recordDate: Date(), height: 101, pictures: [], text: "울 아들 화이팅")
     ]
+}
+
+struct Picture: Codable, Identifiable {
+    var id = UUID()
+    var data: Data
 }
 
 enum SystemColor: String, Codable {
