@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CameraUiView: View {
+    //checkmate
     var body: some View {
         ZStack {
             
