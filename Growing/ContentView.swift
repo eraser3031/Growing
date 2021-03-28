@@ -11,6 +11,7 @@
 //import Combine
 //import FocusEntity
 //
+//
 //class PlacementSetting: ObservableObject {
 //    @Published var placeAnchorPos = SIMD3<Float>(x: 0, y: 0, z: 0)
 //    @Published var wallAnchorPos = SIMD3<Float>(x: 0, y: 0, z: 0)
@@ -64,6 +65,7 @@
 //        let cameraAnchor = AnchorEntity(.camera)
 //        arView.scene.addAnchor(cameraAnchor)
 //        placeSet.updateCancellable = arView.scene.subscribe(to: SceneEvents.Update.self) { event in
+//            
 //            print(#fileID, #function, #line)
 //            updateScene(arView: arView)
 //        }

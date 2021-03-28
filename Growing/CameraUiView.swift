@@ -8,6 +8,13 @@
 import SwiftUI
 
 struct CameraUiView: View {
+    
+    @EnvironmentObject var girinVM: GirinViewModel
+    @State var person: Person?
+    
+    @State var selectIndex = 99
+    @State var offset: CGFloat = 0
+    @State var selectItemPoses: [CGFloat] = []
     //checkmate
     var body: some View {
         ZStack {
@@ -23,11 +30,21 @@ struct CameraUiView: View {
             
             VStack {
                 Spacer()
-                HStack(spacing: 0) {
-                    Image(systemName: "move.3d")
-                        .foregroundColor(.white)
-                        .font(.title)
-                    Spacer()
+                
+                PersonSelectBar()
+                    .padding(.bottom, 20)
+                
+                ZStack(alignment: .center) {
+                    HStack(spacing: 0) {
+                        Image(systemName: "move.3d")
+                            .foregroundColor(.white)
+                            .font(.title)
+                        
+                        Spacer()
+                        Image("CameraButton")
+                    }.padding(.horizontal, 30)
+                    .padding(.bottom, 12)
+                    
                     Image(systemName: "ruler")
                         .foregroundColor(.white)
                         .font(.title)
@@ -36,22 +53,54 @@ struct CameraUiView: View {
                                 .fill(Color.pink)
                                 .frame(width: 66, height: 66)
                         )
-                    Spacer()
-                    Image("CameraButton")
-                }.padding(.horizontal, 30)
-                .padding(.bottom, 12)
+                }
             }
+            
+            Text("\(offset) \(selectIndex)")
+        }
+        .onAppear {
+            selectIndex = 0
+            person = girinVM.personList.first!
         }
     }
 }
 
 //MARK: Components
 extension CameraUiView {
-    
+    func PersonSelectBar() -> some View {
+        HStack(spacing: 34) {
+            ForEach(girinVM.personList.indexed(), id: \.element.id) { (index, p) in
+                Text(p.name)
+                    .fontWeight(.bold)
+                    .if(selectIndex == index){
+                        $0.foregroundColor(.pink)
+                    }
+                    
+                    .font(.subheadline)
+                    .overlay(
+                        GeometryReader { geo in
+                            Color.clear
+                                .onChange(of: selectIndex){ value in
+                                    if value == index {
+                                        offset += screen.width/2 - geo.frame(in: .global).midX
+                                    }
+                                }
+                        }
+                    )
+                    .onTapGesture {
+                        selectIndex = index
+                    }
+                    
+            }
+        }.frame(height: 30)
+        .animation(.spring())
+        .offset(x: offset, y: 0)
+    }
 }
 
 struct CameraUiView_Previews: PreviewProvider {
     static var previews: some View {
         CameraUiView()
+            .environmentObject(GirinViewModel())
     }
 }

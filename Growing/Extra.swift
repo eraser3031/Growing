@@ -11,11 +11,11 @@ import Combine
 let screen = UIScreen.main.bounds
 
 extension Color {
-    static let main = UIColor(named:"main")
-    static let second = UIColor(named:"second")
-    static let mainDark = UIColor(named:"mainDark")
-    static let secondDark = UIColor(named:"secondDark")
-    
+    static let main = Color(UIColor(named:"main")!)
+    static let second = Color(UIColor(named:"second")!)
+    static let mainDark = Color(UIColor(named:"mainDark")!)
+    static let secondDark = Color(UIColor(named:"secondDark")!)
+
     // hex 변환 메소드 하나 구현 해놓기
 }
 
@@ -44,4 +44,20 @@ extension RandomAccessCollection {
 
 extension Data {
     
+}
+
+public extension View {
+  func `if`<T: View>(_ conditional: Bool, transform: (Self) -> T) -> some View {
+    Group {
+      if conditional { transform(self) }
+      else { self }
+    }
+  }
+
+  func `if`<T: View>(_ condition: Bool, true trueTransform: (Self) -> T, false falseTransform: (Self) -> T) -> some View {
+    Group {
+      if condition { trueTransform(self) }
+      else { falseTransform(self) }
+    }
+  }
 }

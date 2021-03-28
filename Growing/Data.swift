@@ -25,7 +25,11 @@ struct Person: Codable, Identifiable {
     
     static let samplePerson: [Person] = [
         Person(name: "우리 주니", favColor: .blue, thumbnail: "TestThumbnail", birthday: Date(), records: Record.sampleRecord),
-        Person(name: "예빈이", favColor: .purple, thumbnail: "TestThumbnail", birthday: Date(), records: Record.sampleRecord)
+        Person(name: "예빈이", favColor: .purple, thumbnail: "TestThumbnail", birthday: Date(), records: Record.sampleRecord),
+        Person(name: "예이", favColor: .purple, thumbnail: "TestThumbnail", birthday: Date(), records: Record.sampleRecord),
+        Person(name: "빈이", favColor: .purple, thumbnail: "TestThumbnail", birthday: Date(), records: Record.sampleRecord),
+        Person(name: "예빈", favColor: .purple, thumbnail: "TestThumbnail", birthday: Date(), records: Record.sampleRecord),
+        Person(name: "이이", favColor: .purple, thumbnail: "TestThumbnail", birthday: Date(), records: Record.sampleRecord)
     ]
     
 }
