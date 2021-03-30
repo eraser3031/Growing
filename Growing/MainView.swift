@@ -9,37 +9,55 @@ import SwiftUI
 
 struct MainView: View {
     @EnvironmentObject var girinVM: GirinViewModel
+    @State var showEditPersonView = false
     
     var body: some View {
-        TabView{
-            NavigationView{
-                VStack(spacing: 0){
-                    
-                    ARViewButton()
-                    
-                    Divider()
-                        .padding(.horizontal, 20)
-                        .padding(.top, 15)
-                    
-                    PersonListScrollView()
-                    
-                }.navigationTitle("둘러보기")
-                .navigationBarTitleDisplayMode(.large)
-            }
-            .navigationViewStyle(StackNavigationViewStyle())
-            .tabItem {
-                Image(systemName: "ruler")
-                Text("측정")
-            }
-            
-            SettingView()
-                .environmentObject(girinVM)
+        ZStack {
+            TabView{
+                ZStack{
+                    NavigationView{
+                        VStack(spacing: 0){
+                            
+                            ARViewButton()
+                            
+                            Divider()
+                                .padding(.horizontal, 20)
+                                .padding(.top, 15)
+                            
+                            PersonListScrollView()
+                            
+                        }.navigationTitle("둘러보기")
+                        .navigationBarTitleDisplayMode(.large)
+                    }
+                }
                 .navigationViewStyle(StackNavigationViewStyle())
                 .tabItem {
-                    Image(systemName: "gear")
-                    Text("설정")
+                    Image(systemName: "ruler")
+                    Text("측정")
                 }
-        }.accentColor(.pink)
+                
+                SettingView()
+                    .environmentObject(girinVM)
+                    .navigationViewStyle(StackNavigationViewStyle())
+                    .tabItem {
+                        Image(systemName: "gear")
+                        Text("설정")
+                    }
+            }.accentColor(.pink)
+            
+            ModalBackgroundView(value: $showEditPersonView){
+                showEditPersonView = false
+            }
+            
+            if showEditPersonView {
+                CreatePersonView {
+                    showEditPersonView = false
+                } cancel: {
+                    showEditPersonView = false
+                }
+
+            }
+        }
         
     }
 }
@@ -83,7 +101,7 @@ extension MainView {
     func PersonListScrollView() -> some View {
         
         func calScrollWidth(count: Int, height: CGFloat) -> CGFloat {
-            CGFloat(count+1)*20+CGFloat(count)*height/1.4
+            CGFloat(count+2)*20+CGFloat(count+1)*height/1.4
         }
         
         return GeometryReader { geometry in
@@ -100,6 +118,9 @@ extension MainView {
                             .padding(.top, 15)
                             .padding(.bottom, 30)
                     }
+                    
+                    PlusPersonCardView()
+                    
                     Spacer()
                 }.frame(width: calScrollWidth(count: girinVM.personList.count,
                                               height: geometry.frame(in: .global).height),
@@ -166,6 +187,13 @@ extension MainView {
                 )
                 
             }).buttonStyle(PlainButtonStyle())
+    }
+    
+    func PlusPersonCardView() -> some View {
+        Rectangle()
+            .onTapGesture {
+                showEditPersonView = true
+            }
     }
 }
 

@@ -1,19 +1,20 @@
 //
-//  EditPersonView.swift
+//  CreatePersonView.swift
 //  Growing
 //
-//  Created by Kimyaehoon on 28/03/2021.
+//  Created by Kimyaehoon on 30/03/2021.
 //
 
 import SwiftUI
 
-struct EditPersonView: View {
+struct CreatePersonView: View {
     @EnvironmentObject var girinVM: GirinViewModel
-    @Environment(\..verticalSizeClass) var verticalSizeClass
-    @Binding var person: Person
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @State var person = Person()
     @State var offset: CGFloat = screen.height
     
     var confirm: () -> Void
+    var cancel: () -> Void
     
     var body: some View {
         VStack(spacing: 0) {
@@ -21,17 +22,35 @@ struct EditPersonView: View {
             Spacer()
                 .frame(height: offset)
                 .onAppear{
-                    offset = .infinity
+                    if horizontalSizeClass == .compact {
+                        offset = .infinity
+                    } else {
+                        offset = 0
+                    }
                 }
                 .animation(.spring())
             
             VStack(spacing: 20) {
                 
                 HStack {
-                    Text("정보 수정").bold()
+                    Text("아이 추가").bold()
                         .font(.title)
                     
                     Spacer()
+                    
+                    ZStack {
+                        Circle()
+                            .fill(Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)))
+                            .frame(width: 34, height:34)
+                        
+                        Image(systemName: "xmark")
+                            .foregroundColor(.black)
+                            .font(.title3)
+                    }
+                    .onTapGesture {
+                        cancel()
+                    }
+                    
                 }.padding(.vertical, 28)
                 
                 VStack {
@@ -85,44 +104,19 @@ struct EditPersonView: View {
                     .cornerRadius(12)
                     .padding(.bottom, UIApplication.shared.windows.filter{$0.isKeyWindow}.first!.safeAreaInsets.bottom)
                     .onTapGesture {
+                        girinVM.personList.append(person)
                         confirm()
                     }
             }
-            .frame(maxWidth: .infinity)
+            .if(horizontalSizeClass == .regular){ body in
+                body
+                    .frame(width: 375)
+            }
             .padding(.horizontal, 20)
             .background(Color.white)
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
             .animation(.spring())
         }
         .edgesIgnoringSafeArea(.bottom)
-    }
-}
-
-//struct EditPersonView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ZStack {
-//            ModalBackgroundView(value: .constant(true))
-//            
-//            VStack {
-//                Spacer()
-//                EditPersonView(person: .constant(Person.samplePerson.first!))
-//                
-//            }.edgesIgnoringSafeArea(.bottom)
-//        }
-//    }
-//}
-
-struct ModalBackgroundView: View {
-    @Binding var value: Bool
-    var cancel: () -> Void
-    var body: some View {
-        Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)).edgesIgnoringSafeArea(.all)
-            .onTapGesture {
-                cancel()
-            }
-            .opacity(value ? 0.5 : 0)
-            .animation(Animation.easeInOut)
-        
-            
     }
 }

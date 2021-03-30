@@ -23,6 +23,22 @@ struct Person: Codable, Identifiable {
     var birthday: Date
     var records: [Record]
     
+    init() {
+        self.name = ""
+        self.favColor = .pink
+        self.thumbnail = ""
+        self.birthday = Date()
+        self.records = []
+    }
+    
+    init(name: String, favColor: SystemColor, thumbnail: String, birthday: Date, records: [Record]) {
+        self.name = name
+        self.favColor = favColor
+        self.thumbnail = thumbnail
+        self.birthday = birthday
+        self.records = records
+    }
+    
     static let samplePerson: [Person] = [
         Person(name: "우리 주니", favColor: .blue, thumbnail: "TestThumbnail", birthday: Date(), records: Record.sampleRecord),
         Person(name: "예빈이", favColor: .purple, thumbnail: "TestThumbnail", birthday: Date(), records: Record.sampleRecord),
@@ -41,6 +57,20 @@ struct Record: Codable, Identifiable {
     var pictures: [Picture]
     var title: String = "제목 없음"
     var text: String
+    
+    init() {
+        self.recordDate = Date()
+        self.height = 0
+        self.pictures = []
+        self.text = ""
+    }
+    
+    init(recordDate: Date, height: Float, pictures: [Picture], text: String) {
+        self.recordDate = recordDate
+        self.height = height
+        self.pictures = pictures
+        self.text = text
+    }
     
     static let sampleRecord: [Record] = [
         Record(recordDate: Date(), height: 23, pictures: [], text: "울 아들 화이팅"),

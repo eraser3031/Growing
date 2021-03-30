@@ -22,6 +22,7 @@
 		21B93C2D25EA49B600878B47 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21B93C2C25EA49B600878B47 /* Preview Assets.xcassets */; };
 		21B93C3025EA49B600878B47 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21B93C2E25EA49B600878B47 /* LaunchScreen.storyboard */; };
 		21C3F6132604B82B00B41F47 /* CameraUiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C3F6122604B82B00B41F47 /* CameraUiView.swift */; };
+		21C5A0332613657A00ECAEB2 /* CreatePersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C5A0322613657A00ECAEB2 /* CreatePersonView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		21B93C2F25EA49B600878B47 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		21B93C3125EA49B600878B47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		21C3F6122604B82B00B41F47 /* CameraUiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraUiView.swift; sourceTree = "<group>"; };
+		21C5A0322613657A00ECAEB2 /* CreatePersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePersonView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 				21C3F6122604B82B00B41F47 /* CameraUiView.swift */,
 				216CBC562610A6660006F182 /* SubView.swift */,
 				216CBC592610AC610006F182 /* EditPersonView.swift */,
+				21C5A0322613657A00ECAEB2 /* CreatePersonView.swift */,
 				218258BB25F5163100A31EB7 /* MainView.swift */,
 				21182E2325F78BAD00F3A41C /* PersonView.swift */,
 				211367BD260351DD00B95348 /* RecordView.swift */,
@@ -185,6 +188,7 @@
 				212112E725F23D95000B5CC9 /* Extra.swift in Sources */,
 				21182E2425F78BAD00F3A41C /* PersonView.swift in Sources */,
 				21B93C2825EA49B200878B47 /* Experience.rcproject in Sources */,
+				21C5A0332613657A00ECAEB2 /* CreatePersonView.swift in Sources */,
 				216CBC572610A6660006F182 /* SubView.swift in Sources */,
 				218258B925F4DAD900A31EB7 /* Storage.swift in Sources */,
 				216CBC5A2610AC610006F182 /* EditPersonView.swift in Sources */,
