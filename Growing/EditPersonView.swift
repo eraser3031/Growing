@@ -9,9 +9,9 @@ import SwiftUI
 
 struct EditPersonView: View {
     @EnvironmentObject var girinVM: GirinViewModel
-    @Environment(\..verticalSizeClass) var verticalSizeClass
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Binding var person: Person
-    @State var offset: CGFloat = screen.height
+    @State var start = false
     
     var confirm: () -> Void
     
@@ -19,10 +19,8 @@ struct EditPersonView: View {
         VStack(spacing: 0) {
              
             Spacer()
-                .frame(height: offset)
-                .onAppear{
-                    offset = .infinity
-                }
+                .frame(height: start ? horizontalSizeClass == .compact ? nil : 0 : screen.height)
+                .onAppear{start = true}
                 .animation(.spring())
             
             VStack(spacing: 20) {
@@ -88,7 +86,10 @@ struct EditPersonView: View {
                         confirm()
                     }
             }
-            .frame(maxWidth: .infinity)
+            .if(horizontalSizeClass == .regular){ body in
+                body
+                    .frame(width: 375)
+            }
             .padding(.horizontal, 20)
             .background(Color.white)
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
@@ -115,6 +116,7 @@ struct EditPersonView: View {
 struct ModalBackgroundView: View {
     @Binding var value: Bool
     var cancel: () -> Void
+    
     var body: some View {
         Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)).edgesIgnoringSafeArea(.all)
             .onTapGesture {
@@ -122,7 +124,19 @@ struct ModalBackgroundView: View {
             }
             .opacity(value ? 0.5 : 0)
             .animation(Animation.easeInOut)
-        
-            
+    }
+}
+
+struct ModalBackgroundView2: View {
+    @Binding var value: Person?
+    var cancel: () -> Void
+    
+    var body: some View {
+        Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)).edgesIgnoringSafeArea(.all)
+            .onTapGesture {
+                cancel()
+            }
+            .opacity(value != nil ? 0.5 : 0)
+            .animation(Animation.easeInOut)
     }
 }

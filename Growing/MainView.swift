@@ -9,7 +9,15 @@ import SwiftUI
 
 struct MainView: View {
     @EnvironmentObject var girinVM: GirinViewModel
-    @State var showEditPersonView = false
+    @State var showCreatePersonView = false
+    @State var showEditPerson: Person? = nil
+    
+    func binding(for item: Person) -> Binding<Person> {
+        guard let index = girinVM.personList.firstIndex(where: { $0.id == item.id }) else {
+            fatalError("no...")
+        }
+        return $girinVM.personList[index]
+    }
     
     var body: some View {
         ZStack {
@@ -45,17 +53,17 @@ struct MainView: View {
                     }
             }.accentColor(.pink)
             
-            ModalBackgroundView(value: $showEditPersonView){
-                showEditPersonView = false
+            ModalBackgroundView(value: $showCreatePersonView){}
+            ModalBackgroundView2(value: $showEditPerson){}
+            
+            if showCreatePersonView {
+                CreatePersonView {showCreatePersonView = false}
             }
             
-            if showEditPersonView {
-                CreatePersonView {
-                    showEditPersonView = false
-                } cancel: {
-                    showEditPersonView = false
+            if showEditPerson != nil {
+                EditPersonView(person: binding(for: showEditPerson!)) {
+                        showEditPerson = nil
                 }
-
             }
         }
         
@@ -110,7 +118,7 @@ extension MainView {
                     Spacer()
                         .frame(width: 0)
                     ForEach(girinVM.personList) { person in
-                        PersonCardView(person: person, geo: geometry)
+                        PersonCardView(person: person, geo: geometry, editPerson: $showEditPerson)
                             .frame(maxHeight: geometry.frame(in: .global).height)
                             .frame(maxWidth: geometry.frame(in: .global).height/1.4)
                             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
@@ -129,19 +137,75 @@ extension MainView {
         }
     }
     
-    func PersonCardView(person: Person, geo: GeometryProxy) -> some View {
-        
-        func binding(for item: Person) -> Binding<Person> {
-            guard let index = girinVM.personList.firstIndex(where: { $0.id == item.id }) else {
-                fatalError("Can't find scrum in array")
+    func PlusPersonCardView() -> some View {
+        Rectangle()
+            .onTapGesture {
+                showCreatePersonView = true
             }
-            return $girinVM.personList[index]
+    }
+}
+
+struct MainView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            MainView().environmentObject(GirinViewModel())
         }
-        
-        return NavigationLink(
+    }
+}
+
+struct SettingView: View {
+    var body: some View {
+        NavigationView{
+            Form {
+                Section(header: Label("정보", systemImage: "info.circle.fill")) {
+                    NavigationLink(destination: Text("aa")) {
+                        Label("앱 정보", systemImage: "questionmark.circle.fill")
+                    }
+                }
+                
+                Section(header: Label("데이터", systemImage: "cylinder.split.1x2.fill")) {
+                    Button(action: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Action@*/{}/*@END_MENU_TOKEN@*/) {
+                        Label("일기 데이터 초기화", systemImage: "text.badge.xmark")
+                    }.buttonStyle(PlainButtonStyle())
+                    
+                    Button(action: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Action@*/{}/*@END_MENU_TOKEN@*/) {
+                        Label("모든 데이터 초기화", systemImage: "xmark.circle.fill")
+                    }.buttonStyle(PlainButtonStyle())
+                }
+            }.navigationTitle("설정")
+            .navigationBarTitleDisplayMode(.large)
+        }
+    }
+}
+
+struct PersonCardView : View {
+    @EnvironmentObject var girinVM: GirinViewModel
+    @State var showActionSheet = false
+    var person: Person
+    var geo: GeometryProxy
+    @Binding var editPerson: Person?
+    
+    @State var emptyPerson = Person()
+    
+    func binding(for item: Person) -> Binding<Person> {
+        guard let index = girinVM.personList.firstIndex(where: { $0.id == item.id }) else {
+            return $emptyPerson
+        }
+        return $girinVM.personList[index]
+    }
+    
+    func remove() {
+        withAnimation(.easeInOut){
+            girinVM.personList.removeAll { p -> Bool in
+                return p.id == person.id
+            }
+        }
+    }
+    
+    var body: some View {
+        NavigationLink(
             destination: PersonView(person: binding(for: person)).environmentObject(girinVM),
             label: {
-                
                 VStack(spacing: 0){
                     Spacer()
                     
@@ -177,55 +241,29 @@ extension MainView {
                                 .font(.system(size: 26, weight: .bold))
                                 .foregroundColor(.white)
                         }
+                        .actionSheet(isPresented: $showActionSheet) {
+                            ActionSheet(title: Text("\(person.name)"), message: nil,
+                                        buttons: [
+                                            .default(Text("수정")){editPerson = person},
+                                            .default(Text("삭제")){remove()},
+                                            .cancel(Text("취소"))
+                                        ])
+                        }
+                        .onTapGesture {
+                            showActionSheet = true
+                        }
                     }
                     .padding(20)
                     .background(Color.white)
                 }.background(
-                    Image(person.thumbnail)
-                        .resizable()
-                        .scaledToFill()
-                )
-                
-            }).buttonStyle(PlainButtonStyle())
-    }
-    
-    func PlusPersonCardView() -> some View {
-        Rectangle()
-            .onTapGesture {
-                showEditPersonView = true
-            }
-    }
-}
-
-struct MainView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            MainView().environmentObject(GirinViewModel())
-        }
-    }
-}
-
-struct SettingView: View {
-    var body: some View {
-        NavigationView{
-            Form {
-                Section(header: Label("정보", systemImage: "info.circle.fill")) {
-                    NavigationLink(destination: Text("aa")) {
-                        Label("앱 정보", systemImage: "questionmark.circle.fill")
+                    ZStack {
+                        Color.gray
+                        
+                        Image(person.thumbnail)
+                            .resizable()
+                            .scaledToFill()
                     }
-                }
-                
-                Section(header: Label("데이터", systemImage: "cylinder.split.1x2.fill")) {
-                    Button(action: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Action@*/{}/*@END_MENU_TOKEN@*/) {
-                        Label("일기 데이터 초기화", systemImage: "text.badge.xmark")
-                    }.buttonStyle(PlainButtonStyle())
-                    
-                    Button(action: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Action@*/{}/*@END_MENU_TOKEN@*/) {
-                        Label("모든 데이터 초기화", systemImage: "xmark.circle.fill")
-                    }.buttonStyle(PlainButtonStyle())
-                }
-            }.navigationTitle("설정")
-            .navigationBarTitleDisplayMode(.large)
-        }
+                )
+            }).buttonStyle(PlainButtonStyle())
     }
 }

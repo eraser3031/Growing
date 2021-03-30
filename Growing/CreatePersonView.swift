@@ -11,23 +11,16 @@ struct CreatePersonView: View {
     @EnvironmentObject var girinVM: GirinViewModel
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @State var person = Person()
-    @State var offset: CGFloat = screen.height
+    @State var start = false
     
     var confirm: () -> Void
-    var cancel: () -> Void
     
     var body: some View {
         VStack(spacing: 0) {
              
             Spacer()
-                .frame(height: offset)
-                .onAppear{
-                    if horizontalSizeClass == .compact {
-                        offset = .infinity
-                    } else {
-                        offset = 0
-                    }
-                }
+                .frame(height: start ? horizontalSizeClass == .compact ? nil : 0 : screen.height)
+                .onAppear{start = true}
                 .animation(.spring())
             
             VStack(spacing: 20) {
@@ -48,7 +41,7 @@ struct CreatePersonView: View {
                             .font(.title3)
                     }
                     .onTapGesture {
-                        cancel()
+                        confirm()
                     }
                     
                 }.padding(.vertical, 28)
@@ -104,8 +97,10 @@ struct CreatePersonView: View {
                     .cornerRadius(12)
                     .padding(.bottom, UIApplication.shared.windows.filter{$0.isKeyWindow}.first!.safeAreaInsets.bottom)
                     .onTapGesture {
-                        girinVM.personList.append(person)
-                        confirm()
+                        withAnimation(.spring()){
+                            girinVM.personList.append(person)
+                            confirm()
+                        }
                     }
             }
             .if(horizontalSizeClass == .regular){ body in
