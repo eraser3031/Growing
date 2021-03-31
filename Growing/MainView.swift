@@ -125,6 +125,7 @@ extension MainView {
                             .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.2)), radius: 40, x: 0.0, y: 20)
                             .padding(.top, 15)
                             .padding(.bottom, 30)
+                            .contentShape(RoundedRectangle(cornerRadius: 20))
                     }
                     
                     PlusPersonCardView()
@@ -138,7 +139,24 @@ extension MainView {
     }
     
     func PlusPersonCardView() -> some View {
-        Rectangle()
+        ZStack{
+            Color.main 
+            
+            VStack(spacing: 26){
+                Image("PersonPlus")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 79, height: 72.5)
+                
+                Text("아이 추가").fontWeight(.semibold)
+                    .font(.title3)
+            }
+            
+        }.clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.2)), radius: 40, x: 0.0, y: 20)
+        .padding(.top, 15)
+        .padding(.bottom, 30)
+        .contentShape(RoundedRectangle(cornerRadius: 20))
             .onTapGesture {
                 showCreatePersonView = true
             }
@@ -204,7 +222,7 @@ struct PersonCardView : View {
     
     var body: some View {
         NavigationLink(
-            destination: PersonView(person: binding(for: person)).environmentObject(girinVM),
+            destination: PersonView(person: binding(for: person), editPerson: $editPerson).environmentObject(girinVM),
             label: {
                 VStack(spacing: 0){
                     Spacer()

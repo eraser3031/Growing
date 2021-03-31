@@ -13,8 +13,7 @@ let screen = UIScreen.main.bounds
 extension Color {
     static let main = Color(UIColor(named:"main")!)
     static let second = Color(UIColor(named:"second")!)
-    static let mainDark = Color(UIColor(named:"mainDark")!)
-    static let secondDark = Color(UIColor(named:"secondDark")!)
+    static let sub = Color(UIColor(named:"sub")!)
 
     // hex 변환 메소드 하나 구현 해놓기
 }

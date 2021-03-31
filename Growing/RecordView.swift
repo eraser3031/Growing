@@ -80,8 +80,8 @@ struct RecordView: View {
             Divider()
                 .padding(20)
             
-            TextField("이야기를 적어주세요.", text: $record.text)
-                .textFieldStyle(PlainTextFieldStyle())
+            TextEditor(text: $record.text)
+                .padding(.horizontal, 20)
             
             Spacer()
             

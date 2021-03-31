@@ -10,21 +10,38 @@ import SwiftUI
 struct PersonView: View {
     @EnvironmentObject var girinVM: GirinViewModel
     @Binding var person: Person
+    @Binding var editPerson: Person?
+    @State var showActionSheet = false
+    
     var body: some View {
-        VStack(spacing: 0){
-            ScrollView(.vertical) {
-                HStack {
-                    LineView(180, spacing: 24)
-                }.padding(.horizontal, 20)
-            }
-        }.navigationTitle("\(person.name)")
-        .navigationBarTitleDisplayMode(.large)
-        .navigationBarItems(trailing:
-                                Image(systemName: "ellipsis.circle.fill")
-                                .foregroundColor(.pink)
-                                .font(.title)
-        )
-        .navigationViewStyle(StackNavigationViewStyle())
+        ZStack {
+            VStack(spacing: 0){
+                ScrollView(.vertical) {
+                    HStack {
+                        LineView(180, spacing: 24)
+                    }.padding(.horizontal, 20)
+                }
+            }.navigationTitle("\(person.name)")
+            .navigationBarTitleDisplayMode(.large)
+            .navigationBarItems(trailing:
+                                    Image(systemName: "ellipsis.circle.fill")
+                                    .foregroundColor(.pink)
+                                    .font(.title)
+                                    .actionSheet(isPresented: $showActionSheet) {
+                                        ActionSheet(title: Text("\(person.name)"), message: nil,
+                                                    buttons: [
+                                                        .default(Text("수정")){editPerson = person},
+                                                        .default(Text("기록 초기화")){person.records = []},
+                                                        .cancel(Text("취소"))
+                                                    ])
+                                    }
+                                    .onTapGesture {
+                                        showActionSheet = true
+                                    }
+
+            )
+            .navigationViewStyle(StackNavigationViewStyle())
+        }
     }
 }
 
@@ -129,8 +146,8 @@ extension PersonView {
     }
 }
 
-struct PersonView_Previews: PreviewProvider {
-    static var previews: some View {
-        PersonView(person: .constant(Person.samplePerson.first!))
-    }
-}
+//struct PersonView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PersonView(person: .constant(Person.samplePerson.first!))
+//    }
+//}
