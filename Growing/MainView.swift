@@ -277,9 +277,9 @@ struct PersonCardView : View {
                     .background(Color.white)
                 }.background(
                     ZStack {
-                        Color.gray
+                        Color.second
                         
-                        Image(person.thumbnail)
+                        Image(uiImage: person.thumbnail.toImage() ?? UIImage())
                             .resizable()
                             .scaledToFill()
                     }

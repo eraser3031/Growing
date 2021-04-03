@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct RecordsView: View {
     @EnvironmentObject var girinVM: GirinViewModel
@@ -45,7 +46,8 @@ struct RecordsView: View {
                                 
                                 // 소수점 2째까지 바꾸기
                                 Text("\(Int(record.height))cm")
-                                    .font(.headline)
+                                    .foregroundColor(.pink)
+                                    .font(.callout)
                                 
                                 Text(record.text)
                                     .font(.callout)
@@ -63,6 +65,7 @@ struct RecordView: View {
     @EnvironmentObject var girinVM: GirinViewModel
     @Binding var person: Person
     @Binding var record: Record
+    @State var showEndText = false
     var body: some View {
         VStack(spacing: 0) {
             
@@ -86,12 +89,36 @@ struct RecordView: View {
             Spacer()
             
         }.navigationTitle(record.title)
+        .navigationBarItems(trailing:
+            showEndText ?
+            Text("완료")
+                .foregroundColor(.pink)
+                .onTapGesture {
+                    hideKeyboard()
+                }
+            : nil
+        )
+        .onReceive(Publishers.keyboardHeight){ value in
+            if value != 0 {
+               showEndText = true
+            } else {
+                showEndText = false
+            }
+        }
     }
 }
 
-struct RecordView_Previews: PreviewProvider {
-    static var previews: some View {
-        RecordsView(person: .constant(Person.samplePerson.first!), recordIndexs: [1,2]){"123"}
-            .environmentObject(GirinViewModel())
+#if canImport(UIKit)
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
+#endif
+
+//struct RecordView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        RecordsView(person: .constant(Person.samplePerson.first!), recordIndexs: [1,2]){"123"}
+//            .environmentObject(GirinViewModel())
+//    }
+//}

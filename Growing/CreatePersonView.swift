@@ -14,7 +14,16 @@ struct CreatePersonView: View {
     @State var person = Person()
     @State var start = false
     @State var keyboardOffset: CGFloat = 0
+    
+    @State var showImagePicker = false
+    @State private var inputImage: UIImage?
+    
     var confirm: () -> Void
+    
+    func loadImage() {
+        guard let inputImage = inputImage else { return }
+        person.thumbnail = inputImage.toString() ?? ""
+    }
     
     var body: some View {
         ZStack {
@@ -56,14 +65,25 @@ struct CreatePersonView: View {
                     }.padding(.vertical, 28)
                     
                     VStack {
-                        Image(person.thumbnail)
+                        Image(uiImage: person.thumbnail.toImage() ?? UIImage())
                             .resizable()
                             .scaledToFill()
                             .frame(width: 120, height: 120)
-                            .background(Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)))
+                            .background(
+                                ZStack {
+                                    Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1))
+                                    
+                                    Image(systemName: "camera.fill")
+                                        .foregroundColor(.gray)
+                                        .font(.title3)
+                                }
+                            )
                             .clipShape(Circle())
                             .onTapGesture {
-                                //이미지 피커 불러와서 person.thumbnail 데이터 넣어주기
+                                showImagePicker = true
+                            }
+                            .sheet(isPresented: $showImagePicker, onDismiss: loadImage) {
+                                ImagePicker(image: self.$inputImage)
                             }
                         
                         Text("대표사진").bold()

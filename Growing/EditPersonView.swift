@@ -6,14 +6,25 @@
 //
 
 import SwiftUI
+import Combine
 
 struct EditPersonView: View {
     @EnvironmentObject var girinVM: GirinViewModel
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Binding var person: Person
+    @State var emptyPerson = Person()
     @State var start = false
+    @State var keyboardOffset: CGFloat = 0
+    
+    @State var showImagePicker = false
+    @State private var inputImage: UIImage?
     
     var confirm: () -> Void
+    
+    func loadImage() {
+        guard let inputImage = inputImage else { return }
+        emptyPerson.thumbnail = inputImage.toString() ?? ""
+    }
     
     var body: some View {
         ZStack {
@@ -41,14 +52,25 @@ struct EditPersonView: View {
                     }.padding(.vertical, 28)
                     
                     VStack {
-                        Image(person.thumbnail)
+                        Image(uiImage: emptyPerson.thumbnail.toImage() ?? UIImage())
                             .resizable()
                             .scaledToFill()
                             .frame(width: 120, height: 120)
-                            .background(Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)))
+                            .background(
+                                ZStack {
+                                    Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1))
+                                    
+                                    Image(systemName: "camera.fill")
+                                        .foregroundColor(.gray)
+                                        .font(.title3)
+                                }
+                            )
                             .clipShape(Circle())
                             .onTapGesture {
-                                //이미지 피커 불러와서 person.thumbnail 데이터 넣어주기
+                                showImagePicker = true
+                            }
+                            .sheet(isPresented: $showImagePicker, onDismiss: loadImage) {
+                                ImagePicker(image: self.$inputImage)
                             }
                         
                         Text("대표사진").bold()
@@ -59,7 +81,7 @@ struct EditPersonView: View {
                         Text("이름").bold()
                             .font(.subheadline)
                         
-                        TextField("예빈이", text: $person.name)
+                        TextField("\(person.name)", text: $emptyPerson.name)
                             .padding()
                             .frame(height: 45)
                             .background(Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)))
@@ -71,11 +93,11 @@ struct EditPersonView: View {
                             .font(.subheadline)
                         
                         HStack(spacing: 0) {
-                            Text("\(person.birthday.year)년 \(person.birthday.month)월 \(person.birthday.day)일")
+                            Text("\(emptyPerson.birthday.year)년 \(emptyPerson.birthday.month)월 \(emptyPerson.birthday.day)일")
                             
                             Spacer()
                             
-                            DatePicker("", selection: $person.birthday, displayedComponents: .date)
+                            DatePicker("", selection: $emptyPerson.birthday, displayedComponents: .date)
                         }.padding()
                         .frame(height: 45)
                         .background(Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)))
@@ -91,6 +113,7 @@ struct EditPersonView: View {
                         .cornerRadius(12)
                         .padding(.bottom, UIApplication.shared.windows.filter{$0.isKeyWindow}.first!.safeAreaInsets.bottom)
                         .onTapGesture {
+                            person = emptyPerson
                             confirm()
                         }
                 }
@@ -103,7 +126,16 @@ struct EditPersonView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                 .animation(.spring())
             }
+            .onReceive(Publishers.keyboardHeight){ height in
+                if horizontalSizeClass == .compact {
+                    keyboardOffset = height
+                }
+            }
+            .offset(x: 0, y: -keyboardOffset)
             .edgesIgnoringSafeArea(.bottom)
+            .onAppear{
+                emptyPerson.birthday = person.birthday
+            }
         }
     }
 }

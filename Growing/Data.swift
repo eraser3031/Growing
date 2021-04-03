@@ -17,7 +17,11 @@ struct Person: Codable, Identifiable {
     var name: String
     var favColor: SystemColor
     var nowHeight: Float {
-        120
+        if records.count == 0 {
+            return 0
+        } else {
+            return records.last!.height
+        }
     }
     var thumbnail: String
     var birthday: Date
