@@ -16,86 +16,95 @@ struct EditPersonView: View {
     var confirm: () -> Void
     
     var body: some View {
-        VStack(spacing: 0) {
-             
-            Spacer()
-                .frame(height: start ? horizontalSizeClass == .compact ? nil : 0 : screen.height)
-                .onAppear{start = true}
-                .animation(.spring())
+        ZStack {
             
-            VStack(spacing: 20) {
-                
-                HStack {
-                    Text("정보 수정").bold()
-                        .font(.title)
-                    
-                    Spacer()
-                }.padding(.vertical, 28)
-                
-                VStack {
-                    Image(person.thumbnail)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 120, height: 120)
-                        .background(Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)))
-                        .clipShape(Circle())
-                        .onTapGesture {
-                            //이미지 피커 불러와서 person.thumbnail 데이터 넣어주기
-                        }
-                    
-                    Text("대표사진").bold()
-                        .font(.subheadline)
+            Color.black.opacity(start ? 0.3 : 0)
+                .onTapGesture {
+                    confirm()
                 }
+                .edgesIgnoringSafeArea(.all)
+            
+            VStack(spacing: 0) {
+                 
+                Spacer()
+                    .frame(height: start ? horizontalSizeClass == .compact ? nil : 0 : screen.height)
+                    .onAppear{start = true}
+                    .animation(.spring())
                 
-                VStack(alignment: .leading){
-                    Text("이름").bold()
-                        .font(.subheadline)
+                VStack(spacing: 20) {
                     
-                    TextField("예빈이", text: $person.name)
-                        .padding()
+                    HStack {
+                        Text("정보 수정").bold()
+                            .font(.title)
+                        
+                        Spacer()
+                    }.padding(.vertical, 28)
+                    
+                    VStack {
+                        Image(person.thumbnail)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 120, height: 120)
+                            .background(Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)))
+                            .clipShape(Circle())
+                            .onTapGesture {
+                                //이미지 피커 불러와서 person.thumbnail 데이터 넣어주기
+                            }
+                        
+                        Text("대표사진").bold()
+                            .font(.subheadline)
+                    }
+                    
+                    VStack(alignment: .leading){
+                        Text("이름").bold()
+                            .font(.subheadline)
+                        
+                        TextField("예빈이", text: $person.name)
+                            .padding()
+                            .frame(height: 45)
+                            .background(Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)))
+                            .cornerRadius(12)
+                    }
+                    
+                    VStack(alignment: .leading){
+                        Text("생년월일").bold()
+                            .font(.subheadline)
+                        
+                        HStack(spacing: 0) {
+                            Text("\(person.birthday.year)년 \(person.birthday.month)월 \(person.birthday.day)일")
+                            
+                            Spacer()
+                            
+                            DatePicker("", selection: $person.birthday, displayedComponents: .date)
+                        }.padding()
                         .frame(height: 45)
                         .background(Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)))
                         .cornerRadius(12)
-                }
-                
-                VStack(alignment: .leading){
-                    Text("생년월일").bold()
-                        .font(.subheadline)
-                    
-                    HStack(spacing: 0) {
-                        Text("\(person.birthday.year)년 \(person.birthday.month)월 \(person.birthday.day)일")
-                        
-                        Spacer()
-                        
-                        DatePicker("", selection: $person.birthday, displayedComponents: .date)
-                    }.padding()
-                    .frame(height: 45)
-                    .background(Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)))
-                    .cornerRadius(12)
-                }
-                .padding(.bottom, 40)
-                
-                Text("확인").bold()
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 50)
-                    .background(Color.pink)
-                    .cornerRadius(12)
-                    .padding(.bottom, UIApplication.shared.windows.filter{$0.isKeyWindow}.first!.safeAreaInsets.bottom)
-                    .onTapGesture {
-                        confirm()
                     }
+                    .padding(.bottom, 40)
+                    
+                    Text("확인").bold()
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 50)
+                        .background(Color.pink)
+                        .cornerRadius(12)
+                        .padding(.bottom, UIApplication.shared.windows.filter{$0.isKeyWindow}.first!.safeAreaInsets.bottom)
+                        .onTapGesture {
+                            confirm()
+                        }
+                }
+                .if(horizontalSizeClass == .regular){ body in
+                    body
+                        .frame(width: 375)
+                }
+                .padding(.horizontal, 20)
+                .background(Color.white)
+                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                .animation(.spring())
             }
-            .if(horizontalSizeClass == .regular){ body in
-                body
-                    .frame(width: 375)
-            }
-            .padding(.horizontal, 20)
-            .background(Color.white)
-            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-            .animation(.spring())
+            .edgesIgnoringSafeArea(.bottom)
         }
-        .edgesIgnoringSafeArea(.bottom)
     }
 }
 

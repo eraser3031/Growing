@@ -53,9 +53,6 @@ struct MainView: View {
                     }
             }.accentColor(.pink)
             
-            ModalBackgroundView(value: $showCreatePersonView){}
-            ModalBackgroundView2(value: $showEditPerson){}
-            
             if showCreatePersonView {
                 CreatePersonView {showCreatePersonView = false}
             }
@@ -202,8 +199,8 @@ struct PersonCardView : View {
     var person: Person
     var geo: GeometryProxy
     @Binding var editPerson: Person?
-    
     @State var emptyPerson = Person()
+    @State var alertRemove = false
     
     func binding(for item: Person) -> Binding<Person> {
         guard let index = girinVM.personList.firstIndex(where: { $0.id == item.id }) else {
@@ -263,12 +260,17 @@ struct PersonCardView : View {
                             ActionSheet(title: Text("\(person.name)"), message: nil,
                                         buttons: [
                                             .default(Text("수정")){editPerson = person},
-                                            .default(Text("삭제")){remove()},
+                                            .default(Text("삭제")){alertRemove = true},
                                             .cancel(Text("취소"))
                                         ])
                         }
                         .onTapGesture {
                             showActionSheet = true
+                        }
+                        .alert(isPresented: $alertRemove) {
+                            Alert(title: Text("정보 삭제"), message: Text("정말로 아이의 데이터를 삭제하시겠어요??"), primaryButton: .destructive(Text("확인"), action: {
+                                remove()
+                            }), secondaryButton: .cancel())
                         }
                     }
                     .padding(20)

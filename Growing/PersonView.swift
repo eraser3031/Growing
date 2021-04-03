@@ -12,6 +12,10 @@ struct PersonView: View {
     @Binding var person: Person
     @Binding var editPerson: Person?
     @State var showActionSheet = false
+    @State var alertRemove = false
+    func remove() {
+        person.records = []
+    }
     
     var body: some View {
         ZStack {
@@ -31,12 +35,17 @@ struct PersonView: View {
                                         ActionSheet(title: Text("\(person.name)"), message: nil,
                                                     buttons: [
                                                         .default(Text("수정")){editPerson = person},
-                                                        .default(Text("기록 초기화")){person.records = []},
+                                                        .default(Text("기록 초기화")){alertRemove = true},
                                                         .cancel(Text("취소"))
                                                     ])
                                     }
                                     .onTapGesture {
                                         showActionSheet = true
+                                    }
+                                    .alert(isPresented: $alertRemove) {
+                                        Alert(title: Text("기록 삭제"), message: Text("정말 모든 기록을 삭제하시 겠어요?"), primaryButton: .destructive(Text("확인"), action: {
+                                            remove()
+                                        }), secondaryButton: .cancel())
                                     }
 
             )
