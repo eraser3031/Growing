@@ -11,6 +11,7 @@ struct MainView: View {
     @EnvironmentObject var girinVM: GirinViewModel
     @State var showCreatePersonView = false
     @State var showEditPerson: Person? = nil
+    @State var showARView = false
     
     func binding(for item: Person) -> Binding<Person> {
         guard let index = girinVM.personList.firstIndex(where: { $0.id == item.id }) else {
@@ -101,6 +102,13 @@ extension MainView {
         )
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .padding(.horizontal, 20)
+        .contentShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .onTapGesture {
+            showARView = true
+        }
+        .fullScreenCover(isPresented: $showARView){
+            ContentView()
+        }
     }
     
     func PersonListScrollView() -> some View {

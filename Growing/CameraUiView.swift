@@ -15,7 +15,9 @@ struct CameraUiView: View {
     @State var selectIndex = 99
     @State var offset: CGFloat = 0
     @State var selectItemPoses: [CGFloat] = []
-    //checkmate
+    
+    var cancel: () -> Void
+    
     var body: some View {
         ZStack {
             
@@ -23,12 +25,29 @@ struct CameraUiView: View {
                 Spacer()
                 Rectangle()
                     .fill(
-                        LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)), Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5))]), startPoint: .top, endPoint: .bottom)
+                        LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)), Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5))]), startPoint: .top, endPoint: .bottom)
                     )
                     .frame(height: 220)
             }.edgesIgnoringSafeArea(.all)
             
             VStack {
+                HStack {
+                    Spacer()
+                    
+                    ZStack() {
+                        Circle()
+                            .fill(Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)))
+                            .frame(width: 34, height:34)
+                        
+                        Image(systemName: "xmark")
+                            .foregroundColor(.black)
+                            .font(.title3)
+                    }
+                    .onTapGesture {
+                        cancel()
+                    }
+                }.padding(.horizontal, 20)
+                
                 Spacer()
                 
                 PersonSelectBar()
@@ -55,8 +74,6 @@ struct CameraUiView: View {
                         )
                 }
             }
-            
-            Text("\(offset) \(selectIndex)")
         }
         .onAppear {
             selectIndex = 0
@@ -98,9 +115,9 @@ extension CameraUiView {
     }
 }
 
-struct CameraUiView_Previews: PreviewProvider {
-    static var previews: some View {
-        CameraUiView()
-            .environmentObject(GirinViewModel())
-    }
-}
+//struct CameraUiView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CameraUiView()
+//            .environmentObject(GirinViewModel())
+//    }
+//}
