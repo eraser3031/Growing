@@ -14,20 +14,24 @@ import FocusEntity
 
 class PlacementSetting: ObservableObject {
     @Published var placeAnchorPos: SIMD3<Float>?
-    @Published var wallAnchorPos: SIMD3<Float>?
     @Published var cameraAnchorPos = SIMD3<Float>(x: 0, y: 0, z: 0)
+    @Published var result: Float = 0
     var updateCancellable: Cancellable?
+    var tapListener: AnyCancellable?
+    
+    let tapSubject = PassthroughSubject<Bool, Never>()
 }
 
 struct ContentView : View {
-    
+    @StateObject var placeSet = PlacementSetting()
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var girinVM: GirinViewModel
     
     var body: some View {
         ZStack{
-            GrowMeasureView()
+            GrowMeasureView(placeSet: placeSet)
             
-            CameraUiView(){
+            CameraUiView(placeSet: placeSet){
                 presentationMode.wrappedValue.dismiss()
             }
         }
@@ -35,40 +39,36 @@ struct ContentView : View {
 }
 
 struct GrowMeasureView: View {
-    @StateObject var placeSet = PlacementSetting()
-    @State var result: Float = 0
+    @ObservedObject var placeSet: PlacementSetting
+    
     var body: some View {
         ZStack{
             ARViewContainer(placeSet: placeSet)
                 .edgesIgnoringSafeArea(.all)
-            
-            VStack{
-                Text("result: \(result)")
-            }
         }.onTapGesture {
 //            result = measureHeight(placeSet.placeAnchorPos.y, placeSet.cameraAnchorPos.y)
         }
-    }
-    
-    private func measureHeight(_ a: Float, _ b: Float) -> Float {
-        abs(a - b) * 100 + 4 // cm + 오차범위
     }
 }
 
 struct ARViewContainer: UIViewRepresentable {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var placeSet: PlacementSetting
-    
+    @State var emptyPos: SIMD3<Float>?
     
     func makeUIView(context: Context) -> CustomARView {
         let arView = CustomARView(frame: .zero)
         let cameraAnchor = AnchorEntity(.camera)
         arView.scene.addAnchor(cameraAnchor)
         placeSet.updateCancellable = arView.scene.subscribe(to: SceneEvents.Update.self) { event in
-            
-            print(#fileID, #function, #line)
             updateScene(arView: arView)
         }
+        
+        placeSet.tapListener = placeSet.tapSubject.sink(receiveValue: { value in
+            if arView.focusEntity!.onPlane || placeSet.placeAnchorPos != nil {
+                tapScene(value)
+            }
+        })
         
         return arView
     }
@@ -76,15 +76,24 @@ struct ARViewContainer: UIViewRepresentable {
     func updateUIView(_ uiView: CustomARView, context: Context) {}
     
     func updateScene(arView: CustomARView) {
-        
         placeSet.cameraAnchorPos = arView.cameraTransform.translation
-        
         if arView.focusEntity!.onPlane {
-            // 이부분 수정 필요. 바로바로 값 넣어주는게 아니라 유저가 바닥을 확정지으면 넣어줘야 함.
-            placeSet.placeAnchorPos = arView.focusEntity?.anchor?.position ?? SIMD3(x: 0, y: 0, z: 0)
+            emptyPos = arView.focusEntity?.anchor?.position ?? SIMD3(x: 0, y: 0, z: 0)
+        }
+    }
+
+    func tapScene(_ value: Bool) {
+        if (value == true) {
+            placeSet.placeAnchorPos = emptyPos
+            emptyPos = nil
+        } else {
+            placeSet.result = measureHeight(placeSet.placeAnchorPos!.y, placeSet.cameraAnchorPos.y)
         }
     }
     
+    func measureHeight(_ a: Float, _ b: Float) -> Float {
+        abs(a - b) * 100 + 4 // cm + 오차범위
+    }
 }
 
 class CustomARView: ARView {
@@ -93,9 +102,10 @@ class CustomARView: ARView {
     
     required init(frame: CGRect) {
         super.init(frame: frame)
-        focusEntity = FocusEntity(on: self, style: .classic(color: UIColor(.blue)))
+        focusEntity = FocusEntity(on: self, style: .classic(color: UIColor(.init(.displayP3, red: 1, green: 1, blue: 1, opacity: 0.2))))
         self.scene.addAnchor(focusEntity!)
         configure(axis: .horizontal)
+        
     }
     
     @objc required dynamic init?(coder decoder: NSCoder) {
@@ -103,9 +113,10 @@ class CustomARView: ARView {
     }
     
     
-    private func configure(axis: ARWorldTrackingConfiguration.PlaneDetection) {
+    func configure(axis: ARWorldTrackingConfiguration.PlaneDetection) {
         let config = ARWorldTrackingConfiguration()
         config.planeDetection = [axis]
+//            self.scene.removeAnchor(focusEntity!.anchor!)
         self.session.run(config)
     }
 }
@@ -117,3 +128,4 @@ struct ContentView_Previews : PreviewProvider {
     }
 }
 #endif
+

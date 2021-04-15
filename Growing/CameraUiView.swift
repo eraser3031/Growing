@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct CameraUiView: View {
     
@@ -16,16 +17,22 @@ struct CameraUiView: View {
     @State var offset: CGFloat = 0
     @State var selectItemPoses: [CGFloat] = []
     
+    @ObservedObject var placeSet: PlacementSetting
+    
     var cancel: () -> Void
     
     var body: some View {
-        ZStack {
+        let isPlaced: Bool = placeSet.placeAnchorPos != nil
+        
+        return ZStack {
             
             VStack(spacing: 0) {
                 Spacer()
                 Rectangle()
                     .fill(
-                        LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)), Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5))]), startPoint: .top, endPoint: .bottom)
+                        LinearGradient(gradient: isPlaced ?
+                        Gradient(colors: [Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)), Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5))]) : Gradient(colors: [Color(#colorLiteral(red: 1, green: 0.1764705882, blue: 0.3333333333, alpha: 0)), Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5))]),
+                                       startPoint: .top, endPoint: .bottom)
                     )
                     .frame(height: 220)
             }.edgesIgnoringSafeArea(.all)
@@ -60,20 +67,36 @@ struct CameraUiView: View {
                             .font(.title)
                         
                         Spacer()
+                        
                         Image("CameraButton")
                     }.padding(.horizontal, 30)
                     .padding(.bottom, 12)
                     
-                    Image(systemName: "ruler")
-                        .foregroundColor(.white)
+                    Image(systemName: isPlaced ? "ruler" : "")
+                        .foregroundColor(isPlaced ? .white : .pink)
                         .font(.title)
                         .background(
                             RoundedRectangle(cornerRadius: 20, style: .continuous)
-                                .fill(Color.pink)
+                                .fill(isPlaced ? Color.pink : .white)
                                 .frame(width: 66, height: 66)
                         )
+                        .overlay(
+                            Image(isPlaced ? "" : "Place")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 24, height: 24)
+                        )
+                        .onTapGesture {
+                            if !isPlaced {
+                                placeSet.tapSubject.send(true)
+                            } else {
+                                placeSet.tapSubject.send(false)
+                            }
+                        }
                 }
             }
+            
+            Text("\(placeSet.result)")
         }
         .onAppear {
             selectIndex = 0

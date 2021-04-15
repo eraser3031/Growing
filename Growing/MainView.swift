@@ -107,7 +107,7 @@ extension MainView {
             showARView = true
         }
         .fullScreenCover(isPresented: $showARView){
-            ContentView()
+            ContentView().environmentObject(girinVM)
         }
     }
     
