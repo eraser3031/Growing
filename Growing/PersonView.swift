@@ -43,7 +43,7 @@ struct PersonView: View {
                                         showActionSheet = true
                                     }
                                     .alert(isPresented: $alertRemove) {
-                                        Alert(title: Text("기록 삭제"), message: Text("정말 모든 기록을 삭제하시 겠어요?"), primaryButton: .destructive(Text("확인"), action: {
+                                        Alert(title: Text("기록 삭제"), message: Text("정말 모든 기록을 삭제하시겠어요?"), primaryButton: .destructive(Text("확인"), action: {
                                             remove()
                                         }), secondaryButton: .cancel())
                                     }

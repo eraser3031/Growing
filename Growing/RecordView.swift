@@ -34,11 +34,11 @@ struct RecordsView: View {
                             .environmentObject(girinVM)
                     ) {
                         HStack(alignment: .top, spacing: 10){
-                            Image(person.thumbnail)
-                                .resizable()
-                                .frame(width: 100, height: 100)
-                                .scaledToFill()
-                                .cornerRadius(12)
+//                            Image(person.thumbnail)
+//                                .resizable()
+//                                .frame(width: 100, height: 100)
+//                                .scaledToFill()
+//                                .cornerRadius(12)
                             VStack(alignment: .leading, spacing: 2){
                                 Text(record.recordDate, style: .date)
                                     .font(.title3)
@@ -57,7 +57,12 @@ struct RecordsView: View {
                     }
                 }
             }
-        }.navigationTitle("\(title())")
+            .onDelete(perform: { indexSet in
+                person.records.remove(at: indexSet.first!)
+            })
+        }
+        .navigationTitle("\(title())")
+        .navigationBarItems(trailing: EditButton())
     }
 }
 
@@ -122,3 +127,5 @@ extension View {
 //            .environmentObject(GirinViewModel())
 //    }
 //}
+
+

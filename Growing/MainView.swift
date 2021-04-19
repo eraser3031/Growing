@@ -12,6 +12,7 @@ struct MainView: View {
     @State var showCreatePersonView = false
     @State var showEditPerson: Person? = nil
     @State var showARView = false
+    @State var showNoPersonAlert = false
     
     func binding(for item: Person) -> Binding<Person> {
         guard let index = girinVM.personList.firstIndex(where: { $0.id == item.id }) else {
@@ -104,7 +105,15 @@ extension MainView {
         .padding(.horizontal, 20)
         .contentShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .onTapGesture {
-            showARView = true
+            if girinVM.personList.count == 0 {
+                showNoPersonAlert = true
+            } else {
+                showARView = true
+            }
+        }
+        .alert(isPresented: $showNoPersonAlert){
+            Alert(title: Text("데이터 없음"), message: Text("키를 재려면 등록한 아이가 한 명 이상 있어야 해요."),
+                  dismissButton: .cancel())
         }
         .fullScreenCover(isPresented: $showARView){
             ContentView().environmentObject(girinVM)
@@ -177,26 +186,75 @@ struct MainView_Previews: PreviewProvider {
 }
 
 struct SettingView: View {
+    @EnvironmentObject var girinVM: GirinViewModel
+    @State var showRecordAlert = false
+    @State var showEveryAlert = false
+    
     var body: some View {
         NavigationView{
             Form {
                 Section(header: Label("정보", systemImage: "info.circle.fill")) {
-                    NavigationLink(destination: Text("aa")) {
+                    NavigationLink(destination: InfoView) {
                         Label("앱 정보", systemImage: "questionmark.circle.fill")
                     }
                 }
                 
                 Section(header: Label("데이터", systemImage: "cylinder.split.1x2.fill")) {
-                    Button(action: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Action@*/{}/*@END_MENU_TOKEN@*/) {
+                    Button(action: {
+                        showRecordAlert = true
+                    }) {
                         Label("일기 데이터 초기화", systemImage: "text.badge.xmark")
                     }.buttonStyle(PlainButtonStyle())
+                    .alert(isPresented: $showRecordAlert) {
+                        Alert(title: Text("일기 데이터 삭제"), message: Text("정말로 모든 일기 데이터를 삭제하시겠어요??"), primaryButton: .destructive(Text("확인"), action: {
+                            for (index, _) in girinVM.personList.enumerated() {
+                                girinVM.personList[index].records = []
+                            }
+                        }), secondaryButton: .cancel())
+                    }
                     
-                    Button(action: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Action@*/{}/*@END_MENU_TOKEN@*/) {
+                    Button(action: {
+                        showEveryAlert = true
+                    }) {
                         Label("모든 데이터 초기화", systemImage: "xmark.circle.fill")
                     }.buttonStyle(PlainButtonStyle())
+                    .alert(isPresented: $showEveryAlert) {
+                        Alert(title: Text("모든 데이터 삭제"), message: Text("정말로 모든 데이터를 삭제하시겠어요??"), primaryButton: .destructive(Text("확인"), action: {
+                            girinVM.personList = []
+                        }), secondaryButton: .cancel())
+                    }
                 }
             }.navigationTitle("설정")
             .navigationBarTitleDisplayMode(.large)
+        }
+    }
+}
+
+extension SettingView {
+    var InfoView: some View {
+        VStack(spacing: 0) {
+            VStack(spacing: 0){
+                Image("Icon")
+                    .resizable()
+                    .frame(width: 128, height: 128)
+                    .cornerRadius(14)
+                    .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.2)), radius: 40, x: 0.0, y: 20)
+                    .padding(.bottom, 30)
+                
+                Text("Girin")
+                    .font(.largeTitle).bold()
+                    .padding(.bottom, 9)
+                
+                Text("Version: \(UIApplication.appVersion ?? "")")
+                    .padding(.bottom, 30)
+                
+                Text("made by eraiser")
+                    .foregroundColor(.gray)
+                    .padding(.bottom, 4)
+                Text("문의: eraser3031@gmail.com")
+                    .foregroundColor(.gray)
+            }
+            Spacer()
         }
     }
 }
@@ -285,7 +343,7 @@ struct PersonCardView : View {
                     .background(Color.white)
                 }.background(
                     ZStack {
-                        Color.second
+                        Color(#colorLiteral(red: 1, green: 0.6784313725, blue: 0.737254902, alpha: 1))
                         
                         Image(uiImage: person.thumbnail.toImage() ?? UIImage())
                             .resizable()

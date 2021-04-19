@@ -16,26 +16,26 @@ struct CameraUiView: View {
     @State var selectIndex = 99
     @State var offset: CGFloat = 0
     @State var selectItemPoses: [CGFloat] = []
+    @State var showMeasureReady = false
     
     @ObservedObject var placeSet: PlacementSetting
     
     var cancel: () -> Void
     
     var body: some View {
-        let isPlaced: Bool = placeSet.placeAnchorPos != nil
-        
+        let status = placeSet.status
         return ZStack {
             
-            VStack(spacing: 0) {
-                Spacer()
-                Rectangle()
-                    .fill(
-                        LinearGradient(gradient: isPlaced ?
-                        Gradient(colors: [Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)), Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5))]) : Gradient(colors: [Color(#colorLiteral(red: 1, green: 0.1764705882, blue: 0.3333333333, alpha: 0)), Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5))]),
-                                       startPoint: .top, endPoint: .bottom)
-                    )
-                    .frame(height: 220)
-            }.edgesIgnoringSafeArea(.all)
+//            VStack(spacing: 0) {
+//                Spacer()
+//                Rectangle()
+//                    .fill(
+//                        LinearGradient(gradient: isPlaced ?
+//                        Gradient(colors: [Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)), Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5))]) : Gradient(colors: [Color(#colorLiteral(red: 1, green: 0.1764705882, blue: 0.3333333333, alpha: 0)), Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5))]),
+//                                       startPoint: .top, endPoint: .bottom)
+//                    )
+//                    .frame(height: 220)
+//            }.edgesIgnoringSafeArea(.all)
             
             VStack {
                 HStack {
@@ -72,31 +72,76 @@ struct CameraUiView: View {
                     }.padding(.horizontal, 30)
                     .padding(.bottom, 12)
                     
-                    Image(systemName: isPlaced ? "ruler" : "")
-                        .foregroundColor(isPlaced ? .white : .pink)
-                        .font(.title)
-                        .background(
-                            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                                .fill(isPlaced ? Color.pink : .white)
-                                .frame(width: 66, height: 66)
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .fill(status == .measure ? Color.pink : .white)
+                        .frame(width: 66, height: 66)
+                        .overlay(
+                            Image(systemName: status == .measure ? "ruler" : status == .wall ? "" : "")
+                                .foregroundColor(status == .measure ? .white : .pink)
+                                .font(.title)
                         )
                         .overlay(
-                            Image(isPlaced ? "" : "Place")
+                            Image(status == .measure ? "" : status == .wall ? "Wall" : "Place")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 24, height: 24)
                         )
+                        .opacity(placeSet.clickable ? 1 : 0.6)
                         .onTapGesture {
-                            if !isPlaced {
+                            if placeSet.clickable {
                                 placeSet.tapSubject.send(true)
-                            } else {
-                                placeSet.tapSubject.send(false)
                             }
                         }
                 }
             }
             
             Text("\(placeSet.result)")
+            
+            //
+            ZStack{
+                Color.pink
+                    .opacity(0.3)
+                
+                Text("s")
+            }.contentShape(Rectangle())
+            .onTapGesture {
+                placeSet.tapSubject.send(false)
+            }
+            .opacity(showMeasureReady ? 1 : 0)
+            .animation(.spring())
+            
+            VStack{
+                Text("Now Height:\(placeSet.result)")
+                Rectangle()
+                    .fill(Color.girinYellow)
+                    .frame(width: 150, height: 150)
+                    .onTapGesture {
+                        placeSet.status = .result
+                    }
+            }
+            .edgesIgnoringSafeArea(.all)
+            .background(Color.white)
+            .opacity(status == .ready ? 1 : 0)
+            
+            VStack{
+                Text("Result Height:\(placeSet.result)")
+                Rectangle()
+                    .fill(Color.girinYellow)
+                    .frame(width: 150, height: 100)
+                    .onTapGesture {
+                        placeSet.status = .ready
+                    }
+                
+                Rectangle()
+                    .fill(Color.girinOrange)
+                    .frame(width: 150, height: 100)
+                    .onTapGesture {
+                        placeSet.status = .measure
+                    }
+            }
+            .edgesIgnoringSafeArea(.all)
+            .background(Color.white)
+            .opacity(status == .result ? 1 : 0)
         }
         .onAppear {
             selectIndex = 0
