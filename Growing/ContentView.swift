@@ -54,6 +54,9 @@ struct ContentView : View {
                 Text("\(placeSet.status.rawValue)/\(placeSet.result)/\(placeSet.clickable ? "t" : "f")")
                     .font(.caption)
                     .foregroundColor(.girinOrange)
+                Text("\(placeSet.placeAnchorPos?.y ?? 0)/\(placeSet.cameraAnchorPos.y)")
+                    .font(.caption)
+                    .foregroundColor(.girinOrange)
                 Spacer()
             }
         }
@@ -84,7 +87,7 @@ struct ARViewContainer: UIViewRepresentable {
         placeSet.tapCancellable = placeSet.tapSubject.sink(receiveValue: { value in
             switch placeSet.status {
             case .place:
-                placeSet.placeAnchorPos = arView.focusEntity!.position
+                placeSet.placeAnchorPos = arView.focusEntity!.anchor!.position
                 placeSet.status = .wall
             case .wall:
                 placeSet.wallAnchorPos = arView.focusEntity!.position
@@ -105,6 +108,8 @@ struct ARViewContainer: UIViewRepresentable {
             case .wall:
                 placeSet.wallAnchorPos = nil
                 arView.configure(axis: .vertical)
+            case .measure:
+                print(#fileID, #function, #line)
             default:
                 print(#fileID, #function, #line)
             }
@@ -127,7 +132,8 @@ struct ARViewContainer: UIViewRepresentable {
             }
         case .wall:
             if arView.focusEntity!.onPlane {
-                if abs(placeSet.placeAnchorPos!.y - arView.focusEntity!.position.y) > 10 {
+                print(abs(placeSet.placeAnchorPos!.y - arView.focusEntity!.position.y))
+                if abs(placeSet.placeAnchorPos!.y - arView.focusEntity!.position.y) > 0.4 {
                     placeSet.clickable = true
                 } else {
                     placeSet.clickable = false
@@ -136,10 +142,14 @@ struct ARViewContainer: UIViewRepresentable {
                 placeSet.clickable = false
             }
         case .ready:
-            placeSet.result = measureHeight(placeSet.wallAnchorPos!.y, placeSet.cameraAnchorPos.y)
+            placeSet.result = measureHeight(placeSet.placeAnchorPos!.y, placeSet.cameraAnchorPos.y)
         default:
             placeSet.clickable = true
         }
+    }
+    
+    func buildExtensometer(arView: CustomARView){
+//        let lineEntity =
     }
     
     func measureHeight(_ a: Float, _ b: Float) -> Float {
@@ -192,3 +202,24 @@ struct ContentView_Previews : PreviewProvider {
 //측정된 키와 인물은 리스트뷰로 보여준다.
 //인물 페이지로 가면 키의 그래프 변화와 나이대별 비교 및 성장에 대한 조언이 보여진다.
 
+class LineEntity: Entity, HasAnchoring, HasModel {
+    required init(color: UIColor) {
+        super.init()
+        self.components[ModelComponent] = ModelComponent(
+            mesh: .generateBox(size: 0.1),
+            materials: [SimpleMaterial(
+                color: color,
+                isMetallic: false)
+            ]
+        )
+    }
+    
+    convenience init(color: UIColor, position: SIMD3<Float>) {
+        self.init(color: color)
+        self.position = position
+    }
+    
+    required init() {
+        fatalError("init() has not been implemented")
+    }
+}
