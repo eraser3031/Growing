@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		21023A342631862D00AB7472 /* Gilroy-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 21023A312631860100AB7472 /* Gilroy-Light.otf */; };
+		21023A352631862D00AB7472 /* Gilroy-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 21023A322631860500AB7472 /* Gilroy-ExtraBold.otf */; };
+		21023A4B2631B81400AB7472 /* SpoqaHanSansNeo-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 21023A492631B81200AB7472 /* SpoqaHanSansNeo-Bold.otf */; };
+		21023A4C2631B81400AB7472 /* SpoqaHanSansNeo-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 21023A4A2631B81400AB7472 /* SpoqaHanSansNeo-Regular.otf */; };
 		211367BE260351DD00B95348 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211367BD260351DD00B95348 /* RecordView.swift */; };
 		21182E2425F78BAD00F3A41C /* PersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21182E2325F78BAD00F3A41C /* PersonView.swift */; };
 		212112E725F23D95000B5CC9 /* Extra.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212112E625F23D95000B5CC9 /* Extra.swift */; };
@@ -29,6 +33,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		21023A312631860100AB7472 /* Gilroy-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-Light.otf"; sourceTree = "<group>"; };
+		21023A322631860500AB7472 /* Gilroy-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-ExtraBold.otf"; sourceTree = "<group>"; };
+		21023A492631B81200AB7472 /* SpoqaHanSansNeo-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Bold.otf"; sourceTree = "<group>"; };
+		21023A4A2631B81400AB7472 /* SpoqaHanSansNeo-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Regular.otf"; sourceTree = "<group>"; };
 		211367BD260351DD00B95348 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
 		21182E2325F78BAD00F3A41C /* PersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonView.swift; sourceTree = "<group>"; };
 		212112E625F23D95000B5CC9 /* Extra.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extra.swift; sourceTree = "<group>"; };
@@ -82,6 +90,8 @@
 		21B93C2225EA49B200878B47 /* Growing */ = {
 			isa = PBXGroup;
 			children = (
+				21023A492631B81200AB7472 /* SpoqaHanSansNeo-Bold.otf */,
+				21023A4A2631B81400AB7472 /* SpoqaHanSansNeo-Regular.otf */,
 				21B93C2325EA49B200878B47 /* AppDelegate.swift */,
 				21B93C2525EA49B200878B47 /* ContentView.swift */,
 				21C3F6122604B82B00B41F47 /* CameraUiView.swift */,
@@ -93,6 +103,8 @@
 				21B408D226161F43006DFE8A /* PosComponent.swift */,
 				21182E2325F78BAD00F3A41C /* PersonView.swift */,
 				211367BD260351DD00B95348 /* RecordView.swift */,
+				21023A312631860100AB7472 /* Gilroy-Light.otf */,
+				21023A322631860500AB7472 /* Gilroy-ExtraBold.otf */,
 				212112E625F23D95000B5CC9 /* Extra.swift */,
 				218258B525F4D70000A31EB7 /* Data.swift */,
 				218258B825F4DAD900A31EB7 /* Storage.swift */,
@@ -179,6 +191,10 @@
 				21B93C3025EA49B600878B47 /* LaunchScreen.storyboard in Resources */,
 				21B93C2D25EA49B600878B47 /* Preview Assets.xcassets in Resources */,
 				21B93C2A25EA49B600878B47 /* Assets.xcassets in Resources */,
+				21023A4C2631B81400AB7472 /* SpoqaHanSansNeo-Regular.otf in Resources */,
+				21023A4B2631B81400AB7472 /* SpoqaHanSansNeo-Bold.otf in Resources */,
+				21023A342631862D00AB7472 /* Gilroy-Light.otf in Resources */,
+				21023A352631862D00AB7472 /* Gilroy-ExtraBold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

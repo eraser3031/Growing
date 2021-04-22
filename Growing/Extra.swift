@@ -80,3 +80,45 @@ extension UIImage {
         return data?.base64EncodedString(options: .endLineWithLineFeed)
     }
 }
+
+//dynamic custom font
+@available(iOS 13, macCatalyst 13, tvOS 13, watchOS 6, *)
+struct ScaledFont: ViewModifier {
+    @Environment(\.sizeCategory) var sizeCategory
+    var name: String
+    var size: CGFloat
+
+    func body(content: Content) -> some View {
+       let scaledSize = UIFontMetrics.default.scaledValue(for: size)
+        return content.font(.custom(name, size: scaledSize))
+    }
+}
+
+@available(iOS 13, macCatalyst 13, tvOS 13, watchOS 6, *)
+extension View {
+    func scaledFont(name: String, size: CGFloat) -> some View {
+        return self.modifier(ScaledFont(name: name, size: size))
+    }
+}
+
+//정규표현식
+extension String{
+    func getArrayAfterRegex(regex: String) -> [String] {
+        
+        do {
+            let regex = try NSRegularExpression(pattern: regex)
+            let results = regex.matches(in: self,
+                                        range: NSRange(self.startIndex..., in: self))
+            return results.map {
+                String(self[Range($0.range, in: self)!])
+            }
+        } catch let error {
+            print("invalid regex: \(error.localizedDescription)")
+            return []
+        }
+    }
+    
+    func hasEng() -> Bool {
+        self.getArrayAfterRegex(regex: "[a-zA-Z]").count != 0
+    }
+}

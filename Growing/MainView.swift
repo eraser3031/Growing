@@ -13,6 +13,7 @@ struct MainView: View {
     @State var showEditPerson: Person? = nil
     @State var showARView = false
     @State var showNoPersonAlert = false
+    @State var showSetting = false
     
     func binding(for item: Person) -> Binding<Person> {
         guard let index = girinVM.personList.firstIndex(where: { $0.id == item.id }) else {
@@ -23,37 +24,64 @@ struct MainView: View {
     
     var body: some View {
         ZStack {
-            TabView{
-                ZStack{
-                    NavigationView{
-                        VStack(spacing: 0){
+            ZStack{
+                NavigationView{
+                    VStack(spacing: 0){
+                        Spacer()
+                            .frame(height: 20)
+                        
+                        HStack(alignment: .top, spacing: 0){
+                            VStack(alignment: .leading, spacing: 10){
+                                Circle()
+                                    .stroke(Color.second, lineWidth: 1)
+                                    .frame(width: 64, height: 64)
+                                    .background(
+                                        Image("Icon")
+                                            .resizable()
+                                            .frame(width: 64, height: 64)
+                                            .scaledToFit()
+                                            .clipShape(Circle())
+                                    )
+                                
+                                Text("Girin")
+                                    .scaledFont(name: "Gilroy-ExtraBold", size: 34)
+                                    .foregroundColor(Color.girinOrange)
+                            }
                             
-                            ARViewButton()
+                            Spacer()
                             
-                            Divider()
-                                .padding(.horizontal, 20)
-                                .padding(.top, 15)
-                            
-                            PersonListScrollView()
-                            
-                        }.navigationTitle("둘러보기")
-                        .navigationBarTitleDisplayMode(.large)
+                            Image(systemName: "person.circle.fill")
+                                .font(.system(size: 40))
+                                .onTapGesture {
+                                    showSetting = true
+                                }
+                                .sheet(isPresented: $showSetting){
+                                    SettingView()
+                                        .environmentObject(girinVM)
+                                        .navigationViewStyle(StackNavigationViewStyle())
+
+                                }
+                        }.padding(.horizontal, 20)
+                        
+                        Spacer()
+                            .frame(height: 10)
+                        
+                        ARViewButton()
+                            .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.2)), radius: 40, x: 0.0, y: 20)
+                        
+                        Spacer()
+                            .frame(height: 30)
+                        
+                        PersonListScrollView()
+                        
+                        Spacer()
+                        
                     }
-                }
-                .navigationViewStyle(StackNavigationViewStyle())
-                .tabItem {
-                    Image(systemName: "ruler")
-                    Text("측정")
-                }
-                
-                SettingView()
-                    .environmentObject(girinVM)
-                    .navigationViewStyle(StackNavigationViewStyle())
-                    .tabItem {
-                        Image(systemName: "gear")
-                        Text("설정")
-                    }
-            }.accentColor(.pink)
+                    .navigationBarTitle("")
+                    .navigationBarHidden(true)
+                }.accentColor(.girinOrange)
+            }
+            //                .navigationViewStyle(StackNavigationViewStyle())
             
             if showCreatePersonView {
                 CreatePersonView {showCreatePersonView = false}
@@ -61,7 +89,7 @@ struct MainView: View {
             
             if showEditPerson != nil {
                 EditPersonView(person: binding(for: showEditPerson!)) {
-                        showEditPerson = nil
+                    showEditPerson = nil
                 }
             }
         }
@@ -72,34 +100,17 @@ struct MainView: View {
 //MARK: Components
 extension MainView {
     func ARViewButton() -> some View {
-        VStack(spacing: 0){
+        VStack(spacing: 8){
             
-            Image("ruler")
-                .resizable()
-                .scaledToFit()
-                .padding(.top, 20)
+            Image(systemName: "arkit")
+                .font(.system(size: 40))
             
-            Spacer()
-                .frame(height: 5)
+            Text("키 재러가기")
+                .scaledFont(name: "SpoqaHanSansNeo-Bold", size: 17)
             
-            HStack(alignment: .bottom){
-                Text("키 재러가기")
-                    .font(.title3)
-                    .bold()
-                
-                Spacer()
-                
-                Image(systemName: "arkit")
-                    .font(.system(size: 44))
-            }.padding(20)
-            .foregroundColor(.white)
-            
-        }.frame(maxWidth: .infinity)
+        }.frame(maxWidth: .infinity, maxHeight: 128)
         .background(
-            LinearGradient(gradient: Gradient(colors: [Color(#colorLiteral(red: 1, green: 0.1764705882, blue: 0.3333333333, alpha: 1)), Color(#colorLiteral(red: 1, green: 0.1764705882, blue: 0.4745098039, alpha: 1))]),
-                           startPoint: .bottomLeading,
-                           endPoint: .topTrailing
-            )
+            Color.girinYellow
         )
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .padding(.horizontal, 20)
@@ -126,30 +137,23 @@ extension MainView {
             CGFloat(count+2)*20+CGFloat(count+1)*height/1.4
         }
         
-        return GeometryReader { geometry in
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 20){
-                    Spacer()
-                        .frame(width: 0)
-                    ForEach(girinVM.personList) { person in
-                        PersonCardView(person: person, geo: geometry, editPerson: $showEditPerson)
-                            .frame(maxHeight: geometry.frame(in: .global).height)
-                            .frame(maxWidth: geometry.frame(in: .global).height/1.4)
-                            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                            .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.2)), radius: 40, x: 0.0, y: 20)
-                            .padding(.top, 15)
-                            .padding(.bottom, 30)
-                            .contentShape(RoundedRectangle(cornerRadius: 20))
+        return
+            VStack(alignment: .leading, spacing: 0){
+                Text("Kids")
+                    .scaledFont(name: "Gilroy-ExtraBold", size: 28)
+                    .padding(.horizontal, 20)
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 0){
+                        ForEach(girinVM.personList) { person in
+                            PersonCardView(person: person, editPerson: $showEditPerson)
+                        }
+                        
+                        //                    PlusPersonCardView()
                     }
-                    
-                    PlusPersonCardView()
-                    
-                    Spacer()
-                }.frame(width: calScrollWidth(count: girinVM.personList.count,
-                                              height: geometry.frame(in: .global).height),
-                        height: geometry.frame(in: .global).height)
+                }
             }
-        }
+        
     }
     
     func PlusPersonCardView() -> some View {
@@ -171,9 +175,9 @@ extension MainView {
         .padding(.top, 15)
         .padding(.bottom, 30)
         .contentShape(RoundedRectangle(cornerRadius: 20))
-            .onTapGesture {
-                showCreatePersonView = true
-            }
+        .onTapGesture {
+            showCreatePersonView = true
+        }
     }
 }
 
@@ -225,6 +229,7 @@ struct SettingView: View {
                     }
                 }
             }.navigationTitle("설정")
+            .accentColor(.girinOrange)
             .navigationBarTitleDisplayMode(.large)
         }
     }
@@ -237,7 +242,7 @@ extension SettingView {
                 Image("Icon")
                     .resizable()
                     .frame(width: 128, height: 128)
-                    .cornerRadius(14)
+                    .cornerRadius(22)
                     .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.2)), radius: 40, x: 0.0, y: 20)
                     .padding(.bottom, 30)
                 
@@ -263,10 +268,14 @@ struct PersonCardView : View {
     @EnvironmentObject var girinVM: GirinViewModel
     @State var showActionSheet = false
     var person: Person
-    var geo: GeometryProxy
     @Binding var editPerson: Person?
     @State var emptyPerson = Person()
     @State var alertRemove = false
+    
+    let width: CGFloat = screen.width/2+20
+    var height: CGFloat {
+        width * 1.4
+    }
     
     func binding(for item: Person) -> Binding<Person> {
         guard let index = girinVM.personList.firstIndex(where: { $0.id == item.id }) else {
@@ -284,72 +293,62 @@ struct PersonCardView : View {
     }
     
     var body: some View {
-        NavigationLink(
-            destination: PersonView(person: binding(for: person), editPerson: $editPerson).environmentObject(girinVM),
-            label: {
-                VStack(spacing: 0){
-                    Spacer()
-                    
-                    HStack(alignment: .top){
-                        VStack(alignment: .leading, spacing: 5){
-                            Text(person.name)
-                                .font(.title3)
-                                .fontWeight(.semibold)
-                            HStack(spacing: 0) {
-                                Text("\(Date().year - person.birthday.year)살 ")
-                                    .fontWeight(.medium)
-                                Text("\(Int(person.nowHeight))cm")
-                                    .bold()
-                                    .foregroundColor(.pink)
-                            }.font(.subheadline)
-                            HStack(spacing: 0) {
-                                Text("최근 기록일 ")
-                                    .fontWeight(.medium)
-                                Text(person.records.last?.recordDate ?? Date(), style: .date)
-                                    .fontWeight(.semibold)
-                                    .lineLimit(1)
-                            }.font(.caption)
-                        }
-                        
-                        Spacer()
-                        
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .fill(Color(#colorLiteral(red: 1, green: 0.1764705882, blue: 0.4745098039, alpha: 1)))
-                                .frame(width: 44, height: 44)
-                            
-                            Image(systemName: "ellipsis")
-                                .font(.system(size: 26, weight: .bold))
-                                .foregroundColor(.white)
-                        }
-                        .actionSheet(isPresented: $showActionSheet) {
-                            ActionSheet(title: Text("\(person.name)"), message: nil,
-                                        buttons: [
-                                            .default(Text("수정")){editPerson = person},
-                                            .default(Text("삭제")){alertRemove = true},
-                                            .cancel(Text("취소"))
-                                        ])
-                        }
-                        .onTapGesture {
-                            showActionSheet = true
-                        }
-                        .alert(isPresented: $alertRemove) {
-                            Alert(title: Text("정보 삭제"), message: Text("정말로 아이의 데이터를 삭제하시겠어요??"), primaryButton: .destructive(Text("확인"), action: {
-                                remove()
-                            }), secondaryButton: .cancel())
-                        }
-                    }
-                    .padding(20)
-                    .background(Color.white)
-                }.background(
-                    ZStack {
-                        Color(#colorLiteral(red: 1, green: 0.6784313725, blue: 0.737254902, alpha: 1))
-                        
-                        Image(uiImage: person.thumbnail.toImage() ?? UIImage())
+        VStack(spacing: 14) {
+            NavigationLink(
+                destination: PersonView(person: binding(for: person), editPerson: $editPerson).environmentObject(girinVM),
+                label: {
+                    if let image = person.thumbnail.toImage() {
+                        Image(uiImage: image)
                             .resizable()
+                            .frame(width: width, height: height)
                             .scaledToFill()
+                            .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                            .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.2)), radius: 40, x: 0.0, y: 20)
+                    } else {
+                        ZStack{
+                            RoundedRectangle(cornerRadius: 22, style: .continuous)
+                                .fill(Color.white)
+                                .frame(width: width, height: height)
+                                .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.18)), radius: 30, x: 0.0, y: 20)
+                            
+                            Image(systemName: "person.fill")
+                                .foregroundColor(.second)
+                                .font(.system(size: 60))
+                        }
                     }
-                )
-            }).buttonStyle(PlainButtonStyle())
+                }).buttonStyle(PlainButtonStyle())
+            
+            HStack(spacing: 0){
+                VStack(alignment: .leading, spacing: 4){
+                    Text(person.name)
+                        .scaledFont(name: "SpoqaHanSansNeo-Bold", size: 20)
+                    Text("\(Date().year - person.birthday.year)살 ")
+                        .scaledFont(name: "SpoqaHanSansNeo-Regular", size: 15)
+                }
+                
+                Spacer()
+                
+                Image(systemName: "ellipsis.circle.fill")
+                    .font(.system(size: 28))
+                    .actionSheet(isPresented: $showActionSheet) {
+                        ActionSheet(title: Text("\(person.name)"), message: nil,
+                                    buttons: [
+                                        .default(Text("수정")){editPerson = person},
+                                        .default(Text("삭제")){alertRemove = true},
+                                        .cancel(Text("취소"))
+                                    ])
+                    }
+                    .onTapGesture {
+                        showActionSheet = true
+                    }
+                    .alert(isPresented: $alertRemove) {
+                        Alert(title: Text("정보 삭제"), message: Text("정말로 아이의 데이터를 삭제하시겠어요??"), primaryButton: .destructive(Text("확인"), action: {
+                            remove()
+                        }), secondaryButton: .cancel())
+                    }
+            }.frame(width: width)
+        }.padding(.horizontal, 20)
+        .padding(.bottom, 30)
+        .padding(.top, 20)
     }
 }
