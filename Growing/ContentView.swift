@@ -29,6 +29,9 @@ class PlacementSetting: ObservableObject {
     
     @Published var clickable = false
     
+    @Published var test = ""
+    @Published var test2 = ""
+    
     var updateCancellable: Cancellable?
     var tapCancellable: AnyCancellable?
     var statusCancellable: AnyCancellable?
@@ -54,9 +57,11 @@ struct ContentView : View {
                 Text("\(placeSet.status.rawValue)/\(placeSet.result)/\(placeSet.clickable ? "t" : "f")")
                     .font(.caption)
                     .foregroundColor(.girinOrange)
-                Text("\(placeSet.placeAnchorPos?.y ?? 0)/\(placeSet.cameraAnchorPos.y)")
+                Text("\(placeSet.placeAnchorPos?.y ?? 0)/\(placeSet.wallAnchorPos?.y ?? 0)/\(placeSet.cameraAnchorPos.y)")
                     .font(.caption)
                     .foregroundColor(.girinOrange)
+                Text(placeSet.test)
+                Text(placeSet.test2)
                 Spacer()
             }
         }
@@ -91,6 +96,22 @@ struct ARViewContainer: UIViewRepresentable {
                 placeSet.status = .wall
             case .wall:
                 placeSet.wallAnchorPos = arView.focusEntity!.position
+                arView.extenEntity = AnchorEntity(plane: .any)
+                let model = ModelEntity(mesh: .generatePlane(width: 1, depth: 0.002))
+                let model2 = ModelEntity(mesh: .generatePlane(width: 0.002, depth: 1))
+                arView.extenEntity!.addChild(model)
+                model.setPosition(SIMD3<Float>(x: placeSet.wallAnchorPos!.x, y: placeSet.placeAnchorPos!.y, z: placeSet.wallAnchorPos!.z), relativeTo: nil)
+                arView.extenEntity!.addChild(model2)
+//                model.position.z = -placeSet.placeAnchorPos!.y
+//                model2.position.z = -placeSet.placeAnchorPos!.y
+//                buildExtensometer(arView: arView)
+                arView.scene.addAnchor(arView.extenEntity!)
+                
+                placeSet.test = "\(arView.extenEntity!.position.x)/\(arView.extenEntity!.position.y)/\(arView.extenEntity!.position.z)"
+                placeSet.test2 = "\(model.position.x)/\(model.position.y)/\(model.position.z)"
+//                arView.extenEntity!.reanchor(.anchor(identifier:
+                
+//                arView.extenEntity!.reanchor(.anchor(identifier: arView.focusEntity!.anchorIdentifier!))
                 placeSet.status = .measure
             case .measure:
                 placeSet.status = .ready
@@ -110,6 +131,7 @@ struct ARViewContainer: UIViewRepresentable {
                 arView.configure(axis: .vertical)
             case .measure:
                 print(#fileID, #function, #line)
+//                buildExtensometer(arView: arView)
             default:
                 print(#fileID, #function, #line)
             }
@@ -149,7 +171,22 @@ struct ARViewContainer: UIViewRepresentable {
     }
     
     func buildExtensometer(arView: CustomARView){
-//        let lineEntity =
+        
+        guard let wallPos = placeSet.wallAnchorPos, let planePos = placeSet.placeAnchorPos else {
+            print(#fileID, #function, #line)
+            return
+        }
+        let wallHeight: Float = wallPos.y - planePos.y
+//        for height in stride(from: 0, through: 2, by: 0.1) {
+//            let lineEntity = LineEntity(color: #colorLiteral(red: 1, green: 0.8000000119, blue: 0.3019999862, alpha: 1), position: SIMD3<Float>(x: 0, y: Float(height)-wallHeight, z: 0))
+//            arView.extenEntity!.addChild(lineEntity)
+//        }
+//        arView.scene.addAnchor(arView.extenEntity!)
+        let lineEntity = LineEntity(color: #colorLiteral(red: 1, green: 0.8000000119, blue: 0.3019999862, alpha: 1))
+        let model = ModelEntity(mesh: .generatePlane(width: 5, height: 0.05))
+//        lineEntity.move(to: Transform(pitch: 0, yaw: -wallHeight, roll: 0), relativeTo: arView.extenEntity!)
+        arView.extenEntity!.addChild(lineEntity)
+        arView.extenEntity!.addChild(model)
     }
     
     func measureHeight(_ a: Float, _ b: Float) -> Float {
@@ -160,10 +197,12 @@ struct ARViewContainer: UIViewRepresentable {
 class CustomARView: ARView {
 
     var focusEntity: FocusEntity?
+    var extenEntity: AnchorEntity?
     
     required init(frame: CGRect) {
         super.init(frame: frame)
         focusEntity = FocusEntity(on: self, style: .classic(color: UIColor(#colorLiteral(red: 1, green: 0.8, blue: 0.3019607843, alpha: 1))))
+        extenEntity = AnchorEntity(plane: .any)
         self.scene.addAnchor(focusEntity!)
     }
     
@@ -206,7 +245,7 @@ class LineEntity: Entity, HasAnchoring, HasModel {
     required init(color: UIColor) {
         super.init()
         self.components[ModelComponent] = ModelComponent(
-            mesh: .generateBox(size: 0.1),
+            mesh: .generateBox(width: 0.5, height: 0.01, depth: 0.01),
             materials: [SimpleMaterial(
                 color: color,
                 isMetallic: false)
