@@ -122,3 +122,4 @@ extension String{
         self.getArrayAfterRegex(regex: "[a-zA-Z]").count != 0
     }
 }
+

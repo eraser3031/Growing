@@ -7,55 +7,55 @@
 
 import SwiftUI
 
-struct PersonView: View {
-    @EnvironmentObject var girinVM: GirinViewModel
-    @Binding var person: Person
-    @Binding var editPerson: Person?
-    @State var showActionSheet = false
-    @State var alertRemove = false
-    func remove() {
-        person.records = []
-    }
-    
-    var body: some View {
-        ZStack {
-            VStack(spacing: 0){
-                ScrollView(.vertical) {
-                    HStack {
-                        LineView(180, spacing: 24)
-                    }.padding(.horizontal, 20)
-                }
-            }.navigationTitle("\(person.name)")
-            .navigationBarTitleDisplayMode(.large)
-            .navigationBarItems(trailing:
-                                    Image(systemName: "ellipsis.circle.fill")
-                                    .foregroundColor(.pink)
-                                    .font(.title)
-                                    .actionSheet(isPresented: $showActionSheet) {
-                                        ActionSheet(title: Text("\(person.name)"), message: nil,
-                                                    buttons: [
-                                                        .default(Text("수정")){editPerson = person},
-                                                        .default(Text("기록 초기화")){alertRemove = true},
-                                                        .cancel(Text("취소"))
-                                                    ])
-                                    }
-                                    .onTapGesture {
-                                        showActionSheet = true
-                                    }
-                                    .alert(isPresented: $alertRemove) {
-                                        Alert(title: Text("기록 삭제"), message: Text("정말 모든 기록을 삭제하시겠어요?"), primaryButton: .destructive(Text("확인"), action: {
-                                            remove()
-                                        }), secondaryButton: .cancel())
-                                    }
-
-            )
-            .navigationViewStyle(StackNavigationViewStyle())
-        }
-    }
-}
+//struct PersonView: View {
+//    @EnvironmentObject var girinVM: GirinViewModel
+//    @Binding var person: Person
+//    @Binding var editPerson: Person?
+//    @State var showActionSheet = false
+//    @State var alertRemove = false
+//    func remove() {
+//        person.records = []
+//    }
+//    
+//    var body: some View {
+//        ZStack {
+//            VStack(spacing: 0){
+//                ScrollView(.vertical) {
+//                    HStack {
+//                        LineView(180, spacing: 24)
+//                    }.padding(.horizontal, 20)
+//                }
+//            }.navigationTitle("\(person.name)")
+//            .navigationBarTitleDisplayMode(.large)
+//            .navigationBarItems(trailing:
+//                                    Image(systemName: "ellipsis.circle.fill")
+//                                    .foregroundColor(.pink)
+//                                    .font(.title)
+//                                    .actionSheet(isPresented: $showActionSheet) {
+//                                        ActionSheet(title: Text("\(person.name)"), message: nil,
+//                                                    buttons: [
+//                                                        .default(Text("수정")){editPerson = person},
+//                                                        .default(Text("기록 초기화")){alertRemove = true},
+//                                                        .cancel(Text("취소"))
+//                                                    ])
+//                                    }
+//                                    .onTapGesture {
+//                                        showActionSheet = true
+//                                    }
+//                                    .alert(isPresented: $alertRemove) {
+//                                        Alert(title: Text("기록 삭제"), message: Text("정말 모든 기록을 삭제하시겠어요?"), primaryButton: .destructive(Text("확인"), action: {
+//                                            remove()
+//                                        }), secondaryButton: .cancel())
+//                                    }
+//
+//            )
+//            .navigationViewStyle(StackNavigationViewStyle())
+//        }
+//    }
+//}
 
 //MARK: Components
-extension PersonView {
+extension NewPersonView {
     
     func LineView(_ count: Int, spacing: CGFloat) -> some View {
         VStack(alignment: .trailing, spacing: spacing){

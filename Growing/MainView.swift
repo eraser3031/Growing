@@ -27,41 +27,12 @@ struct MainView: View {
             ZStack{
                 NavigationView{
                     VStack(spacing: 0){
-                        Spacer()
-                            .frame(height: 20)
-                        
-                        HStack(alignment: .top, spacing: 0){
-                            VStack(alignment: .leading, spacing: 10){
-                                Circle()
-                                    .stroke(Color.second, lineWidth: 1)
-                                    .frame(width: 64, height: 64)
-                                    .background(
-                                        Image("Icon")
-                                            .resizable()
-                                            .frame(width: 64, height: 64)
-                                            .scaledToFit()
-                                            .clipShape(Circle())
-                                    )
-                                
-                                Text("Girin")
-                                    .scaledFont(name: "Gilroy-ExtraBold", size: 34)
-                                    .foregroundColor(Color.girinOrange)
-                            }
-                            
+                        if UIApplication.shared.windows.filter{$0.isKeyWindow}.first!.safeAreaInsets.top > 1 {
                             Spacer()
-                            
-                            Image(systemName: "person.circle.fill")
-                                .font(.system(size: 40))
-                                .onTapGesture {
-                                    showSetting = true
-                                }
-                                .sheet(isPresented: $showSetting){
-                                    SettingView()
-                                        .environmentObject(girinVM)
-                                        .navigationViewStyle(StackNavigationViewStyle())
-
-                                }
-                        }.padding(.horizontal, 20)
+                                .frame(height: 20)
+                        }
+                        
+                        Header
                         
                         Spacer()
                             .frame(height: 10)
@@ -99,6 +70,42 @@ struct MainView: View {
 
 //MARK: Components
 extension MainView {
+    
+    var Header: some View {
+        HStack(alignment: .top, spacing: 0){
+            VStack(alignment: .leading, spacing: 10){
+                Circle()
+                    .stroke(Color.second, lineWidth: 1)
+                    .frame(width: 64, height: 64)
+                    .background(
+                        Image("Icon")
+                            .resizable()
+                            .frame(width: 64, height: 64)
+                            .scaledToFit()
+                            .clipShape(Circle())
+                    )
+                
+                Text("Girin")
+                    .scaledFont(name: "Gilroy-ExtraBold", size: 34)
+                    .foregroundColor(Color.girinOrange)
+            }
+            
+            Spacer()
+            
+            Image(systemName: "person.circle.fill")
+                .font(.system(size: 40))
+                .onTapGesture {
+                    showSetting = true
+                }
+                .sheet(isPresented: $showSetting){
+                    SettingView()
+                        .environmentObject(girinVM)
+                        .navigationViewStyle(StackNavigationViewStyle())
+
+                }
+        }.padding(.horizontal, 20)
+    }
+    
     func ARViewButton() -> some View {
         VStack(spacing: 8){
             
@@ -145,12 +152,17 @@ extension MainView {
                 
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 0){
-                        ForEach(girinVM.personList) { person in
-                            PersonCardView(person: person, editPerson: $showEditPerson)
+                        if girinVM.personList.count == 0 {
+                                EmptyView()
+                        } else {
+                            ForEach(girinVM.personList) { person in
+                                PersonCardView(person: person, editPerson: $showEditPerson)
+                            }
                         }
-                        
-                        //                    PlusPersonCardView()
+
+                        PlusPersonCardView()
                     }
+                    .padding(.leading, 6)
                 }
             }
         
@@ -271,6 +283,7 @@ struct PersonCardView : View {
     @Binding var editPerson: Person?
     @State var emptyPerson = Person()
     @State var alertRemove = false
+    @State var showSheet = false
     
     let width: CGFloat = screen.width/2+20
     var height: CGFloat {
@@ -294,29 +307,34 @@ struct PersonCardView : View {
     
     var body: some View {
         VStack(spacing: 14) {
-            NavigationLink(
-                destination: PersonView(person: binding(for: person), editPerson: $editPerson).environmentObject(girinVM),
-                label: {
-                    if let image = person.thumbnail.toImage() {
-                        Image(uiImage: image)
-                            .resizable()
-                            .frame(width: width, height: height)
-                            .scaledToFill()
-                            .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
-                            .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.2)), radius: 40, x: 0.0, y: 20)
-                    } else {
-                        ZStack{
-                            RoundedRectangle(cornerRadius: 22, style: .continuous)
-                                .fill(Color.white)
-                                .frame(width: width, height: height)
-                                .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.18)), radius: 30, x: 0.0, y: 20)
-                            
-                            Image(systemName: "person.fill")
-                                .foregroundColor(.second)
-                                .font(.system(size: 60))
-                        }
+            
+            if let image = person.thumbnail.toImage() {
+                Image(uiImage: image)
+                    .resizable()
+                    .frame(width: width, height: height)
+                    .scaledToFill()
+                    .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                    .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.2)), radius: 40, x: 0.0, y: 20)
+                    .sheet(isPresented: $showSheet) {
+                        NewPersonView(person: binding(for: person), editPerson: $editPerson).environmentObject(girinVM)
                     }
-                }).buttonStyle(PlainButtonStyle())
+                    .onTapGesture { showSheet = true }
+            } else {
+                ZStack{
+                    RoundedRectangle(cornerRadius: 22, style: .continuous)
+                        .fill(Color.white)
+                        .frame(width: width, height: height)
+                        .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.18)), radius: 30, x: 0.0, y: 20)
+                    
+                    Image(systemName: "person.fill")
+                        .foregroundColor(.second)
+                        .font(.system(size: 60))
+                }
+                .sheet(isPresented: $showSheet) {
+                    NewPersonView(person: binding(for: person), editPerson: $editPerson).environmentObject(girinVM)
+                }
+                .onTapGesture { showSheet = true }
+            }
             
             HStack(spacing: 0){
                 VStack(alignment: .leading, spacing: 4){
@@ -347,7 +365,7 @@ struct PersonCardView : View {
                         }), secondaryButton: .cancel())
                     }
             }.frame(width: width)
-        }.padding(.horizontal, 20)
+        }.padding(.horizontal, 14)
         .padding(.bottom, 30)
         .padding(.top, 20)
     }
