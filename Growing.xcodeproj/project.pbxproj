@@ -20,6 +20,7 @@
 		218258BC25F5163100A31EB7 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218258BB25F5163100A31EB7 /* MainView.swift */; };
 		21B0EE65261AA85100D60263 /* FocusEntity in Frameworks */ = {isa = PBXBuildFile; productRef = 21B0EE64261AA85100D60263 /* FocusEntity */; };
 		21B408D326161F43006DFE8A /* PosComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B408D226161F43006DFE8A /* PosComponent.swift */; };
+		21B418CD263F92B1008ECE6A /* CustomScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B418CC263F92B1008ECE6A /* CustomScrollView.swift */; };
 		21B93C2425EA49B200878B47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B93C2325EA49B200878B47 /* AppDelegate.swift */; };
 		21B93C2625EA49B200878B47 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B93C2525EA49B200878B47 /* ContentView.swift */; };
 		21B93C2825EA49B200878B47 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 21B93C2725EA49B200878B47 /* Experience.rcproject */; };
@@ -45,6 +46,7 @@
 		218258B825F4DAD900A31EB7 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		218258BB25F5163100A31EB7 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		21B408D226161F43006DFE8A /* PosComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosComponent.swift; sourceTree = "<group>"; };
+		21B418CC263F92B1008ECE6A /* CustomScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomScrollView.swift; sourceTree = "<group>"; };
 		21B93C2025EA49B200878B47 /* Growing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Growing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21B93C2325EA49B200878B47 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		21B93C2525EA49B200878B47 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 				21C5A0322613657A00ECAEB2 /* CreatePersonView.swift */,
 				215618482618AF460069DE27 /* ImagePicker.swift */,
 				218258BB25F5163100A31EB7 /* MainView.swift */,
+				21B418CC263F92B1008ECE6A /* CustomScrollView.swift */,
 				21B408D226161F43006DFE8A /* PosComponent.swift */,
 				21182E2325F78BAD00F3A41C /* PersonView.swift */,
 				211367BD260351DD00B95348 /* RecordView.swift */,
@@ -207,6 +210,7 @@
 				21C3F6132604B82B00B41F47 /* CameraUiView.swift in Sources */,
 				218258B625F4D70000A31EB7 /* Data.swift in Sources */,
 				21B93C2425EA49B200878B47 /* AppDelegate.swift in Sources */,
+				21B418CD263F92B1008ECE6A /* CustomScrollView.swift in Sources */,
 				21B408D326161F43006DFE8A /* PosComponent.swift in Sources */,
 				212112E725F23D95000B5CC9 /* Extra.swift in Sources */,
 				21182E2425F78BAD00F3A41C /* PersonView.swift in Sources */,

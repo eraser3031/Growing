@@ -8,6 +8,111 @@
 import SwiftUI
 import Combine
 
+struct NewEditPersonView: View {
+    
+    @EnvironmentObject var girinVM: GirinViewModel
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @Binding var person: Person
+    @State var emptyPerson = Person()
+    @State var start = false
+    @State var keyboardOffset: CGFloat = 0
+    
+    @State var showImagePicker = false
+    @State private var inputImage: UIImage?
+    
+    var confirm: () -> Void
+    
+    func loadImage() {
+        guard let inputImage = inputImage else { return }
+        emptyPerson.thumbnail = inputImage.toString() ?? ""
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Text("Edit")
+                    .font(Font.system(.largeTitle, design: .default).weight(.bold))
+                Spacer()
+                Image(systemName: "xmark.circle.fill")
+                    .font(.largeTitle)
+                    .foregroundColor(Color(.tertiaryLabel))
+            }
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Picture")
+                    .font(.headline)
+                Image("myImage")
+                    .renderingMode(.original)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(maxWidth: .infinity, maxHeight: 120)
+                    .clipped()
+                    .overlay(ZStack {
+                        Rectangle()
+                            .foregroundColor(Color(.displayP3, red: 0/255, green: 0/255, blue: 0/255).opacity(0.4))
+                        Image(systemName: "photo.fill.on.rectangle.fill")
+                            .foregroundColor(Color(.systemBackground))
+                            .font(.title2)
+                    }
+                    .cornerRadius(12), alignment: .center)
+                    .cornerRadius(12)
+                    .onTapGesture {
+                        showImagePicker = true
+                    }
+                    .sheet(isPresented: $showImagePicker, onDismiss: loadImage) {
+                        ImagePicker(image: self.$inputImage)
+                    }
+            }
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Name")
+                    .font(.headline)
+                TextField("\(person.name)", text: $emptyPerson.name)
+                    .padding()
+                    .frame(height: 45)
+                    .background(Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)))
+                    .cornerRadius(12)
+            }
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Birthday")
+                    .font(.headline)
+                DatePicker("Date", selection: $emptyPerson.birthday, displayedComponents: .date).datePickerStyle(DefaultDatePickerStyle())
+                    .accentColor(.orange)
+                    .padding(8)
+                    .background(Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)))
+                    .cornerRadius(12)
+            }
+            Spacer()
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .frame(maxWidth: .infinity, maxHeight: 50)
+                .clipped()
+                .foregroundColor(Color(.displayP3, red: 255/255, green: 202/255, blue: 71/255))
+                .overlay(Text("Submit")
+                    .bold()
+                    .font(.body), alignment: .center)
+                .onTapGesture {
+                    person = emptyPerson
+                    confirm()
+                }
+        }
+        .padding(22)
+        .frame(maxWidth: 375, maxHeight: 480)
+        .clipped()
+        .background(RoundedRectangle(cornerRadius: 20, style: .continuous)
+            .foregroundColor(Color(.systemBackground)), alignment: .center)
+        .shadow(color: Color(.displayP3, red: 92/255, green: 103/255, blue: 153/255).opacity(0.2), radius: 40, x: 0, y: 20)
+        .padding(.horizontal, 30)
+        .onReceive(Publishers.keyboardHeight){ height in
+            if horizontalSizeClass == .compact {
+                keyboardOffset = height
+            }
+        }
+        .offset(x: 0, y: -keyboardOffset)
+        .onAppear{
+            emptyPerson.birthday = person.birthday
+        }
+    }
+}
+
+
 struct EditPersonView: View {
     @EnvironmentObject var girinVM: GirinViewModel
     @Environment(\.horizontalSizeClass) var horizontalSizeClass

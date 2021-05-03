@@ -62,6 +62,9 @@ struct MainView: View {
                 EditPersonView(person: binding(for: showEditPerson!)) {
                     showEditPerson = nil
                 }
+                NewEditPersonView(person: binding(for: showEditPerson!)) {
+                    showEditPerson = nil
+                }
             }
         }
         
@@ -356,9 +359,7 @@ struct PersonCardView : View {
                                         .cancel(Text("취소"))
                                     ])
                     }
-                    .onTapGesture {
-                        showActionSheet = true
-                    }
+                    .onTapGesture { showActionSheet = true }
                     .alert(isPresented: $alertRemove) {
                         Alert(title: Text("정보 삭제"), message: Text("정말로 아이의 데이터를 삭제하시겠어요??"), primaryButton: .destructive(Text("확인"), action: {
                             remove()
@@ -368,5 +369,30 @@ struct PersonCardView : View {
         }.padding(.horizontal, 14)
         .padding(.bottom, 30)
         .padding(.top, 20)
+    }
+}
+
+struct FlipModifier: AnimatableModifier {
+    var progress: Double
+    
+    var animatableData: Double {
+        get { progress }
+        set { progress = newValue }
+    }
+    
+    func body(content: Content) -> some View {
+        ZStack {
+            if progress >= 0.5 {
+                
+            } else {
+                
+            }
+        }
+        .rotation3DEffect(
+            .degrees(progress * -180),
+            axis: (x: 0.0, y: 1.0, z: 0.0),
+            anchor: .center,
+            anchorZ: 0.0,
+            perspective: 0.5)
     }
 }
