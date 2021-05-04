@@ -78,7 +78,7 @@ struct NewPersonView: View {
                 }
                 
                 Spacer()
-                
+                //
                 Image(systemName: "ellipsis.circle.fill")
                     .font(.system(size: 40))
                     .foregroundColor(.primary)
