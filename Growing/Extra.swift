@@ -65,19 +65,21 @@ public extension View {
   }
 }
 
-extension String {
+extension Date {
+    func toAge() -> Int {
+        Date().year - self.year
+    }
+}
+
+extension Data {
     func toImage() -> UIImage? {
-        if let data = Data(base64Encoded: self, options: .ignoreUnknownCharacters){
-            return UIImage(data: data)
-        }
-        return nil
+            return UIImage(data: self)
     }
 }
 
 extension UIImage {
-    func toString() -> String? {
-        let data: Data? = self.pngData()
-        return data?.base64EncodedString(options: .endLineWithLineFeed)
+    func toData() -> Data? {
+        self.pngData() ?? self.jpegData(compressionQuality: 1)
     }
 }
 

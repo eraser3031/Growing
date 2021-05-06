@@ -9,14 +9,150 @@ import SwiftUI
 import Combine
 
 struct NewEditPersonView: View {
+    @EnvironmentObject var girinVM: GirinViewModel
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @Binding var person: Person
+    @Binding var showEditPersonView: Bool
+    @State var emptyPerson = Person()
+    @State var keyboardOffset: CGFloat = 0
+    @State var showImagePicker = false
+    @State private var inputImage: UIImage?
+    
+    func loadImage() {
+        guard let inputImage = inputImage else { return }
+        person.thumbnail = inputImage.toData() ?? Data()
+    }
+    
+    var body: some View {
+        
+        VStack(spacing: 20) {
+            HStack {
+                Text("Edit Kid")
+                    .scaledFont(name: "Gilroy-ExtraBold", size: 28)
+                
+                Spacer()
+                
+                ZStack {
+                    Circle()
+                        .fill(Color.second)
+                        .frame(width: 34, height:34)
+                    
+                    Image(systemName: "xmark")
+                        .foregroundColor(.black)
+                        .font(.title3)
+                }
+                .onTapGesture {
+                    withAnimation(.spring()) {
+                        person = emptyPerson
+                        showEditPersonView = false
+                    }
+                }
+                
+            }.padding(.vertical, 28)
+            
+            VStack {
+                Image(uiImage: person.thumbnail.toImage() ?? UIImage())
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 120, height: 120)
+                    .background(
+                        ZStack {
+                            Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1))
+                            
+                            Image(systemName: "camera.fill")
+                                .foregroundColor(.gray)
+                                .font(.title3)
+                        }
+                    )
+                    .clipShape(Circle())
+                    .onTapGesture {
+                        showImagePicker = true
+                    }
+                    .sheet(isPresented: $showImagePicker, onDismiss: loadImage) {
+                        ImagePicker(image: self.$inputImage)
+                    }
+                
+                Text("Profile Picture")
+                    .scaledFont(name: "Gilroy-ExtraBold", size: 15)
+            }
+            
+            VStack(alignment: .leading){
+                Text("Name")
+                    .scaledFont(name: "Gilroy-ExtraBold", size: 15)
+                
+                TextField("Please write kid's name.", text: $person.name)
+                    .padding()
+                    .frame(height: 45)
+                    .background(Color.second)
+                    .cornerRadius(12)
+            }
+            
+            VStack(alignment: .leading, spacing: 0){
+                Text("Birthday")
+                    .scaledFont(name: "Gilroy-ExtraBold", size: 15)
+                
+                HStack(spacing: 0) {
+                    Text("\(person.birthday.toAge()) years")
+                        .scaledFont(name: "Gilroy-ExtraBold", size: 18)
+                    
+                    Spacer()
+                    
+                    DatePicker("", selection: $person.birthday, displayedComponents: .date)
+                        .accentColor(.girinOrange)
+                }.padding()
+                .frame(height: 45)
+                .background(Color.second)
+                .cornerRadius(12)
+            }
+            .padding(.bottom, 40)
+            
+            Text("Confrim")
+                .scaledFont(name: "Gilroy-ExtraBold", size: 17)
+                .frame(maxWidth: .infinity)
+                .frame(height: 50)
+                .background(Color.girinYellow)
+                .cornerRadius(12)
+                .padding(.bottom, UIApplication.shared.windows.filter{$0.isKeyWindow}.first!.safeAreaInsets.bottom)
+                .onTapGesture {
+                    withAnimation(.spring()){
+                        showEditPersonView = false
+                    }
+                }
+        }
+        .onChange(of: showEditPersonView){ value in
+            if !value {
+                emptyPerson = person
+            }
+        }
+        .if(horizontalSizeClass == .regular){ body in
+            body
+                .frame(width: 375)
+        }
+        .frame(height: 600)
+        .padding(.horizontal, 20)
+        .background(Color.white)
+        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .onReceive(Publishers.keyboardHeight){ height in
+            if horizontalSizeClass == .compact {
+                keyboardOffset = height
+            }
+        }
+        .offset(y: showEditPersonView ? horizontalSizeClass == .regular ? 0 : screen.height/2-620/2 : screen.height)
+//        .offset(x: 0, y: -keyboardOffset)
+        .edgesIgnoringSafeArea(.bottom)
+    }
+}
+
+
+struct EditPersonView: View {
     
     @EnvironmentObject var girinVM: GirinViewModel
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @Binding var person: Person
+    @Binding var showEditPersonView: Bool
     @State var emptyPerson = Person()
     @State var start = false
     @State var keyboardOffset: CGFloat = 0
-    
     @State var showImagePicker = false
     @State private var inputImage: UIImage?
     
@@ -24,7 +160,7 @@ struct NewEditPersonView: View {
     
     func loadImage() {
         guard let inputImage = inputImage else { return }
-        emptyPerson.thumbnail = inputImage.toString() ?? ""
+        person.thumbnail = inputImage.toData() ?? Data()
     }
     
     var body: some View {
@@ -36,16 +172,20 @@ struct NewEditPersonView: View {
                 Image(systemName: "xmark.circle.fill")
                     .font(.largeTitle)
                     .foregroundColor(Color(.tertiaryLabel))
+                    .onTapGesture {
+                        confirm()
+                    }
             }
             VStack(alignment: .leading, spacing: 4) {
                 Text("Picture")
                     .font(.headline)
-                Image("myImage")
+                Image(uiImage: person.thumbnail.toImage() ?? UIImage())
                     .renderingMode(.original)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(maxWidth: .infinity, maxHeight: 120)
                     .clipped()
+                    .cornerRadius(12)
                     .overlay(ZStack {
                         Rectangle()
                             .foregroundColor(Color(.displayP3, red: 0/255, green: 0/255, blue: 0/255).opacity(0.4))
@@ -54,7 +194,7 @@ struct NewEditPersonView: View {
                             .font(.title2)
                     }
                     .cornerRadius(12), alignment: .center)
-                    .cornerRadius(12)
+                    .contentShape(RoundedRectangle(cornerRadius: 12))
                     .onTapGesture {
                         showImagePicker = true
                     }
@@ -65,7 +205,7 @@ struct NewEditPersonView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Name")
                     .font(.headline)
-                TextField("\(person.name)", text: $emptyPerson.name)
+                TextField("\(person.name)", text: $person.name)
                     .padding()
                     .frame(height: 45)
                     .background(Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)))
@@ -74,7 +214,7 @@ struct NewEditPersonView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Birthday")
                     .font(.headline)
-                DatePicker("Date", selection: $emptyPerson.birthday, displayedComponents: .date).datePickerStyle(DefaultDatePickerStyle())
+                DatePicker("Date", selection: $person.birthday, displayedComponents: .date).datePickerStyle(DefaultDatePickerStyle())
                     .accentColor(.orange)
                     .padding(8)
                     .background(Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)))
@@ -86,18 +226,17 @@ struct NewEditPersonView: View {
                 .clipped()
                 .foregroundColor(Color(.displayP3, red: 255/255, green: 202/255, blue: 71/255))
                 .overlay(Text("Submit")
-                    .bold()
-                    .font(.body), alignment: .center)
+                            .bold()
+                            .font(.body), alignment: .center)
                 .onTapGesture {
-                    person = emptyPerson
                     confirm()
                 }
         }
         .padding(22)
-        .frame(maxWidth: 375, maxHeight: 480)
+        .frame(maxWidth: 375, maxHeight: 540)
         .clipped()
         .background(RoundedRectangle(cornerRadius: 20, style: .continuous)
-            .foregroundColor(Color(.systemBackground)), alignment: .center)
+                        .foregroundColor(Color(.systemBackground)), alignment: .center)
         .shadow(color: Color(.displayP3, red: 92/255, green: 103/255, blue: 153/255).opacity(0.2), radius: 40, x: 0, y: 20)
         .padding(.horizontal, 30)
         .onReceive(Publishers.keyboardHeight){ height in
@@ -105,145 +244,10 @@ struct NewEditPersonView: View {
                 keyboardOffset = height
             }
         }
-        .offset(x: 0, y: -keyboardOffset)
-        .onAppear{
-            emptyPerson.birthday = person.birthday
-        }
+        //        .offset(x: 0, y: -keyboardOffset)
     }
 }
 
-
-struct EditPersonView: View {
-    @EnvironmentObject var girinVM: GirinViewModel
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @Binding var person: Person
-    @State var emptyPerson = Person()
-    @State var start = false
-    @State var keyboardOffset: CGFloat = 0
-    
-    @State var showImagePicker = false
-    @State private var inputImage: UIImage?
-    
-    var confirm: () -> Void
-    
-    func loadImage() {
-        guard let inputImage = inputImage else { return }
-        emptyPerson.thumbnail = inputImage.toString() ?? ""
-    }
-    
-    var body: some View {
-        ZStack {
-            
-            Color.black.opacity(start ? 0.3 : 0)
-                .onTapGesture {
-                    confirm()
-                }
-                .edgesIgnoringSafeArea(.all)
-            
-            VStack(spacing: 0) {
-                 
-                Spacer()
-                    .frame(height: start ? horizontalSizeClass == .compact ? nil : 0 : screen.height)
-                    .onAppear{start = true}
-                    .animation(.spring())
-                
-                VStack(spacing: 20) {
-                    
-                    HStack {
-                        Text("정보 수정").bold()
-                            .font(.title)
-                        
-                        Spacer()
-                    }.padding(.vertical, 28)
-                    
-                    VStack {
-                        Image(uiImage: emptyPerson.thumbnail.toImage() ?? UIImage())
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 120, height: 120)
-                            .background(
-                                ZStack {
-                                    Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1))
-                                    
-                                    Image(systemName: "camera.fill")
-                                        .foregroundColor(.gray)
-                                        .font(.title3)
-                                }
-                            )
-                            .clipShape(Circle())
-                            .onTapGesture {
-                                showImagePicker = true
-                            }
-                            .sheet(isPresented: $showImagePicker, onDismiss: loadImage) {
-                                ImagePicker(image: self.$inputImage)
-                            }
-                        
-                        Text("대표사진").bold()
-                            .font(.subheadline)
-                    }
-                    
-                    VStack(alignment: .leading){
-                        Text("이름").bold()
-                            .font(.subheadline)
-                        
-                        TextField("\(person.name)", text: $emptyPerson.name)
-                            .padding()
-                            .frame(height: 45)
-                            .background(Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)))
-                            .cornerRadius(12)
-                    }
-                    
-                    VStack(alignment: .leading){
-                        Text("생년월일").bold()
-                            .font(.subheadline)
-                        
-                        HStack(spacing: 0) {
-                            Text("\(emptyPerson.birthday.year)년 \(emptyPerson.birthday.month)월 \(emptyPerson.birthday.day)일")
-                            
-                            Spacer()
-                            
-                            DatePicker("", selection: $emptyPerson.birthday, displayedComponents: .date)
-                        }.padding()
-                        .frame(height: 45)
-                        .background(Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)))
-                        .cornerRadius(12)
-                    }
-                    .padding(.bottom, 40)
-                    
-                    Text("확인").bold()
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 50)
-                        .background(Color.pink)
-                        .cornerRadius(12)
-                        .padding(.bottom, UIApplication.shared.windows.filter{$0.isKeyWindow}.first!.safeAreaInsets.bottom)
-                        .onTapGesture {
-                            person = emptyPerson
-                            confirm()
-                        }
-                }
-                .if(horizontalSizeClass == .regular){ body in
-                    body
-                        .frame(width: 375)
-                }
-                .padding(.horizontal, 20)
-                .background(Color.white)
-                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                .animation(.spring())
-            }
-            .onReceive(Publishers.keyboardHeight){ height in
-                if horizontalSizeClass == .compact {
-                    keyboardOffset = height
-                }
-            }
-            .offset(x: 0, y: -keyboardOffset)
-            .edgesIgnoringSafeArea(.bottom)
-            .onAppear{
-                emptyPerson.birthday = person.birthday
-            }
-        }
-    }
-}
 
 //struct EditPersonView_Previews: PreviewProvider {
 //    static var previews: some View {

@@ -12,7 +12,12 @@ final class GirinViewModel: ObservableObject {
 
 }
 
-struct Person: Codable, Identifiable {
+struct Person: Codable, Identifiable, Equatable {
+    
+    static func == (lhs: Person, rhs: Person) -> Bool {
+        lhs.id == rhs.id
+    }
+    
     var id = UUID()
     var name: String
     var favColor: SystemColor
@@ -23,33 +28,31 @@ struct Person: Codable, Identifiable {
             return records.last!.height
         }
     }
-    var thumbnail: String
+    var thumbnail: Data = Data()
     var birthday: Date
     var records: [Record]
     
     init() {
         self.name = ""
         self.favColor = .pink
-        self.thumbnail = ""
         self.birthday = Date()
         self.records = []
     }
     
-    init(name: String, favColor: SystemColor, thumbnail: String, birthday: Date, records: [Record]) {
+    init(name: String, favColor: SystemColor, birthday: Date, records: [Record]) {
         self.name = name
         self.favColor = favColor
-        self.thumbnail = thumbnail
         self.birthday = birthday
         self.records = records
     }
     
     static let samplePerson: [Person] = [
-        Person(name: "우리 주니", favColor: .blue, thumbnail: "TestThumbnail", birthday: Date(), records: Record.sampleRecord),
-        Person(name: "예빈이", favColor: .purple, thumbnail: "TestThumbnail", birthday: Date(), records: Record.sampleRecord),
-        Person(name: "예이", favColor: .purple, thumbnail: "TestThumbnail", birthday: Date(), records: Record.sampleRecord),
-        Person(name: "빈이", favColor: .purple, thumbnail: "TestThumbnail", birthday: Date(), records: Record.sampleRecord),
-        Person(name: "예빈", favColor: .purple, thumbnail: "TestThumbnail", birthday: Date(), records: Record.sampleRecord),
-        Person(name: "이이", favColor: .purple, thumbnail: "TestThumbnail", birthday: Date(), records: Record.sampleRecord)
+        Person(name: "우리 주니", favColor: .blue, birthday: Date(), records: Record.sampleRecord),
+        Person(name: "예빈이", favColor: .purple, birthday: Date(), records: Record.sampleRecord),
+        Person(name: "예이", favColor: .purple, birthday: Date(), records: Record.sampleRecord),
+        Person(name: "빈이", favColor: .purple, birthday: Date(), records: Record.sampleRecord),
+        Person(name: "예빈", favColor: .purple, birthday: Date(), records: Record.sampleRecord),
+        Person(name: "이이", favColor: .purple, birthday: Date(), records: Record.sampleRecord)
     ]
     
 }

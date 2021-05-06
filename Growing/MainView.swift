@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import Combine
 
 struct MainView: View {
     @EnvironmentObject var girinVM: GirinViewModel
     @State var showCreatePersonView = false
+    @State var showEditPersonView = false
     @State var showEditPerson: Person? = nil
     @State var showARView = false
     @State var showNoPersonAlert = false
@@ -17,7 +19,7 @@ struct MainView: View {
     
     func binding(for item: Person) -> Binding<Person> {
         guard let index = girinVM.personList.firstIndex(where: { $0.id == item.id }) else {
-            fatalError("no...")
+            return .constant(Person())
         }
         return $girinVM.personList[index]
     }
@@ -52,24 +54,56 @@ struct MainView: View {
                     .navigationBarHidden(true)
                 }.accentColor(.girinOrange)
             }
+            .scaleEffect(showEditPersonView || showCreatePersonView ? 0.95 : 1)
+            //            .blur(radius: showEditPersonView ? 4 : 0)
+            .overlay(showEditPersonView || showCreatePersonView ? Color(.separator).ignoresSafeArea() : nil)
             //                .navigationViewStyle(StackNavigationViewStyle())
             
-            if showCreatePersonView {
-                CreatePersonView {showCreatePersonView = false}
-            }
             
-            if showEditPerson != nil {
-                EditPersonView(person: binding(for: showEditPerson!)) {
-                    showEditPerson = nil
-                }
-                NewEditPersonView(person: binding(for: showEditPerson!)) {
-                    showEditPerson = nil
-                }
-            }
+            
+            CreatePersonView(showCreatePersonView: $showCreatePersonView)
+            
+            NewEditPersonView(person: binding(for: showEditPerson ?? Person()), showEditPersonView: $showEditPersonView)
+            
         }
-        
     }
 }
+
+struct FlipModifier: AnimatableModifier {
+    @Namespace private var shapeTransition
+    var progress: Double
+    
+    var animatableData: Double {
+        get { progress }
+        set { progress = newValue }
+    }
+    
+    func body(content: Content) -> some View {
+        ZStack {
+            if progress >= 0.5 {
+                content
+                    .rotation3DEffect(
+                        .degrees(-180),
+                        axis: (x: 0.0, y: 1.0, z: 0.0),
+                        anchor: .center,
+                        anchorZ: 0.0,
+                        perspective: 0.5)
+            } else {
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(Color.main)
+                    .frame(maxWidth: 300, maxHeight: 400)
+                    .padding(20)
+            }
+        }
+        .rotation3DEffect(
+            .degrees(progress * -180),
+            axis: (x: 0.0, y: 1.0, z: 0.0),
+            anchor: .center,
+            anchorZ: 0.0,
+            perspective: 0.5)
+    }
+}
+
 
 //MARK: Components
 extension MainView {
@@ -104,7 +138,7 @@ extension MainView {
                     SettingView()
                         .environmentObject(girinVM)
                         .navigationViewStyle(StackNavigationViewStyle())
-
+                    
                 }
         }.padding(.horizontal, 20)
     }
@@ -154,45 +188,55 @@ extension MainView {
                     .padding(.horizontal, 20)
                 
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 0){
+                    HStack(alignment: .top, spacing: 0){
                         if girinVM.personList.count == 0 {
-                                EmptyView()
+                            EmptyView()
                         } else {
                             ForEach(girinVM.personList) { person in
-                                PersonCardView(person: person, editPerson: $showEditPerson)
+                                PersonCardView(person: person, editPerson: $showEditPerson, showEditPersonView: $showEditPersonView)
                             }
                         }
-
+                        
                         PlusPersonCardView()
+                            
                     }
-                    .padding(.leading, 6)
+                    .padding(.leading, 7)
                 }
             }
         
     }
     
     func PlusPersonCardView() -> some View {
-        ZStack{
-            Color.main 
-            
-            VStack(spacing: 26){
-                Image("PersonPlus")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 79, height: 72.5)
-                
-                Text("아이 추가").fontWeight(.semibold)
-                    .font(.title3)
-            }
-            
-        }.clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.2)), radius: 40, x: 0.0, y: 20)
-        .padding(.top, 15)
-        .padding(.bottom, 30)
-        .contentShape(RoundedRectangle(cornerRadius: 20))
-        .onTapGesture {
-            showCreatePersonView = true
+        
+        let width: CGFloat = screen.width/2+20
+        var height: CGFloat {
+            width * 1.4
         }
+        
+        return ZStack {
+            RoundedRectangle(cornerRadius: 22, style: .continuous)
+                .clipped()
+                .foregroundColor(Color(.systemBackground))
+            VStack(spacing: 2) {
+                Image(systemName: "person.fill.badge.plus")
+                    .font(.system(size: 50, weight: .regular, design: .default))
+                    .foregroundColor(Color(.displayP3, red: 244/255, green: 144/255, blue: 12/255))
+                Text("Plus Kid")
+                    .scaledFont(name: "Gilroy-ExtraBold", size: 13)
+            }
+        }
+        .frame(width: width, height: height)
+        .clipped()
+        .onTapGesture {
+            withAnimation(.spring()) {
+                showCreatePersonView = true
+            }
+        }
+        .shadow(color: Color(.displayP3, red: 92/255, green: 103/255, blue: 153/255).opacity(0.2), radius: 40, x: 0, y: 20)
+        .padding(.horizontal, 14)
+        .padding(.bottom, 30)
+        .padding(.top, 20)
+        
     }
 }
 
@@ -284,6 +328,7 @@ struct PersonCardView : View {
     @State var showActionSheet = false
     var person: Person
     @Binding var editPerson: Person?
+    @Binding var showEditPersonView: Bool
     @State var emptyPerson = Person()
     @State var alertRemove = false
     @State var showSheet = false
@@ -312,16 +357,18 @@ struct PersonCardView : View {
         VStack(spacing: 14) {
             
             if let image = person.thumbnail.toImage() {
-                Image(uiImage: image)
-                    .resizable()
-                    .frame(width: width, height: height)
-                    .scaledToFill()
-                    .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
-                    .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.2)), radius: 40, x: 0.0, y: 20)
-                    .sheet(isPresented: $showSheet) {
-                        NewPersonView(person: binding(for: person), editPerson: $editPerson).environmentObject(girinVM)
-                    }
-                    .onTapGesture { showSheet = true }
+                ZStack{
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                }
+                .frame(width: width, height: height)
+                .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.2)), radius: 40, x: 0.0, y: 20)
+                .sheet(isPresented: $showSheet) {
+                    NewPersonView(person: binding(for: person), editPerson: $editPerson).environmentObject(girinVM)
+                }
+                .onTapGesture { showSheet = true }
             } else {
                 ZStack{
                     RoundedRectangle(cornerRadius: 22, style: .continuous)
@@ -342,9 +389,18 @@ struct PersonCardView : View {
             HStack(spacing: 0){
                 VStack(alignment: .leading, spacing: 4){
                     Text(person.name)
-                        .scaledFont(name: "SpoqaHanSansNeo-Bold", size: 20)
-                    Text("\(Date().year - person.birthday.year)살 ")
-                        .scaledFont(name: "SpoqaHanSansNeo-Regular", size: 15)
+                        .scaledFont(name: "Gilroy-ExtraBold", size: 20)
+                    
+                    HStack{
+                        Text("\(person.birthday.toAge()) years")
+                            .font(.subheadline).bold()
+                        
+                        Text("\(person.nowHeight, specifier: "%.1f")cm")
+                            .font(.subheadline).bold()
+                            .foregroundColor(.girinOrange)
+                    }
+                    
+                    
                 }
                 
                 Spacer()
@@ -354,7 +410,13 @@ struct PersonCardView : View {
                     .actionSheet(isPresented: $showActionSheet) {
                         ActionSheet(title: Text("\(person.name)"), message: nil,
                                     buttons: [
-                                        .default(Text("수정")){editPerson = person},
+                                        .default(Text("수정")){
+                                            editPerson = person
+                                            withAnimation(.spring()) {
+                                                showEditPersonView = true
+                                            }
+                                            
+                                        },
                                         .default(Text("삭제")){alertRemove = true},
                                         .cancel(Text("취소"))
                                     ])
@@ -369,30 +431,5 @@ struct PersonCardView : View {
         }.padding(.horizontal, 14)
         .padding(.bottom, 30)
         .padding(.top, 20)
-    }
-}
-
-struct FlipModifier: AnimatableModifier {
-    var progress: Double
-    
-    var animatableData: Double {
-        get { progress }
-        set { progress = newValue }
-    }
-    
-    func body(content: Content) -> some View {
-        ZStack {
-            if progress >= 0.5 {
-                
-            } else {
-                
-            }
-        }
-        .rotation3DEffect(
-            .degrees(progress * -180),
-            axis: (x: 0.0, y: 1.0, z: 0.0),
-            anchor: .center,
-            anchorZ: 0.0,
-            perspective: 0.5)
     }
 }
