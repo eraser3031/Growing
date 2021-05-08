@@ -11,7 +11,6 @@ import Combine
 struct MainView: View {
     @EnvironmentObject var girinVM: GirinViewModel
     @State var showCreatePersonView = false
-    @State var showEditPersonView = false
     @State var showEditPerson: Person? = nil
     @State var showARView = false
     @State var showNoPersonAlert = false
@@ -54,17 +53,30 @@ struct MainView: View {
                     .navigationBarHidden(true)
                 }.accentColor(.girinOrange)
             }
-            .scaleEffect(showEditPersonView || showCreatePersonView ? 0.95 : 1)
-            //            .blur(radius: showEditPersonView ? 4 : 0)
-            .overlay(showEditPersonView || showCreatePersonView ? Color(.separator).ignoresSafeArea() : nil)
-            //                .navigationViewStyle(StackNavigationViewStyle())
+            .scaleEffect(showEditPerson != nil || showCreatePersonView ? 0.95 : 1)
             
             
-            
-            CreatePersonView(showCreatePersonView: $showCreatePersonView)
-            
-            NewEditPersonView(person: binding(for: showEditPerson ?? Person()), showEditPersonView: $showEditPersonView)
-            
+            ZStack(alignment: .bottom){
+                if showEditPerson != nil || showCreatePersonView {
+                    Color(.separator)
+                        .transition(.opacity)
+                }
+                
+                if showCreatePersonView {
+                    CreatePersonView(showCreatePersonView: $showCreatePersonView)
+                        .transition(.move(edge: .bottom))
+                }
+                
+                if showEditPerson != nil {
+                    EditPersonView(person: binding(for: showEditPerson!)){
+                        withAnimation(.spring()) {
+                            showEditPerson = nil
+                        }
+                    }
+                    .transition(.move(edge: .bottom))
+                }
+            }
+            .ignoresSafeArea()
         }
     }
 }
@@ -193,12 +205,12 @@ extension MainView {
                             EmptyView()
                         } else {
                             ForEach(girinVM.personList) { person in
-                                PersonCardView(person: person, editPerson: $showEditPerson, showEditPersonView: $showEditPersonView)
+                                PersonCardView(person: person, editPerson: $showEditPerson)
                             }
                         }
                         
                         PlusPersonCardView()
-                            
+                        
                     }
                     .padding(.leading, 7)
                 }
@@ -328,7 +340,6 @@ struct PersonCardView : View {
     @State var showActionSheet = false
     var person: Person
     @Binding var editPerson: Person?
-    @Binding var showEditPersonView: Bool
     @State var emptyPerson = Person()
     @State var alertRemove = false
     @State var showSheet = false
@@ -372,7 +383,7 @@ struct PersonCardView : View {
             } else {
                 ZStack{
                     RoundedRectangle(cornerRadius: 22, style: .continuous)
-                        .fill(Color.white)
+                        .fill(Color.main)
                         .frame(width: width, height: height)
                         .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.18)), radius: 30, x: 0.0, y: 20)
                     
@@ -405,17 +416,16 @@ struct PersonCardView : View {
                 
                 Spacer()
                 
+                //  MARK: -  Edit Person Button
                 Image(systemName: "ellipsis.circle.fill")
                     .font(.system(size: 28))
                     .actionSheet(isPresented: $showActionSheet) {
                         ActionSheet(title: Text("\(person.name)"), message: nil,
                                     buttons: [
                                         .default(Text("수정")){
-                                            editPerson = person
                                             withAnimation(.spring()) {
-                                                showEditPersonView = true
+                                                editPerson = person
                                             }
-                                            
                                         },
                                         .default(Text("삭제")){alertRemove = true},
                                         .cancel(Text("취소"))
@@ -427,6 +437,7 @@ struct PersonCardView : View {
                             remove()
                         }), secondaryButton: .cancel())
                     }
+                //  MARK: -
             }.frame(width: width)
         }.padding(.horizontal, 14)
         .padding(.bottom, 30)

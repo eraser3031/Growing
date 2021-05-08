@@ -10,8 +10,7 @@ import SwiftUI
 import ARKit
 import FocusEntity
 
-@main
-class AppDelegate: UIResponder, UIApplicationDelegate {
+@main class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 

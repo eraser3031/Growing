@@ -45,6 +45,7 @@ struct CreatePersonView: View {
                     withAnimation {
                         showCreatePersonView = false
                     }
+                    hideKeyboard()
                 }
                 
             }.padding(.vertical, 28)
@@ -65,6 +66,7 @@ struct CreatePersonView: View {
                     )
                     .clipShape(Circle())
                     .onTapGesture {
+                        hideKeyboard()
                         showImagePicker = true
                     }
                     .sheet(isPresented: $showImagePicker, onDismiss: loadImage) {
@@ -113,6 +115,7 @@ struct CreatePersonView: View {
                 .cornerRadius(12)
                 .padding(.bottom, UIApplication.shared.windows.filter{$0.isKeyWindow}.first!.safeAreaInsets.bottom)
                 .onTapGesture {
+                    hideKeyboard()
                     withAnimation(.spring()){
                         girinVM.personList.append(person)
                         showCreatePersonView = false
@@ -127,14 +130,12 @@ struct CreatePersonView: View {
         .padding(.horizontal, 20)
         .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .animation(.spring())
         .onReceive(Publishers.keyboardHeight){ height in
             if horizontalSizeClass == .compact {
                 keyboardOffset = height
             }
         }
-        .offset(y: showCreatePersonView ? horizontalSizeClass == .regular ? 0 : screen.height/2-620/2 : screen.height)
-        //            .offset(x: 0, y: -keyboardOffset)
+        .offset(x: 0, y: -keyboardOffset)
         .edgesIgnoringSafeArea(.bottom)
     }
 }
