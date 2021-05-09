@@ -8,180 +8,203 @@
 import SwiftUI
 import Combine
 
-struct CameraUiView: View {
+struct NewCameraUIView: View {
     
     @EnvironmentObject var girinVM: GirinViewModel
-    @State var person: Person?
-    
-    @State var selectIndex = 99
+    @State var person: Person = Person()
     @State var offset: CGFloat = 0
     @State var selectItemPoses: [CGFloat] = []
     @State var showMeasureReady = false
+    @State var start = false
+    @State var showClearAxisAlert = false
     
-    @ObservedObject var placeSet: PlacementSetting
+    @ObservedObject var placeSet: PlaceSetting
     
     var cancel: () -> Void
+    let bottomInset = UIApplication.shared.windows.filter{$0.isKeyWindow}.first!.safeAreaInsets.bottom
     
     var body: some View {
-        let status = placeSet.status
-        return ZStack {
-            
-//            VStack(spacing: 0) {
-//                Spacer()
-//                Rectangle()
-//                    .fill(
-//                        LinearGradient(gradient: isPlaced ?
-//                        Gradient(colors: [Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)), Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5))]) : Gradient(colors: [Color(#colorLiteral(red: 1, green: 0.1764705882, blue: 0.3333333333, alpha: 0)), Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5))]),
-//                                       startPoint: .top, endPoint: .bottom)
-//                    )
-//                    .frame(height: 220)
-//            }.edgesIgnoringSafeArea(.all)
-            
+        ZStack {
             VStack {
-                HStack {
-                    Spacer()
+                ZStack {
+                    Rectangle()
+                        .frame(maxWidth: .infinity, maxHeight: 50)
+                        .foregroundColor(Color(.systemBackground))
                     
-                    ZStack() {
-                        Circle()
-                            .fill(Color(#colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)))
-                            .frame(width: 34, height:34)
+                    //  MARK: - Cancel Buttton
+                    HStack{
+                        Spacer()
                         
-                        Image(systemName: "xmark")
-                            .foregroundColor(.black)
-                            .font(.title3)
-                    }
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.secondary)
+                            .font(.title2)
+                        
+                    }.padding(.horizontal, 20)
                     .onTapGesture {
-                        cancel()
+                        withAnimation(.timingCurve(0.16, 1, 0.3, 1, duration: 0.6)){
+                            start = false
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                            cancel()
+                        }
                     }
-                }.padding(.horizontal, 20)
+                    //  MARK: -
+                    
+                    //  MARK: - Person Change Button
+                    Picker(selection: $person,
+                           label: HStack(spacing: 4){
+                            Text("\(person.name == "" ? "Select Kid" : person.name)")
+                                .font(.system(size: 15, weight: .bold, design: .default))
+                                .foregroundColor(.primary)
+                                .minimumScaleFactor(1)
+                            Image(systemName: "arrowtriangle.down.fill")
+                                .font(.footnote)
+                                .foregroundColor(.primary)
+                           }
+                    ) {
+                        ForEach(girinVM.personList){ p in
+                            Text("\(p.name)").tag(p)
+                        }
+                    }
+                    
+                    .pickerStyle(MenuPickerStyle())
+                    //  MARK: - 
+                }
                 
                 Spacer()
                 
-                PersonSelectBar()
-                    .padding(.bottom, 20)
-                
-                ZStack(alignment: .center) {
-                    HStack(spacing: 0) {
-                        Image(systemName: "move.3d")
-                            .foregroundColor(.white)
-                            .font(.title)
-                        
-                        Spacer()
-                        
-                        Image("CameraButton")
-                    }.padding(.horizontal, 30)
-                    .padding(.bottom, 12)
+                ZStack {
+                    Rectangle()
+                        .frame(maxWidth: .infinity, maxHeight: placeSet.isPlaced == (true, true) ? 140+bottomInset : 200+bottomInset)
+                        .foregroundColor(Color(.systemBackground))
+                        .cornerRadius(placeSet.isPlaced == (true, true) ? 0 : 20)
                     
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .fill(status == .measure ? Color.pink : .white)
-                        .frame(width: 66, height: 66)
-                        .overlay(
-                            Image(systemName: status == .measure ? "ruler" : status == .wall ? "" : "")
-                                .foregroundColor(status == .measure ? .white : .pink)
+                    if placeSet.isPlaced == (true, true) {
+                        HStack(spacing: 70) {
+                            //  MARK: - Clear AR Environment Button
+                            Button(action: {
+                                showClearAxisAlert = true
+                            }) {
+                                VStack(spacing: 4) {
+                                    Image(systemName: "move.3d")
+                                        .font(.largeTitle)
+                                        .foregroundColor(.girinYellow)
+                                    Text("position")
+                                        .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 10)
+                                }
+                            }
+                            .alert(isPresented: $showClearAxisAlert){
+                                Alert(title: Text("AR Axis Setting"), message: Text("Would you like to set up AR space again?"), primaryButton: .destructive(Text("Confirm"), action: {
+                                    withAnimation(.spring()){
+                                        let model = placeSet.arView!.wallEntity!.findEntity(named: "standard")
+                                        placeSet.arView!.wallEntity!.removeChild(model!)
+                                    }
+                                }), secondaryButton: .cancel())
+                            }
+         
+                            //  MARK: -
+                            
+                            //  MARK: - Measure Button
+                            Image(systemName: "ruler")
                                 .font(.title)
-                        )
-                        .overlay(
-                            Image(status == .measure ? "" : status == .wall ? "Wall" : "Place")
+                                .foregroundColor(.black)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 18, style: .continuous)
+                                        .frame(width: 70, height: 70)
+                                        .foregroundColor(.girinYellow)
+                                )
+                            //  MARK: -
+                            
+                            //  MARK: - Capture Button
+                            VStack(spacing: 4) {
+                                Image(systemName: "circle")
+                                    .font(Font.system(.largeTitle, design: .default).weight(.semibold))
+                                Text("Camera")
+                                    .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 10)
+                            }
+                            //  MARK: -
+                        }
+                    } else {
+                        VStack {
+                            Image("AxisGuide")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 24, height: 24)
-                        )
-                        .opacity(placeSet.clickable ? 1 : 0.6)
-                        .onTapGesture {
-                            if placeSet.clickable {
-                                placeSet.tapSubject.send(true)
-                            }
+                                .frame(width: 100, height: 90)
+                            Text("Move back and forth to the center point\n at the edge where the wall meets the floor.")
+                                .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 13)
                         }
+                    }
                 }
             }
             
-            Text("\(placeSet.result)")
-            
-            //
-            ZStack{
-                Color.pink
-                    .opacity(0.3)
+            if !start {
+                ZStack{
+                    Color(.systemBackground)
+                    
+                    VStack(spacing: 4) {
+                        Circle()
+                            .stroke(Color.second, lineWidth: 1)
+                            .frame(width: 64, height: 64)
+                            .background(
+                                Image("Icon")
+                                    .resizable()
+                                    .frame(width: 64, height: 64)
+                                    .scaledToFit()
+                                    .clipShape(Circle())
+                            )
+                        
+                        Text("Wait a second...")
+                            .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17)
+                    }
+                }
                 
-                Text("s")
-            }.contentShape(Rectangle())
-            .onTapGesture {
-                placeSet.tapSubject.send(false)
+                .transition(.opacity)
+                .zIndex(1)
             }
-            .opacity(showMeasureReady ? 1 : 0)
-            .animation(.spring())
             
-            VStack{
-                Text("Now Height:\(placeSet.result)")
-                Rectangle()
-                    .fill(Color.girinYellow)
-                    .frame(width: 150, height: 150)
-                    .onTapGesture {
-                        placeSet.status = .result
-                    }
-            }
-            .edgesIgnoringSafeArea(.all)
-            .background(Color.white)
-            .opacity(status == .ready ? 1 : 0)
             
-            VStack{
-                Text("Result Height:\(placeSet.result)")
-                Rectangle()
-                    .fill(Color.girinYellow)
-                    .frame(width: 150, height: 100)
-                    .onTapGesture {
-                        placeSet.status = .ready
-                    }
-                
-                Rectangle()
-                    .fill(Color.girinOrange)
-                    .frame(width: 150, height: 100)
-                    .onTapGesture {
-                        placeSet.status = .measure
-                    }
+        }.onAppear{
+            withAnimation(.timingCurve(0.7, 0, 0.84, 0, duration: 0.6).delay(0.4)){
+                start = true
             }
-            .edgesIgnoringSafeArea(.all)
-            .background(Color.white)
-            .opacity(status == .result ? 1 : 0)
         }
-        .onAppear {
-            selectIndex = 0
-            person = girinVM.personList.first!
-        }
+        .ignoresSafeArea(edges: .bottom)
+        
     }
 }
 
 //MARK: Components
-extension CameraUiView {
-    func PersonSelectBar() -> some View {
-        HStack(spacing: 34) {
-            ForEach(girinVM.personList.indexed(), id: \.element.id) { (index, p) in
-                Text(p.name)
-                    .fontWeight(.bold)
-                    .if(selectIndex == index){
-                        $0.foregroundColor(.pink)
-                    }
-                    
-                    .font(.subheadline)
-                    .overlay(
-                        GeometryReader { geo in
-                            Color.clear
-                                .onChange(of: selectIndex){ value in
-                                    if value == index {
-                                        offset += screen.width/2 - geo.frame(in: .global).midX
-                                    }
-                                }
-                        }
-                    )
-                    .onTapGesture {
-                        selectIndex = index
-                    }
-                    
-            }
-        }.frame(height: 30)
-        .animation(.spring())
-        .offset(x: offset, y: 0)
-    }
-}
+//extension CameraUiView {
+//    func PersonSelectBar() -> some View {
+//        HStack(spacing: 34) {
+//            ForEach(girinVM.personList.indexed(), id: \.element.id) { (index, p) in
+//                Text(p.name)
+//                    .fontWeight(.bold)
+//                    .if(selectIndex == index){
+//                        $0.foregroundColor(.pink)
+//                    }
+//
+//                    .font(.subheadline)
+//                    .overlay(
+//                        GeometryReader { geo in
+//                            Color.clear
+//                                .onChange(of: selectIndex){ value in
+//                                    if value == index {
+//                                        offset += screen.width/2 - geo.frame(in: .global).midX
+//                                    }
+//                                }
+//                        }
+//                    )
+//                    .onTapGesture {
+//                        selectIndex = index
+//                    }
+//
+//            }
+//        }.frame(height: 30)
+//        .animation(.spring())
+//        .offset(x: offset, y: 0)
+//    }
+//}
 
 //struct CameraUiView_Previews: PreviewProvider {
 //    static var previews: some View {

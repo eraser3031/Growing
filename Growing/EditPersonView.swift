@@ -25,7 +25,6 @@ struct EditPersonView: View {
     var endEdit: () -> Void
     
     var body: some View {
-        
         VStack(spacing: 20) {
             HStack {
                 Text("Edit Kid")
@@ -33,7 +32,7 @@ struct EditPersonView: View {
                 
                 Spacer()
                 
-                //  MARK: - Cancel Button
+                //  MARK: - EditPersonView Cancel Button
                 ZStack {
                     Circle()
                         .fill(Color.second)
@@ -109,7 +108,7 @@ struct EditPersonView: View {
             }
             .padding(.bottom, 40)
             
-            //  MARK: - Confirm Button
+            //  MARK: - EditPersonView Confirm Button
             Text("Confrim")
                 .scaledFont(name: "Gilroy-ExtraBold", size: 17)
                 .frame(maxWidth: .infinity)

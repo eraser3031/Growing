@@ -127,3 +127,9 @@ extension String{
     }
 }
 
+enum CustomFont: String, Codable {
+    case Gilroy_ExtraBold = "Gilroy-ExtraBold"
+    case Gilroy_Light = "Gilroy-Light"
+    case SpoqaHanSans_Bold = "SpoqaHanSansNeo-Bold"
+    case SpoqaHanSans_Regular = "SpoqaHanSansNeo-Regular"
+}

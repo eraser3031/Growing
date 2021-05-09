@@ -12,7 +12,7 @@ final class GirinViewModel: ObservableObject {
 
 }
 
-struct Person: Codable, Identifiable, Equatable {
+struct Person: Codable, Identifiable, Equatable, Hashable {
     
     static func == (lhs: Person, rhs: Person) -> Bool {
         lhs.id == rhs.id
@@ -57,61 +57,62 @@ struct Person: Codable, Identifiable, Equatable {
     
 }
 
-struct Record: Codable, Identifiable {
+struct Record: Codable, Identifiable, Hashable {
+    static func == (lhs: Record, rhs: Record) -> Bool {
+        lhs.id == rhs.id
+    }
+    
     var id = UUID()
     var recordDate: Date
     var height: Float
-    var pictures: [Picture]
     var title: String = "제목 없음"
     var text: String
     
     init() {
         self.recordDate = Date()
         self.height = 0
-        self.pictures = []
         self.text = ""
     }
     
-    init(recordDate: Date, height: Float, pictures: [Picture], text: String) {
+    init(recordDate: Date, height: Float, text: String) {
         self.recordDate = recordDate
         self.height = height
-        self.pictures = pictures
         self.text = text
     }
     
     static let sampleRecord: [Record] = [
-        Record(recordDate: Date(), height: 23, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 23.6, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 23.3, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 22, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 20, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 30, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 110, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 100, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 41, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 20.6, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 21.3, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 28, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 34, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 40, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 113, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 120, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 53, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 53.6, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 53.3, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 52, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 50, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 60, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 130, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 140, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 133, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 133.6, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 134.3, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 150, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 144, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 137, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 139, pictures: [], text: "울 아들 화이팅"),
-        Record(recordDate: Date(), height: 101, pictures: [], text: "울 아들 화이팅")
+        Record(recordDate: Date(), height: 23, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 23.6, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 23.3, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 22, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 20, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 30, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 110, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 100, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 41, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 20.6, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 21.3, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 28, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 34, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 40, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 113, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 120, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 53, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 53.6, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 53.3, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 52, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 50, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 60, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 130, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 140, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 133, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 133, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 134, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 150, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 144, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 137, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 139, text: "울 아들 화이팅"),
+        Record(recordDate: Date(), height: 101, text: "울 아들 화이팅")
     ]
 }
 
