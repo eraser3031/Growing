@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,13 +12,13 @@
 		211367BE260351DD00B95348 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211367BD260351DD00B95348 /* RecordView.swift */; };
 		21182E2425F78BAD00F3A41C /* PersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21182E2325F78BAD00F3A41C /* PersonView.swift */; };
 		212112E725F23D95000B5CC9 /* Extra.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212112E625F23D95000B5CC9 /* Extra.swift */; };
+		214D7B0526497C720066C06F /* ReadyMeasureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 214D7B0426497C710066C06F /* ReadyMeasureView.swift */; };
 		215618492618AF460069DE27 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215618482618AF460069DE27 /* ImagePicker.swift */; };
 		216CBC572610A6660006F182 /* SubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216CBC562610A6660006F182 /* SubView.swift */; };
 		216CBC5A2610AC610006F182 /* EditPersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216CBC592610AC610006F182 /* EditPersonView.swift */; };
 		218258B625F4D70000A31EB7 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218258B525F4D70000A31EB7 /* Data.swift */; };
 		218258B925F4DAD900A31EB7 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218258B825F4DAD900A31EB7 /* Storage.swift */; };
 		218258BC25F5163100A31EB7 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218258BB25F5163100A31EB7 /* MainView.swift */; };
-		21B0EE65261AA85100D60263 /* FocusEntity in Frameworks */ = {isa = PBXBuildFile; productRef = 21B0EE64261AA85100D60263 /* FocusEntity */; };
 		21B408D326161F43006DFE8A /* PosComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B408D226161F43006DFE8A /* PosComponent.swift */; };
 		21B418CD263F92B1008ECE6A /* CustomScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B418CC263F92B1008ECE6A /* CustomScrollView.swift */; };
 		21B93C2425EA49B200878B47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B93C2325EA49B200878B47 /* AppDelegate.swift */; };
@@ -38,6 +38,7 @@
 		211367BD260351DD00B95348 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
 		21182E2325F78BAD00F3A41C /* PersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonView.swift; sourceTree = "<group>"; };
 		212112E625F23D95000B5CC9 /* Extra.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extra.swift; sourceTree = "<group>"; };
+		214D7B0426497C710066C06F /* ReadyMeasureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyMeasureView.swift; sourceTree = "<group>"; };
 		215618482618AF460069DE27 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		216CBC562610A6660006F182 /* SubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubView.swift; sourceTree = "<group>"; };
 		216CBC592610AC610006F182 /* EditPersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPersonView.swift; sourceTree = "<group>"; };
@@ -66,7 +67,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				21B0EE65261AA85100D60263 /* FocusEntity in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,6 +96,7 @@
 				2171FC0126367FC300499441 /* SpoqaHanSansNeo-Regular.otf */,
 				21B93C2325EA49B200878B47 /* AppDelegate.swift */,
 				21B93C2525EA49B200878B47 /* ContentView.swift */,
+				214D7B0426497C710066C06F /* ReadyMeasureView.swift */,
 				21CF12AE2647CCE200723F51 /* KeyChart1.reality */,
 				21C3F6122604B82B00B41F47 /* CameraUiView.swift */,
 				216CBC562610A6660006F182 /* SubView.swift */,
@@ -146,7 +147,6 @@
 			);
 			name = Growing;
 			packageProductDependencies = (
-				21B0EE64261AA85100D60263 /* FocusEntity */,
 			);
 			productName = Growing;
 			productReference = 21B93C2025EA49B200878B47 /* Growing.app */;
@@ -176,7 +176,6 @@
 			);
 			mainGroup = 21B93C1725EA49B200878B47;
 			packageReferences = (
-				21B0EE63261AA85100D60263 /* XCRemoteSwiftPackageReference "FocusEntity" */,
 			);
 			productRefGroup = 21B93C2125EA49B200878B47 /* Products */;
 			projectDirPath = "";
@@ -224,6 +223,7 @@
 				215618492618AF460069DE27 /* ImagePicker.swift in Sources */,
 				218258B925F4DAD900A31EB7 /* Storage.swift in Sources */,
 				216CBC5A2610AC610006F182 /* EditPersonView.swift in Sources */,
+				214D7B0526497C720066C06F /* ReadyMeasureView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,25 +421,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		21B0EE63261AA85100D60263 /* XCRemoteSwiftPackageReference "FocusEntity" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/maxxfrazer/FocusEntity";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.2.1;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		21B0EE64261AA85100D60263 /* FocusEntity */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 21B0EE63261AA85100D60263 /* XCRemoteSwiftPackageReference "FocusEntity" */;
-			productName = FocusEntity;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 21B93C1825EA49B200878B47 /* Project object */;
 }

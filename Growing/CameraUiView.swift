@@ -17,7 +17,7 @@ struct NewCameraUIView: View {
     @State var showMeasureReady = false
     @State var start = false
     @State var showClearAxisAlert = false
-    
+    @State var snapShot: UIImage?
     @ObservedObject var placeSet: PlaceSetting
     
     var cancel: () -> Void
@@ -93,11 +93,13 @@ struct NewCameraUIView: View {
                                         .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 10)
                                 }
                             }
+                            .buttonStyle(PlainButtonStyle())
                             .alert(isPresented: $showClearAxisAlert){
                                 Alert(title: Text("AR Axis Setting"), message: Text("Would you like to set up AR space again?"), primaryButton: .destructive(Text("Confirm"), action: {
                                     withAnimation(.spring()){
                                         let model = placeSet.arView!.wallEntity!.findEntity(named: "standard")
                                         placeSet.arView!.wallEntity!.removeChild(model!)
+                                        placeSet.startSetting(placeSet.arView!)
                                     }
                                 }), secondaryButton: .cancel())
                             }
@@ -116,22 +118,32 @@ struct NewCameraUIView: View {
                             //  MARK: -
                             
                             //  MARK: - Capture Button
-                            VStack(spacing: 4) {
-                                Image(systemName: "circle")
-                                    .font(Font.system(.largeTitle, design: .default).weight(.semibold))
-                                Text("Camera")
-                                    .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 10)
+                            Button(action: {
+                                placeSet.arView!.snapshot(saveToHDR: false){ image in
+                                    snapShot = image
+                                    UIImageWriteToSavedPhotosAlbum(snapShot!, nil, nil, nil)
+                                }
+                            }) {
+                                VStack(spacing: 4) {
+                                    Image(systemName: "circle")
+                                        .font(Font.system(.largeTitle, design: .default).weight(.semibold))
+                                    Text("Camera")
+                                        .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 10)
+                                }
                             }
+                            .buttonStyle(PlainButtonStyle())
                             //  MARK: -
                         }
                     } else {
-                        VStack {
+                        VStack(spacing: 8) {
+                            
                             Image("AxisGuide")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 100, height: 90)
-                            Text("Move back and forth to the center point\n at the edge where the wall meets the floor.")
-                                .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 13)
+                            Text("Move back and forth to the center point\nat the edge where the wall meets the floor.")
+                                .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17)
+                                .multilineTextAlignment(.center)
                         }
                     }
                 }
@@ -141,7 +153,7 @@ struct NewCameraUIView: View {
                 ZStack{
                     Color(.systemBackground)
                     
-                    VStack(spacing: 4) {
+                    VStack(spacing: 8) {
                         Circle()
                             .stroke(Color.second, lineWidth: 1)
                             .frame(width: 64, height: 64)
@@ -162,7 +174,7 @@ struct NewCameraUIView: View {
                 .zIndex(1)
             }
             
-            
+            Text("\(placeSet.arView?.wallEntity == nil ? "f" : "t")")
         }.onAppear{
             withAnimation(.timingCurve(0.7, 0, 0.84, 0, duration: 0.6).delay(0.4)){
                 start = true

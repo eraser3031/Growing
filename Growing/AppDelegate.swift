@@ -8,7 +8,6 @@
 import UIKit
 import SwiftUI
 import ARKit
-import FocusEntity
 
 @main class AppDelegate: UIResponder, UIApplicationDelegate {
 

@@ -31,7 +31,7 @@ struct SubView: View {
                     .font(.title3)
                     .frame(width: 150)
                     .padding(.bottom, 50)
-                
+                    
                 HStack {
                     Button(action: {presentationMode.wrappedValue.dismiss()}) {
                         Text(cancelText).bold()
