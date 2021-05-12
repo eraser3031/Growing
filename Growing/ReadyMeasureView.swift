@@ -25,7 +25,7 @@ struct ReadyMeasureView: View {
             .padding(.horizontal, 20)
             
             Spacer()
-            
+            //
             VStack(spacing: 4) {
                 Image(uiImage: person.thumbnail.toImage() ?? UIImage())
                     .renderingMode(.original)
