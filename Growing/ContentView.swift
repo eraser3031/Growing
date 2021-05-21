@@ -12,6 +12,7 @@ import Combine
 
 class PlaceSetting: ObservableObject {
     @Published var isPlaced: (floor:Bool, wall:Bool) = (false, false)
+    
     var updateCancellable: Cancellable?
     var placeCancellable: AnyCancellable?
     var testCancellable: AnyCancellable?
@@ -20,6 +21,7 @@ class PlaceSetting: ObservableObject {
     
     @Published var info = ""
     @Published var info2 = ""
+    @Published var measureHeight: Float = 0
     
     func clear() {
         updateCancellable = nil
@@ -108,6 +110,12 @@ struct ARViewContainer: UIViewRepresentable {
         
         placeSet.startSetting(arView)
         
+        func measure() -> Float {
+            let camera = arView.cameraTransform.translation
+            let floor = arView.floorEntity!.position
+            return abs(camera.y - floor.y) * 100 + 4 // cm + 오차범위
+        }
+        
         placeSet.updateCancellable = arView.scene.subscribe(to: SceneEvents.Update.self) { event in
             var emptyPlaced: (floor:Bool, wall:Bool) = (false, false)
             
@@ -122,6 +130,7 @@ struct ARViewContainer: UIViewRepresentable {
             
             if placeSet.isPlaced == (true, true) {
                 updateTransform(arView, name: "standard")
+                placeSet.measureHeight = measure()
             }
         }
 

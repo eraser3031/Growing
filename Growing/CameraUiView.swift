@@ -18,6 +18,8 @@ struct NewCameraUIView: View {
     @State var start = false
     @State var showClearAxisAlert = false
     @State var snapShot: UIImage?
+    @State var showCaptureAnimation = false
+    @State var showReadyMeasure = false
     @ObservedObject var placeSet: PlaceSetting
     
     var cancel: () -> Void
@@ -103,7 +105,7 @@ struct NewCameraUIView: View {
                                     }
                                 }), secondaryButton: .cancel())
                             }
-         
+                            
                             //  MARK: -
                             
                             //  MARK: - Measure Button
@@ -115,13 +117,30 @@ struct NewCameraUIView: View {
                                         .frame(width: 70, height: 70)
                                         .foregroundColor(.girinYellow)
                                 )
+                                .onTapGesture {
+                                    showMeasureReady = true
+                                    let model = placeSet.arView!.wallEntity!.findEntity(named: "standard")
+                                    placeSet.arView!.wallEntity!.removeChild(model!)
+                                    placeSet.arView?.session.pause()
+                                }
+                                .fullScreenCover(isPresented: $showMeasureReady){
+                                    ReadyMeasureView(placeSet: placeSet, person: $person) {
+                                        showMeasureReady = false //
+                                        placeSet.startSetting(placeSet.arView!)
+                                    }
+                                }
                             //  MARK: -
                             
                             //  MARK: - Capture Button
                             Button(action: {
-                                placeSet.arView!.snapshot(saveToHDR: false){ image in
-                                    snapShot = image
-                                    UIImageWriteToSavedPhotosAlbum(snapShot!, nil, nil, nil)
+                                if showCaptureAnimation == false {
+                                    placeSet.arView!.snapshot(saveToHDR: false){ image in
+                                        snapShot = image
+                                        UIImageWriteToSavedPhotosAlbum(snapShot!, nil, nil, nil)
+                                    }
+                                    withAnimation(.easeInOut(duration: 0.1)) {
+                                        showCaptureAnimation = true
+                                    }
                                 }
                             }) {
                                 VStack(spacing: 4) {
@@ -175,7 +194,22 @@ struct NewCameraUIView: View {
             }
             
             Text("\(placeSet.arView?.wallEntity == nil ? "f" : "t")")
+            
+            if showCaptureAnimation {
+                Color.white.ignoresSafeArea()
+                    .transition(.opacity)
+                    .onAppear{
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            withAnimation(.easeInOut(duration: 0.1)) {
+                                showCaptureAnimation = false
+                            }
+                        }
+                    }
+            }
+            
         }.onAppear{
+            
+            person = girinVM.personList.first!
             withAnimation(.timingCurve(0.7, 0, 0.84, 0, duration: 0.6).delay(0.4)){
                 start = true
             }

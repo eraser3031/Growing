@@ -11,7 +11,8 @@ struct ReadyMeasureView: View {
     @EnvironmentObject var girinVN: GirinViewModel
     @ObservedObject var placeSet: PlaceSetting
     @Binding var person: Person
-    
+    @State var showResultMeasureView = false
+    var dismiss: () -> Void
     var body: some View {
         VStack {
             HStack {
@@ -19,8 +20,21 @@ struct ReadyMeasureView: View {
                     .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 34)
 
                 Spacer()
-                Image(systemName: "xmark.circle.fill")
-                    .font(.title)
+                
+                //  MARK: - ReadyMeasureView Cancel Button
+                ZStack {
+                    Circle()
+                        .fill(Color.second)
+                        .frame(width: 34, height:34)
+                    
+                    Image(systemName: "xmark")
+                        .foregroundColor(.black)
+                        .font(.title3)
+                }
+                .onTapGesture {
+                    dismiss()
+                }
+                //  MARK: -
             }
             .padding(.horizontal, 20)
             
@@ -34,19 +48,19 @@ struct ReadyMeasureView: View {
                     .mask(Circle())
                     .frame(width: 64, height: 64)
                     
-                Text("Yaehoon")
+                Text(person.name)
                     .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 12)
             }
             
             //  MARK: - ReadyMeasureView Measure Button
-            Button(action: /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Action@*/{}/*@END_MENU_TOKEN@*/) {
+            Button(action: {showResultMeasureView = true}) {
                 ZStack {
                     Circle()
                         .frame(width: screen.width-120, height: screen.width-120)
                         .foregroundColor(Color(.systemBackground))
                         .shadow(color: Color(.displayP3, red: 92/255, green: 103/255, blue: 153/255).opacity(0.2), radius: 40, x: 0, y: 20)
                     
-                    Text("130cm")
+                    Text("\(placeSet.measureHeight, specifier: "%.2f")cm")
                         .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 34)
                 }
             }.buttonStyle(PlainButtonStyle())
