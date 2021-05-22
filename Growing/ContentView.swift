@@ -110,9 +110,11 @@ struct ARViewContainer: UIViewRepresentable {
         
         placeSet.startSetting(arView)
         
+        
+        //  MARK: - Measure Method
         func measure() -> Float {
             let camera = arView.cameraTransform.translation
-            let floor = arView.floorEntity!.position
+            let floor = arView.floorEntity!.position(relativeTo: nil)
             return abs(camera.y - floor.y) * 100 + 4 // cm + 오차범위
         }
         

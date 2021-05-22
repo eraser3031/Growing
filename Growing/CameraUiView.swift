@@ -119,15 +119,16 @@ struct NewCameraUIView: View {
                                 )
                                 .onTapGesture {
                                     showMeasureReady = true
-                                    let model = placeSet.arView!.wallEntity!.findEntity(named: "standard")
-                                    placeSet.arView!.wallEntity!.removeChild(model!)
-                                    placeSet.arView?.session.pause()
+//                                    let model = placeSet.arView!.wallEntity!.findEntity(named: "standard")
+//                                    placeSet.arView!.wallEntity!.removeChild(model!)
+//                                    placeSet.arView?.session.pause()
                                 }
                                 .fullScreenCover(isPresented: $showMeasureReady){
                                     ReadyMeasureView(placeSet: placeSet, person: $person) {
                                         showMeasureReady = false //
-                                        placeSet.startSetting(placeSet.arView!)
+//                                        placeSet.startSetting(placeSet.arView!)
                                     }
+                                    .environmentObject(girinVM)
                                 }
                             //  MARK: -
                             
