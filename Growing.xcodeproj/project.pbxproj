@@ -29,7 +29,6 @@
 		21B93C3025EA49B600878B47 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21B93C2E25EA49B600878B47 /* LaunchScreen.storyboard */; };
 		21C3F6132604B82B00B41F47 /* CameraUiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C3F6122604B82B00B41F47 /* CameraUiView.swift */; };
 		21C5A0332613657A00ECAEB2 /* CreatePersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C5A0322613657A00ECAEB2 /* CreatePersonView.swift */; };
-		21CF12AF2647CCE300723F51 /* KeyChart1.reality in Resources */ = {isa = PBXBuildFile; fileRef = 21CF12AE2647CCE200723F51 /* KeyChart1.reality */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,7 +58,6 @@
 		21B93C3125EA49B600878B47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		21C3F6122604B82B00B41F47 /* CameraUiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraUiView.swift; sourceTree = "<group>"; };
 		21C5A0322613657A00ECAEB2 /* CreatePersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePersonView.swift; sourceTree = "<group>"; };
-		21CF12AE2647CCE200723F51 /* KeyChart1.reality */ = {isa = PBXFileReference; lastKnownFileType = file; name = KeyChart1.reality; path = ../../../../../../../Downloads/KeyChart1.reality; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,7 +95,6 @@
 				21B93C2325EA49B200878B47 /* AppDelegate.swift */,
 				21B93C2525EA49B200878B47 /* ContentView.swift */,
 				214D7B0426497C710066C06F /* ReadyMeasureView.swift */,
-				21CF12AE2647CCE200723F51 /* KeyChart1.reality */,
 				21C3F6122604B82B00B41F47 /* CameraUiView.swift */,
 				216CBC562610A6660006F182 /* SubView.swift */,
 				216CBC592610AC610006F182 /* EditPersonView.swift */,
@@ -192,7 +189,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				21B93C3025EA49B600878B47 /* LaunchScreen.storyboard in Resources */,
-				21CF12AF2647CCE300723F51 /* KeyChart1.reality in Resources */,
 				21B93C2D25EA49B600878B47 /* Preview Assets.xcassets in Resources */,
 				21B93C2A25EA49B600878B47 /* Assets.xcassets in Resources */,
 				21023A342631862D00AB7472 /* Gilroy-Light.otf in Resources */,

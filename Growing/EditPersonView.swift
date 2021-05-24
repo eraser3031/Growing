@@ -109,19 +109,23 @@ struct EditPersonView: View {
             .padding(.bottom, 40)
             
             //  MARK: - EditPersonView Confirm Button
-            Text("Confrim")
-                .scaledFont(name: "Gilroy-ExtraBold", size: 17)
-                .frame(maxWidth: .infinity)
-                .frame(height: 50)
-                .background(Color.girinYellow)
-                .cornerRadius(12)
-                .padding(.bottom, UIApplication.shared.windows.filter{$0.isKeyWindow}.first!.safeAreaInsets.bottom)
-                .onTapGesture {
-                    withAnimation(.spring()){
-                        endEdit()
-                    }
-                    hideKeyboard()
+            Button(action: {
+                withAnimation(.spring()){
+                    endEdit()
                 }
+                hideKeyboard()
+            }) {
+                Text("Confrim")
+                    .scaledFont(name: "Gilroy-ExtraBold", size: 17)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 50)
+                    .background(Color.girinYellow)
+                    .cornerRadius(12)
+                    .padding(.bottom, UIApplication.shared.windows.filter{$0.isKeyWindow}.first!.safeAreaInsets.bottom)
+            }
+            .disabled(person.thumbnail == Data() || person.name == "")
+            .opacity((person.thumbnail == Data() || person.name == "") ? 0.6 : 1)
+            .buttonStyle(PlainButtonStyle())
             //  MARK: -
         }
         .if(horizontalSizeClass == .regular){ body in

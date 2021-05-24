@@ -15,6 +15,7 @@ struct MainView: View {
     @State var showARView = false
     @State var showNoPersonAlert = false
     @State var showSetting = false
+    @State var repeatAnimation = false
     
     func binding(for item: Person) -> Binding<Person> {
         guard let index = girinVM.personList.firstIndex(where: { $0.id == item.id }) else {
@@ -26,32 +27,28 @@ struct MainView: View {
     var body: some View {
         ZStack {
             ZStack{
-                NavigationView{
-                    VStack(spacing: 0){
-                        if UIApplication.shared.windows.filter{$0.isKeyWindow}.first!.safeAreaInsets.top > 1 {
-                            Spacer()
-                                .frame(height: 20)
-                        }
-                        
-                        Header
-                        
+                VStack(spacing: 0){
+                    if UIApplication.shared.windows.filter{$0.isKeyWindow}.first!.safeAreaInsets.top > 1 {
                         Spacer()
-                            .frame(height: 10)
-                        
-                        ARViewButton()
-                            .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.2)), radius: 40, x: 0.0, y: 20)
-                        
-                        Spacer()
-                            .frame(height: 30)
-                        
-                        PersonListScrollView()
-                        
-                        Spacer()
-                        
+                            .frame(height: 20)
                     }
-                    .navigationBarTitle("")
-                    .navigationBarHidden(true)
-                }.accentColor(.girinOrange)
+                    
+                    Header
+                    
+                    Spacer()
+                        .frame(height: 10)
+                    
+                    ARViewButton()
+                        .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.2)), radius: 40, x: 0.0, y: 20)
+                    
+                    Spacer()
+                        .frame(height: 30)
+                    
+                    PersonListScrollView()
+                    
+                    Spacer()
+                    
+                }
             }
             .scaleEffect(showEditPerson != nil || showCreatePersonView ? 0.95 : 1)
             
@@ -160,9 +157,12 @@ extension MainView {
             
             Image(systemName: "arkit")
                 .font(.system(size: 40))
+                .scaleEffect(repeatAnimation ? 1.1 : 1)
+                .onAppear{repeatAnimation = true}
+                .animation(.easeInOut(duration: 2).repeatForever(autoreverses: true))
             
-            Text("키 재러가기")
-                .scaledFont(name: "SpoqaHanSansNeo-Bold", size: 17)
+            Text("Measure Height")
+                .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17)
             
         }.frame(maxWidth: .infinity, maxHeight: 128)
         .background(
@@ -212,7 +212,7 @@ extension MainView {
                         PlusPersonCardView()
                         
                     }
-                    .padding(.leading, 7)
+                    .padding(.horizontal, 7)
                 }
             }
         
@@ -244,10 +244,10 @@ extension MainView {
                 showCreatePersonView = true
             }
         }
-        .shadow(color: Color(.displayP3, red: 92/255, green: 103/255, blue: 153/255).opacity(0.2), radius: 40, x: 0, y: 20)
+        .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.2)), radius: 30, x: 0.0, y: 20)
         .padding(.horizontal, 14)
-        .padding(.bottom, 30)
-        .padding(.top, 20)
+        .padding(.bottom, 36)
+        .padding(.top, 24)
         
     }
 }
@@ -268,38 +268,38 @@ struct SettingView: View {
     var body: some View {
         NavigationView{
             Form {
-                Section(header: Label("정보", systemImage: "info.circle.fill")) {
+                Section(header: Label("Info", systemImage: "info.circle.fill")) {
                     NavigationLink(destination: InfoView) {
-                        Label("앱 정보", systemImage: "questionmark.circle.fill")
+                        Label("App Info", systemImage: "questionmark.circle.fill")
                     }
                 }
                 
-                Section(header: Label("데이터", systemImage: "cylinder.split.1x2.fill")) {
-                    Button(action: {
-                        showRecordAlert = true
-                    }) {
-                        Label("일기 데이터 초기화", systemImage: "text.badge.xmark")
-                    }.buttonStyle(PlainButtonStyle())
-                    .alert(isPresented: $showRecordAlert) {
-                        Alert(title: Text("일기 데이터 삭제"), message: Text("정말로 모든 일기 데이터를 삭제하시겠어요??"), primaryButton: .destructive(Text("확인"), action: {
-                            for (index, _) in girinVM.personList.enumerated() {
-                                girinVM.personList[index].records = []
-                            }
-                        }), secondaryButton: .cancel())
-                    }
+                Section(header: Label("Data", systemImage: "cylinder.split.1x2.fill")) {
+//                    Button(action: {
+//                        showRecordAlert = true
+//                    }) {
+//                        Label("일기 데이터 초기화", systemImage: "text.badge.xmark")
+//                    }.buttonStyle(PlainButtonStyle())
+//                    .alert(isPresented: $showRecordAlert) {
+//                        Alert(title: Text("일기 데이터 삭제"), message: Text("정말로 모든 일기 데이터를 삭제하시겠어요??"), primaryButton: .destructive(Text("확인"), action: {
+//                            for (index, _) in girinVM.personList.enumerated() {
+//                                girinVM.personList[index].records = []
+//                            }
+//                        }), secondaryButton: .cancel())
+//                    }
                     
                     Button(action: {
                         showEveryAlert = true
                     }) {
-                        Label("모든 데이터 초기화", systemImage: "xmark.circle.fill")
+                        Label("Remove All Data", systemImage: "xmark.circle.fill")
                     }.buttonStyle(PlainButtonStyle())
                     .alert(isPresented: $showEveryAlert) {
-                        Alert(title: Text("모든 데이터 삭제"), message: Text("정말로 모든 데이터를 삭제하시겠어요??"), primaryButton: .destructive(Text("확인"), action: {
+                        Alert(title: Text("Remove All Data"), message: Text("Are you sure you want to delete all data including your kid's information?"), primaryButton: .destructive(Text("OK"), action: {
                             girinVM.personList = []
                         }), secondaryButton: .cancel())
                     }
                 }
-            }.navigationTitle("설정")
+            }.navigationTitle("Setting")
             .accentColor(.girinOrange)
             .navigationBarTitleDisplayMode(.large)
         }
@@ -375,7 +375,7 @@ struct PersonCardView : View {
                 }
                 .frame(width: width, height: height)
                 .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
-                .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.2)), radius: 40, x: 0.0, y: 20)
+                .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.2)), radius: 30, x: 0.0, y: 20)
                 .sheet(isPresented: $showSheet) {
                     NewPersonView(person: binding(for: person), editPerson: $editPerson).environmentObject(girinVM)
                 }
@@ -440,7 +440,7 @@ struct PersonCardView : View {
                 //  MARK: -
             }.frame(width: width)
         }.padding(.horizontal, 14)
-        .padding(.bottom, 30)
-        .padding(.top, 20)
+        .padding(.bottom, 36)
+        .padding(.top, 24)
     }
 }

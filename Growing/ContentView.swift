@@ -43,7 +43,7 @@ class PlaceSetting: ObservableObject {
         session.environmentTexturing = .automatic
         session.planeDetection = [.horizontal, .vertical]
         session.frameSemantics.insert(.personSegmentation)
-        arView.session.run(session)
+        arView.session.run(session, options: .removeExistingAnchors)
         makeFloorEntity(arView)
     }
     
@@ -66,6 +66,7 @@ struct ContentView : View {
     var body: some View {
         ZStack{
             ARViewContainer(placeSet: placeSet)
+                .ignoresSafeArea()
             
             NewCameraUIView(placeSet: placeSet) {
                 presentationMode.wrappedValue.dismiss()

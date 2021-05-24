@@ -24,7 +24,7 @@ struct NewPersonView: View {
     }
     
     var body: some View {
-        let topHeight = topH(person.nowHeight)
+        let topHeight = topH(person.bestHeight)
         
         return VStack(spacing: 0){
             Spacer()
@@ -41,7 +41,7 @@ struct NewPersonView: View {
                                 Image(uiImage: image)
                                     .resizable()
                                     .frame(width: 64, height: 64)
-                                    .scaledToFit()
+                                    .scaledToFill()
                                     .clipShape(Circle())
                             )
                             .padding(.bottom, 10)
@@ -110,7 +110,7 @@ struct NewPersonView: View {
                             .lineLimit(1)
                             .frame(width: 48, alignment: .leading)
                             .opacity(start ? 1 : 0)
-                            .animation(.timingCurve(0.87, 0, 0.13, 1, duration: 1).delay(Double(topHeight-index)/Double(person.nowHeight)*0.3))
+                            .animation(.timingCurve(0.87, 0, 0.13, 1, duration: 1).delay(Double(topHeight-index)/Double(person.bestHeight)*0.3))
                         makeLineView(index: topHeight-index)
                     }.id(topHeight-index)
                 }
@@ -131,7 +131,7 @@ extension NewPersonView {
                 .fill(Color.black)
                 .cornerRadius(120)
                 .frame(width: start ? (index % 2 != 0) ? CGFloat(32.44) : CGFloat(17.69) : 0, height: 2.64, alignment: .leading)
-                .animation(.timingCurve(0.87, 0, 0.13, 1, duration: 1).delay(Double(index)/Double(person.nowHeight)*0.6))
+                .animation(.timingCurve(0.87, 0, 0.13, 1, duration: 1).delay(Double(index)/Double(person.bestHeight)*0.6))
             
             Spacer()
         }
@@ -181,7 +181,7 @@ extension NewPersonView {
                     .opacity(start ? 1 : 0)
                     
                 }.offset(y: calOffset(data.height))
-                .animation(.timingCurve(0.87, 0, 0.13, 1, duration: 1).delay(Double(data.height/person.nowHeight)*0.6))
+                .animation(.timingCurve(0.87, 0, 0.13, 1, duration: 1).delay(Double(data.height/person.bestHeight)*0.6))
             }
         }
     }

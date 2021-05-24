@@ -144,6 +144,7 @@ struct ResultMeasureView: View {
                 //  MARK: - ResultMeasureView OK Button
                 Button(action: {
                     person.records.append(Record(recordDate: Date(), height: height, text: ""))
+//                    print(person.records.count)
                     dismissOuter()
                 }) {
                     ZStack {

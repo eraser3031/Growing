@@ -20,91 +20,108 @@ struct NewCameraUIView: View {
     @State var snapShot: UIImage?
     @State var showCaptureAnimation = false
     @State var showReadyMeasure = false
+    @State var showQuestion = false
     @ObservedObject var placeSet: PlaceSetting
+    @Namespace var namespace
     
     var cancel: () -> Void
-    let bottomInset = UIApplication.shared.windows.filter{$0.isKeyWindow}.first!.safeAreaInsets.bottom
+    let bottomInset = UIApplication.shared.windows.filter{$0.isKeyWindow}.first?.safeAreaInsets.bottom ?? 0
+    
+    func binding(for item: Person) -> Binding<Person> {
+        guard let index = girinVM.personList.firstIndex(where: { $0.id == item.id }) else {
+            return .constant(Person())
+        }
+        return $girinVM.personList[index]
+    }
     
     var body: some View {
         ZStack {
             VStack {
-                ZStack {
-                    Rectangle()
-                        .frame(maxWidth: .infinity, maxHeight: 50)
+                HStack{
+                    //  MARK: - Question Small View
+                    Image(systemName: "questionmark.circle.fill")
                         .foregroundColor(Color(.systemBackground))
-                    
-                    //  MARK: - Cancel Buttton
-                    HStack{
-                        Spacer()
-                        
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.secondary)
-                            .font(.title2)
-                        
-                    }.padding(.horizontal, 20)
-                    .onTapGesture {
-                        withAnimation(.timingCurve(0.16, 1, 0.3, 1, duration: 0.6)){
-                            start = false
+                        .font(.system(size: 40))
+                        .onTapGesture {
+                            withAnimation(.spring()) {
+                                showQuestion = true
+                            }
                         }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                            cancel()
-                        }
-                    }
                     //  MARK: -
                     
-                    //  MARK: - Person Change Button
-                    Picker(selection: $person,
-                           label: HStack(spacing: 4){
-                            Text("\(person.name == "" ? "Select Kid" : person.name)")
-                                .font(.system(size: 15, weight: .bold, design: .default))
-                                .foregroundColor(.primary)
-                                .minimumScaleFactor(1)
-                            Image(systemName: "arrowtriangle.down.fill")
-                                .font(.footnote)
-                                .foregroundColor(.primary)
-                           }
-                    ) {
-                        ForEach(girinVM.personList){ p in
-                            Text("\(p.name)").tag(p)
-                        }
-                    }
+                    Spacer()
                     
-                    .pickerStyle(MenuPickerStyle())
-                    //  MARK: - 
-                }
+                    //  MARK: - Cancel Buttton
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(Color(.systemBackground))
+                        .font(.system(size: 40))
+                        .onTapGesture {
+                            withAnimation(.timingCurve(0.16, 1, 0.3, 1, duration: 0.6)){
+                                start = false
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                                cancel()
+                            }
+                        }
+                    //  MARK: -
+                }.padding(.horizontal, 20)
                 
                 Spacer()
                 
-                ZStack {
-                    Rectangle()
-                        .frame(maxWidth: .infinity, maxHeight: placeSet.isPlaced == (true, true) ? 140+bottomInset : 200+bottomInset)
-                        .foregroundColor(Color(.systemBackground))
-                        .cornerRadius(placeSet.isPlaced == (true, true) ? 0 : 20)
-                    
-                    if placeSet.isPlaced == (true, true) {
+                if placeSet.isPlaced == (true, true) {
+                    VStack(spacing: 0){
+                        
+                        //  MARK: - Person Change Button
+                        Picker(selection: $person,
+                               label:
+                                Text("\(person.name == "" ? "Select Kid" : person.name)")
+                                .font(.system(size: 12, weight: .bold, design: .default))
+                                .foregroundColor(.primary)
+                                .minimumScaleFactor(1)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 2)
+                                .overlay(
+                                    Capsule()
+                                        .stroke(Color(.tertiaryLabel), lineWidth: 1)
+                                )
+                        ) {
+                            ForEach(girinVM.personList){ p in
+                                Text("\(p.name)").tag(p)
+                            }
+                        }
+                        .pickerStyle(MenuPickerStyle())
+                        .padding(.vertical, 10)
+                        //  MARK: -
+                        
                         HStack(spacing: 70) {
                             //  MARK: - Clear AR Environment Button
                             Button(action: {
-                                showClearAxisAlert = true
+                                withAnimation(.spring()){
+                                    let model = placeSet.arView!.wallEntity!.findEntity(named: "standard")
+                                    placeSet.arView!.wallEntity!.removeChild(model!)
+                                    placeSet.startSetting(placeSet.arView!)
+                                }
+                                //                                showClearAxisAlert = true
                             }) {
                                 VStack(spacing: 4) {
                                     Image(systemName: "move.3d")
                                         .font(.largeTitle)
                                         .foregroundColor(.girinYellow)
-                                    Text("position")
+                                    Text("reset")
                                         .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 10)
                                 }
                             }
                             .buttonStyle(PlainButtonStyle())
-                            .alert(isPresented: $showClearAxisAlert){
-                                Alert(title: Text("AR Axis Setting"), message: Text("Would you like to set up AR space again?"), primaryButton: .destructive(Text("Confirm"), action: {
-                                    withAnimation(.spring()){
-                                        let model = placeSet.arView!.wallEntity!.findEntity(named: "standard")
-                                        placeSet.arView!.wallEntity!.removeChild(model!)
-                                        placeSet.startSetting(placeSet.arView!)
-                                    }
-                                }), secondaryButton: .cancel())
-                            }
+                            
+                            //                            .alert(isPresented: $showClearAxisAlert){
+                            //                                Alert(title: Text("AR Axis Setting"), message: Text("Would you like to set up AR space again?"), primaryButton: .destructive(Text("Confirm"), action: {
+                            //                                    withAnimation(.spring()){
+                            //                                        let model = placeSet.arView!.wallEntity!.findEntity(named: "standard")
+                            //                                        placeSet.arView!.wallEntity!.removeChild(model!)
+                            //                                        placeSet.startSetting(placeSet.arView!)
+                            //                                    }
+                            //                                }), secondaryButton: .cancel())
+                            //                            }
                             
                             //  MARK: -
                             
@@ -119,14 +136,14 @@ struct NewCameraUIView: View {
                                 )
                                 .onTapGesture {
                                     showMeasureReady = true
-//                                    let model = placeSet.arView!.wallEntity!.findEntity(named: "standard")
-//                                    placeSet.arView!.wallEntity!.removeChild(model!)
-//                                    placeSet.arView?.session.pause()
+                                    //                                    let model = placeSet.arView!.wallEntity!.findEntity(named: "standard")
+                                    //                                    placeSet.arView!.wallEntity!.removeChild(model!)
+                                    //                                    placeSet.arView?.session.pause()
                                 }
                                 .fullScreenCover(isPresented: $showMeasureReady){
-                                    ReadyMeasureView(placeSet: placeSet, person: $person) {
+                                    ReadyMeasureView(placeSet: placeSet, person: binding(for: person)) {
                                         showMeasureReady = false //
-//                                        placeSet.startSetting(placeSet.arView!)
+                                        //                                        placeSet.startSetting(placeSet.arView!)
                                     }
                                     .environmentObject(girinVM)
                                 }
@@ -154,17 +171,45 @@ struct NewCameraUIView: View {
                             .buttonStyle(PlainButtonStyle())
                             //  MARK: -
                         }
-                    } else {
-                        VStack(spacing: 8) {
-                            
-                            Image("AxisGuide")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 100, height: 90)
-                            Text("Move back and forth to the center point\nat the edge where the wall meets the floor.")
-                                .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17)
-                                .multilineTextAlignment(.center)
-                        }
+                        .padding(.vertical, 20)
+                    }
+                    .ignoresSafeArea()
+                    .frame(maxWidth: .infinity)
+                    .padding(.bottom, bottomInset)
+                    .background(Color(.systemBackground))
+                    .transition(.move(edge: .bottom))
+                } else {
+                    VStack(spacing: 2) {
+                        Text("\(placeSet.isPlaced.floor ? "1" : "0") / 2")
+                            .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 13)
+                            .foregroundColor(.girinOrange)
+                        Text("Finding \(placeSet.isPlaced.floor ? "Wall" : "Floor")")
+                            .scaledFont(name: CustomFont.Gilroy_Light.rawValue, size: 20)
+                    }
+                    .ignoresSafeArea()
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 8)
+                    .background(Capsule().fill(Color(.systemBackground)))
+                    .padding(.vertical, 20)
+                    .padding(.bottom, bottomInset)
+                    .transition(.move(edge: .bottom))
+                }
+            }
+            
+            if showQuestion {
+                ZStack{
+                    Text("hi")
+                }
+                .frame(maxWidth: 350)
+                .frame(height: 500) // 임시
+                .background(
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .fill(Color(.systemBackground))
+                )
+                .padding(.horizontal, 20)
+                .onTapGesture {
+                    withAnimation(.spring()) {
+                        showQuestion = false
                     }
                 }
             }
@@ -172,6 +217,7 @@ struct NewCameraUIView: View {
             if !start {
                 ZStack{
                     Color(.systemBackground)
+                        .ignoresSafeArea()
                     
                     VStack(spacing: 8) {
                         Circle()
@@ -194,8 +240,6 @@ struct NewCameraUIView: View {
                 .zIndex(1)
             }
             
-            Text("\(placeSet.arView?.wallEntity == nil ? "f" : "t")")
-            
             if showCaptureAnimation {
                 Color.white.ignoresSafeArea()
                     .transition(.opacity)
@@ -216,7 +260,6 @@ struct NewCameraUIView: View {
             }
         }
         .ignoresSafeArea(edges: .bottom)
-        
     }
 }
 

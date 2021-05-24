@@ -13,12 +13,8 @@ final class GirinViewModel: ObservableObject {
 }
 
 struct Person: Codable, Identifiable, Equatable, Hashable {
-    
-    static func == (lhs: Person, rhs: Person) -> Bool {
-        lhs.id == rhs.id
-    }
-    
-    var id = UUID()
+
+    var id: UUID
     var name: String
     var favColor: SystemColor
     var nowHeight: Float {
@@ -28,11 +24,21 @@ struct Person: Codable, Identifiable, Equatable, Hashable {
             return records.last!.height
         }
     }
+    var bestHeight: Float {
+        var best: Float = 0
+        records.forEach { record in
+            if best <= record.height {
+                best = record.height
+            }
+        }
+        return best
+    }
     var thumbnail: Data = Data()
     var birthday: Date
     var records: [Record]
     
     init() {
+        self.id = UUID()
         self.name = ""
         self.favColor = .pink
         self.birthday = Date()
@@ -40,6 +46,7 @@ struct Person: Codable, Identifiable, Equatable, Hashable {
     }
     
     init(name: String, favColor: SystemColor, birthday: Date, records: [Record]) {
+        self.id = UUID()
         self.name = name
         self.favColor = favColor
         self.birthday = birthday

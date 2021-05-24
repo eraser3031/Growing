@@ -11,7 +11,7 @@ import Combine
 struct CreatePersonView: View {
     @EnvironmentObject var girinVM: GirinViewModel
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @State var person = Person()
+    @State var person =  Person()
     @State var start = false
     @State var keyboardOffset: CGFloat = 0
     @Binding var showCreatePersonView: Bool
@@ -107,20 +107,24 @@ struct CreatePersonView: View {
             }
             .padding(.bottom, 40)
             
-            Text("Confirm")
-                .scaledFont(name: "Gilroy-ExtraBold", size: 17)
-                .frame(maxWidth: .infinity)
-                .frame(height: 50)
-                .background(Color.girinYellow)
-                .cornerRadius(12)
-                .padding(.bottom, UIApplication.shared.windows.filter{$0.isKeyWindow}.first!.safeAreaInsets.bottom)
-                .onTapGesture {
-                    hideKeyboard()
-                    withAnimation(.spring()){
-                        girinVM.personList.append(person)
-                        showCreatePersonView = false
-                    }
+            Button(action: {
+                withAnimation(.spring()){
+                    girinVM.personList.append(person)
+                    showCreatePersonView = false
                 }
+                hideKeyboard()
+            }) {
+                Text("Confirm")
+                    .scaledFont(name: "Gilroy-ExtraBold", size: 17)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 50)
+                    .background(Color.girinYellow)
+                    .cornerRadius(12)
+                    .padding(.bottom, UIApplication.shared.windows.filter{$0.isKeyWindow}.first!.safeAreaInsets.bottom)
+            }.disabled(person.thumbnail == Data() || person.name == "")
+            .opacity((person.thumbnail == Data() || person.name == "") ? 0.6 : 1)
+            .buttonStyle(PlainButtonStyle())
+            
         }
         .if(horizontalSizeClass == .regular){ body in
             body
@@ -132,10 +136,15 @@ struct CreatePersonView: View {
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .onReceive(Publishers.keyboardHeight){ height in
             if horizontalSizeClass == .compact {
-                keyboardOffset = height
+                withAnimation(.spring()) {
+                    keyboardOffset = height
+                }
             }
         }
         .offset(x: 0, y: -keyboardOffset)
         .edgesIgnoringSafeArea(.bottom)
+        .onAppear{
+            person = Person()
+        }
     }
 }
