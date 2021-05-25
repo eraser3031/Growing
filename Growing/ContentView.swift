@@ -15,6 +15,7 @@ class PlaceSetting: ObservableObject {
     
     var updateCancellable: Cancellable?
     var placeCancellable: AnyCancellable?
+    var modelCancellable: AnyCancellable?
     var testCancellable: AnyCancellable?
     
     var arView: ARCustomView?
@@ -23,9 +24,12 @@ class PlaceSetting: ObservableObject {
     @Published var info2 = ""
     @Published var measureHeight: Float = 0
     
+    @Published var selectModel: Model = Model.giraffe
+    
     func clear() {
         updateCancellable = nil
         placeCancellable = nil
+        modelCancellable = nil
         testCancellable = nil
     }
     
@@ -104,6 +108,15 @@ struct ARViewContainer: UIViewRepresentable {
                           , relativeTo: nil)
     }
     
+    func loadModel(model: Model){
+        let loadRequest = Entity.loadAsync(named: model.name)
+        placeSet.testCancellable = loadRequest.sink(receiveCompletion: { completion in
+        }, receiveValue: { model in
+            model.name = "standard"
+            placeSet.arView!.wallEntity!.addChild(model)
+        })
+    }
+    
     func makeUIView(context: Context) -> ARView {
         //        , cameraMode: .ar, automaticallyConfigureSession: true)
         let arView = ARCustomView(frame: .zero)
@@ -116,7 +129,7 @@ struct ARViewContainer: UIViewRepresentable {
         func measure() -> Float {
             let camera = arView.cameraTransform.translation
             let floor = arView.floorEntity!.position(relativeTo: nil)
-            return abs(camera.y - floor.y) * 100 + 4 // cm + 오차범위
+            return abs(camera.y - floor.y) * 100  // cm + 오차범위
         }
         
         placeSet.updateCancellable = arView.scene.subscribe(to: SceneEvents.Update.self) { event in
@@ -144,15 +157,20 @@ struct ARViewContainer: UIViewRepresentable {
                 }
                 
                 if floor && wall {
-                    let loadRequest = Entity.loadAsync(named: "KeyChart1")
-                    placeSet.testCancellable = loadRequest.sink(receiveCompletion: { completion in
-                    }, receiveValue: { model in
-                        model.name = "standard"
-                        arView.wallEntity!.addChild(model)
-                        updateTransform(arView, name: "standard")
-                    })
+                    loadModel(model: placeSet.selectModel)
+                    updateTransform(placeSet.arView!, name: "standard")
                 }
                 
+            }
+        
+        placeSet.modelCancellable = placeSet.$selectModel
+            .sink{ model in
+                if placeSet.isPlaced == (true, true) {
+                    let oldModel = placeSet.arView!.wallEntity!.findEntity(named: "standard")
+                    placeSet.arView!.wallEntity!.removeChild(oldModel!)
+                    loadModel(model: model)
+                    updateTransform(placeSet.arView!, name: "standard")
+                }
             }
         
         return arView

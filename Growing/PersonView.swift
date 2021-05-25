@@ -8,12 +8,15 @@
 import SwiftUI
 
 struct NewPersonView: View {
+    @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var girinVM: GirinViewModel
     @Binding var person: Person
     @Binding var editPerson: Person?
     @State var showActionSheet = false
     @State var alertRemove = false
     @State var start = false
+    
+    @State var seg = "Chart"
     
     func remove() {
         person.records = []
@@ -80,19 +83,22 @@ struct NewPersonView: View {
                 Spacer()
                 //
                 Image(systemName: "ellipsis.circle.fill")
-                    .font(.system(size: 40))
+                    .font(.largeTitle)
                     .foregroundColor(.primary)
                     .onTapGesture {
                         showActionSheet = true
                     }
                     .actionSheet(isPresented: $showActionSheet) {
-                       ActionSheet(title: Text("\(person.name)"), message: nil,
-                                   buttons: [
-                                       .default(Text("수정")){editPerson = person},
-                                       .default(Text("기록 초기화")){alertRemove = true},
-                                       .cancel(Text("취소"))
-                                   ])
-                   }
+                        ActionSheet(title: Text("\(person.name)"), message: nil,
+                                    buttons: [
+                                        .default(Text("수정")){
+                                            presentationMode.wrappedValue.dismiss()
+                                            editPerson = person
+                                        },
+                                        .default(Text("기록 초기화")){alertRemove = true},
+                                        .cancel(Text("취소"))
+                                    ])
+                    }
                     .alert(isPresented: $alertRemove) {
                         Alert(title: Text("기록 삭제"), message: Text("정말 모든 기록을 삭제하시겠어요?"), primaryButton: .destructive(Text("확인"), action: {
                             remove()
@@ -100,21 +106,41 @@ struct NewPersonView: View {
                     }
                 
             }.padding(.horizontal, 20)
-            .padding(.bottom, 30)
+            .padding(.bottom, 20)
             
-            ScrollView(.vertical, showsIndicators: false) {
-                ForEach(1..<topHeight){ index in
-                    HStack {
-                        Text("\(topHeight-index)cm")
-                            .scaledFont(name: "Gilroy-ExtraBold", size: 12)
-                            .lineLimit(1)
-                            .frame(width: 48, alignment: .leading)
-                            .opacity(start ? 1 : 0)
-                            .animation(.timingCurve(0.87, 0, 0.13, 1, duration: 1).delay(Double(topHeight-index)/Double(person.bestHeight)*0.3))
-                        makeLineView(index: topHeight-index)
-                    }.id(topHeight-index)
+            Picker(selection: $seg, label: EmptyView()) {
+                Text("Chart").scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17).tag("Chart")
+                Text("Record").scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17).tag("Record")
+            }.pickerStyle(SegmentedPickerStyle())
+            .padding(.horizontal, 20)
+            .padding(.bottom, 20)
+            
+            if seg == "Chart" {
+                ScrollView(.vertical, showsIndicators: false) {
+                    ForEach(1..<topHeight){ index in
+                        HStack {
+                            Text("\(topHeight-index)cm")
+                                .scaledFont(name: "Gilroy-ExtraBold", size: 12)
+                                .lineLimit(1)
+                                .frame(width: 48, alignment: .leading)
+                                .opacity(start ? 1 : 0)
+                                .animation(.timingCurve(0.87, 0, 0.13, 1, duration: 1).delay(Double(topHeight-index)/Double(person.bestHeight)*0.3))
+                            makeLineView(index: topHeight-index)
+                        }.id(topHeight-index)
+                    }
+                }.padding(.horizontal, 20)
+            } else {
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack {
+                        ForEach(person.records.reversed()) { record in
+                            RecordCellView(person: $person, record: record)
+                        }
+                        Spacer()
+                    }
+                    .padding(.horizontal, 20)
                 }
-            }.padding(.horizontal, 20)
+                
+            }
         }
         .onAppear{
             DispatchQueue.main.asyncAfter(deadline: .now()) {
@@ -187,57 +213,44 @@ extension NewPersonView {
     }
 }
 
-//
-//struct NewPersonView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        NewPersonView(person: .constant(Person.samplePerson.first!))
-//    }
-//}
 
-
-//struct PersonView: View {
-//    @EnvironmentObject var girinVM: GirinViewModel
-//    @Binding var person: Person
-//    @Binding var editPerson: Person?
-//    @State var showActionSheet = false
-//    @State var alertRemove = false
-//    func remove() {
-//        person.records = []
-//    }
-//
-//    var body: some View {
-//        ZStack {
-//            VStack(spacing: 0){
-//                ScrollView(.vertical) {
-//                    HStack {
-//                        LineView(180, spacing: 24)
-//                    }.padding(.horizontal, 20)
-//                }
-//            }.navigationTitle("\(person.name)")
-//            .navigationBarTitleDisplayMode(.large)
-//            .navigationBarItems(trailing:
-//                                    Image(systemName: "ellipsis.circle.fill")
-//                                    .foregroundColor(.pink)
-//                                    .font(.title)
-//                                    .actionSheet(isPresented: $showActionSheet) {
-//                                        ActionSheet(title: Text("\(person.name)"), message: nil,
-//                                                    buttons: [
-//                                                        .default(Text("수정")){editPerson = person},
-//                                                        .default(Text("기록 초기화")){alertRemove = true},
-//                                                        .cancel(Text("취소"))
-//                                                    ])
-//                                    }
-//                                    .onTapGesture {
-//                                        showActionSheet = true
-//                                    }
-//                                    .alert(isPresented: $alertRemove) {
-//                                        Alert(title: Text("기록 삭제"), message: Text("정말 모든 기록을 삭제하시겠어요?"), primaryButton: .destructive(Text("확인"), action: {
-//                                            remove()
-//                                        }), secondaryButton: .cancel())
-//                                    }
-//
-//            )
-//            .navigationViewStyle(StackNavigationViewStyle())
-//        }
-//    }
-//}
+struct RecordCellView: View {
+    
+    @Binding var person: Person
+    var record: Record
+    @State var showRemoveRecordAlert = false
+    
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("\(record.height, specifier: "%.2f")cm")
+                    .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 18)
+                
+                HStack(spacing: 6){
+                    Text(record.recordDate, style: .date)
+                    Text(record.recordDate, style: .time)
+                }.scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 12)
+            }
+            Spacer()
+            
+            Image(systemName: "xmark.circle.fill")
+                .foregroundColor(.girinOrange)
+                .font(.title2)
+                .onTapGesture{
+                    showRemoveRecordAlert = true
+                }
+        }
+        .padding()
+        .background(RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .foregroundColor(Color(.secondarySystemBackground)), alignment: .center)
+        .alert(isPresented: $showRemoveRecordAlert) {
+            Alert(title: Text("Remove Record"), message: Text("Are you sure you want to delete this record?"), primaryButton: .destructive(Text("OK"), action: {
+                withAnimation(.spring()) {
+                    person.records.removeAll { anyRecord in
+                        anyRecord.id == record.id
+                    }
+                }
+            }), secondaryButton: .cancel())
+        }
+    }
+}

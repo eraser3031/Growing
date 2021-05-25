@@ -21,6 +21,7 @@ struct NewCameraUIView: View {
     @State var showCaptureAnimation = false
     @State var showReadyMeasure = false
     @State var showQuestion = false
+    @State var showChangeModelSheet = false
     @ObservedObject var placeSet: PlaceSetting
     @Namespace var namespace
     
@@ -37,17 +38,43 @@ struct NewCameraUIView: View {
     var body: some View {
         ZStack {
             VStack {
-                HStack{
-                    //  MARK: - Question Small View
-                    Image(systemName: "questionmark.circle.fill")
-                        .foregroundColor(Color(.systemBackground))
-                        .font(.system(size: 40))
-                        .onTapGesture {
-                            withAnimation(.spring()) {
-                                showQuestion = true
-                            }
+                HStack(alignment: .top){
+                    
+                    VStack {
+                        //  MARK: - Question Small View
+                        Image(systemName: "questionmark.circle.fill")
+                            .foregroundColor(Color(.systemBackground))
+                            .font(.system(size: 40))
+                            .onTapGesture {
+                                withAnimation(.spring()) {
+                                    showQuestion = true
+                                }
                         }
-                    //  MARK: -
+                        //  MARK: -
+                        
+                        //  MARK: - Change Model View
+                        Image(systemName: "questionmark.circle.fill")
+                            .font(.system(size: 40))
+                            .overlay(
+                                ZStack{
+                                    Circle()
+                                        .foregroundColor(Color(.systemBackground))
+                                    
+                                    Image(placeSet.selectModel.thumbnailName)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .clipShape(Circle())
+                                }
+                            )
+                            .onTapGesture {
+                                showChangeModelSheet = true
+                            }
+                            .sheet(isPresented: $showChangeModelSheet){
+                                SelectModelView(selectModel: $placeSet.selectModel)
+                            }
+                        //  MARK: -
+                    }
+                    
                     
                     Spacer()
                     
@@ -263,42 +290,47 @@ struct NewCameraUIView: View {
     }
 }
 
-//MARK: Components
-//extension CameraUiView {
-//    func PersonSelectBar() -> some View {
-//        HStack(spacing: 34) {
-//            ForEach(girinVM.personList.indexed(), id: \.element.id) { (index, p) in
-//                Text(p.name)
-//                    .fontWeight(.bold)
-//                    .if(selectIndex == index){
-//                        $0.foregroundColor(.pink)
-//                    }
-//
-//                    .font(.subheadline)
-//                    .overlay(
-//                        GeometryReader { geo in
-//                            Color.clear
-//                                .onChange(of: selectIndex){ value in
-//                                    if value == index {
-//                                        offset += screen.width/2 - geo.frame(in: .global).midX
-//                                    }
-//                                }
-//                        }
-//                    )
-//                    .onTapGesture {
-//                        selectIndex = index
-//                    }
-//
-//            }
-//        }.frame(height: 30)
-//        .animation(.spring())
-//        .offset(x: offset, y: 0)
-//    }
-//}
-
-//struct CameraUiView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        CameraUiView()
-//            .environmentObject(GirinViewModel())
-//    }
-//}
+struct SelectModelView: View {
+    @Binding var selectModel: Model
+    
+    let gridItem: [GridItem] = [
+        GridItem(.adaptive(minimum: 140, maximum: 140), spacing: 20, alignment: nil),
+    ]
+    
+    var body: some View {
+        NavigationView {
+            ScrollView{
+                LazyVGrid(
+                    columns: gridItem,
+                    alignment: .center,
+                    spacing: 20,
+                    pinnedViews: [],
+                    content: {
+                        ForEach(Model.models){ model in
+                            VStack(alignment: .leading) {
+                                Button(action: {
+                                    selectModel = model                                    
+                                }) {
+                                    ZStack {
+                                        RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                            .fill(Color(.secondarySystemBackground))
+                                        
+                                        Image(model.thumbnailName)
+                                            .resizable()
+                                            .scaledToFit()
+                                            .padding()
+                                         
+                                    }.frame(height: 140)
+                                }.buttonStyle(PlainButtonStyle())
+                                
+                                Text(model.displayName)
+                                    .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 20)
+                            }
+                        }
+                })
+            }
+            .navigationTitle(Text("Height Chart"))
+            .navigationViewStyle(StackNavigationViewStyle())
+        }
+    }
+}
