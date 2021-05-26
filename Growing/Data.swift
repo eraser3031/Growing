@@ -8,8 +8,11 @@
 import SwiftUI
 
 final class GirinViewModel: ObservableObject {
-    @Published var personList: [Person] = Storage.retrive("PersonList.json", from: .documents, as: [Person].self) ?? Person.samplePerson
+    @Published var personList: [Person] = Storage.retrive("PersonList.json", from: .documents, as: [Person].self) ?? []
 
+    func save() {
+        Storage.store(personList, to: .documents, as: "PersonList.json")
+    }
 }
 
 struct Person: Codable, Identifiable, Equatable, Hashable {

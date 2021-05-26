@@ -79,7 +79,7 @@ extension Data {
 
 extension UIImage {
     func toData() -> Data? {
-        self.pngData() ?? self.jpegData(compressionQuality: 1)
+        self.jpegData(compressionQuality: 0.25) ?? self.pngData() 
     }
 }
 
@@ -132,4 +132,12 @@ enum CustomFont: String, Codable {
     case Gilroy_Light = "Gilroy-Light"
     case SpoqaHanSans_Bold = "SpoqaHanSansNeo-Bold"
     case SpoqaHanSans_Regular = "SpoqaHanSansNeo-Regular"
+}
+
+extension String
+{
+    func localized(bundle: Bundle = .main, tableName: String = "Localizable") -> String
+    {
+        return NSLocalizedString(self, tableName: tableName, value: self, comment: "")
+    }
 }

@@ -10,6 +10,7 @@ import Combine
 
 struct MainView: View {
     @EnvironmentObject var girinVM: GirinViewModel
+    @Environment(\.colorScheme) var colorScheme
     @State var showCreatePersonView = false
     @State var showEditPerson: Person? = nil
     @State var showARView = false
@@ -157,11 +158,11 @@ extension MainView {
             
             Image(systemName: "arkit")
                 .font(.system(size: 40))
-                .scaleEffect(repeatAnimation ? 1.1 : 1)
-                .onAppear{repeatAnimation = true}
-                .animation(.easeInOut(duration: 2).repeatForever(autoreverses: true))
+//                .scaleEffect(repeatAnimation ? 1.1 : 1)
+//                .onAppear{repeatAnimation = true}
+//                .animation(.easeInOut(duration: 2).repeatForever(autoreverses: true))
             
-            Text("Measure Height")
+            Text("Measure Height".localized())
                 .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17)
             
         }.frame(maxWidth: .infinity, maxHeight: 128)
@@ -179,7 +180,7 @@ extension MainView {
             }
         }
         .alert(isPresented: $showNoPersonAlert){
-            Alert(title: Text("데이터 없음"), message: Text("키를 재려면 등록한 아이가 한 명 이상 있어야 해요."),
+            Alert(title: Text("Empty Data"), message: Text("You need at least one kid to measure the height.".localized()),
                   dismissButton: .cancel())
         }
         .fullScreenCover(isPresented: $showARView){
@@ -227,26 +228,24 @@ extension MainView {
         
         return ZStack {
             RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .clipped()
-                .foregroundColor(Color(.systemBackground))
+                .foregroundColor(colorScheme == .dark ? Color(.secondarySystemBackground) : Color(.systemBackground))
             VStack(spacing: 2) {
                 Image(systemName: "person.fill.badge.plus")
                     .font(.system(size: 50, weight: .regular, design: .default))
                     .foregroundColor(Color(.displayP3, red: 244/255, green: 144/255, blue: 12/255))
-                Text("Plus Kid")
+                Text("Add Kid".localized())
                     .scaledFont(name: "Gilroy-ExtraBold", size: 13)
             }
         }
         .frame(width: width, height: height)
-        .clipped()
         .onTapGesture {
             withAnimation(.spring()) {
                 showCreatePersonView = true
             }
         }
-        .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.2)), radius: 30, x: 0.0, y: 20)
-        .padding(.horizontal, 14)
+        .shadow(color: colorScheme == .dark ? Color.clear : Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.1)), radius: 20, x: 0.0, y: 10)
         .padding(.bottom, 36)
+        .padding(.horizontal, 14)
         .padding(.top, 24)
         
     }
@@ -296,6 +295,7 @@ struct SettingView: View {
                     .alert(isPresented: $showEveryAlert) {
                         Alert(title: Text("Remove All Data"), message: Text("Are you sure you want to delete all data including your kid's information?"), primaryButton: .destructive(Text("OK"), action: {
                             girinVM.personList = []
+                            girinVM.save() //
                         }), secondaryButton: .cancel())
                     }
                 }
@@ -327,7 +327,7 @@ extension SettingView {
                 Text("made by eraiser")
                     .foregroundColor(.gray)
                     .padding(.bottom, 4)
-                Text("문의: eraser3031@gmail.com")
+                Text("eraser3031@gmail.com")
                     .foregroundColor(.gray)
             }
             Spacer()
@@ -337,6 +337,7 @@ extension SettingView {
 
 struct PersonCardView : View {
     @EnvironmentObject var girinVM: GirinViewModel
+    @Environment(\.colorScheme) var colorScheme
     @State var showActionSheet = false
     var person: Person
     @Binding var editPerson: Person?
@@ -383,12 +384,12 @@ struct PersonCardView : View {
             } else {
                 ZStack{
                     RoundedRectangle(cornerRadius: 22, style: .continuous)
-                        .fill(Color.main)
+                        .fill(colorScheme == .dark ? Color(.secondarySystemBackground) : Color.main)
                         .frame(width: width, height: height)
-                        .shadow(color: Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.18)), radius: 30, x: 0.0, y: 20)
+                        .shadow(color: colorScheme == .dark ? Color.clear : Color(#colorLiteral(red: 0.1333333333, green: 0.3098039216, blue: 0.662745098, alpha: 0.1)), radius: 20, x: 0.0, y: 10)
                     
                     Image(systemName: "person.fill")
-                        .foregroundColor(.second)
+                        .foregroundColor(colorScheme == .dark ? .secondary : .second)
                         .font(.system(size: 60))
                 }
                 .sheet(isPresented: $showSheet) {
@@ -422,19 +423,20 @@ struct PersonCardView : View {
                     .actionSheet(isPresented: $showActionSheet) {
                         ActionSheet(title: Text("\(person.name)"), message: nil,
                                     buttons: [
-                                        .default(Text("수정")){
+                                        .default(Text("Edit")){
                                             withAnimation(.spring()) {
                                                 editPerson = person
                                             }
                                         },
-                                        .default(Text("삭제")){alertRemove = true},
-                                        .cancel(Text("취소"))
+                                        .default(Text("Remove")){alertRemove = true},
+                                        .cancel(Text("Cancel"))
                                     ])
                     }
                     .onTapGesture { showActionSheet = true }
                     .alert(isPresented: $alertRemove) {
-                        Alert(title: Text("정보 삭제"), message: Text("정말로 아이의 데이터를 삭제하시겠어요??"), primaryButton: .destructive(Text("확인"), action: {
+                        Alert(title: Text("Data remove"), message: Text("Are you sure you want to delete the kid's data?"), primaryButton: .destructive(Text("OK"), action: {
                             remove()
+                            girinVM.save()
                         }), secondaryButton: .cancel())
                     }
                 //  MARK: -

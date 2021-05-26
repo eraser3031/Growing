@@ -17,7 +17,7 @@ struct ReadyMeasureView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Measure")
+                Text("Measure".localized())
                     .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 34)
 
                 Spacer()
@@ -29,7 +29,7 @@ struct ReadyMeasureView: View {
                         .frame(width: 34, height:34)
                     
                     Image(systemName: "xmark")
-                        .foregroundColor(.black)
+                        .foregroundColor(.primary)
                         .font(.title3)
                 }
                 .onTapGesture {
@@ -51,7 +51,7 @@ struct ReadyMeasureView: View {
                         .frame(width: 64, height: 64)
                         
                     Text(person.name)
-                        .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 12)
+                        .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 13)
                 }
                 
                 //  MARK: - ReadyMeasureView Measure Button
@@ -63,7 +63,7 @@ struct ReadyMeasureView: View {
                         Circle()
                             .frame(width: screen.width-120, height: screen.width-120)
                             .foregroundColor(Color(.systemBackground))
-                            .shadow(color: Color(.displayP3, red: 92/255, green: 103/255, blue: 153/255).opacity(0.2), radius: 40, x: 0, y: 20)
+                            .shadow(color: Color.girinOrange.opacity(0.5), radius: 40, x: 0, y: 20)
                         
                         Text("\(placeSet.measureHeight, specifier: "%.2f")cm")
                             .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 34)
@@ -83,16 +83,17 @@ struct ReadyMeasureView: View {
             }.offset(y: -64)
             
             Spacer()
-            Text("Put your iphone on top of your head\nand Press the Circle")
+            Text("Put your iphone on top of your head and Press the Circle".localized())
                 .multilineTextAlignment(.center)
-                .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17)
+                .padding(.horizontal, 40)
+                .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 20)
         }
     }
 }
 
 struct ResultMeasureView: View {
     
-    @EnvironmentObject var girinVN: GirinViewModel
+    @EnvironmentObject var girinVM: GirinViewModel
     @ObservedObject var placeSet: PlaceSetting
     @Binding var person: Person
     @Binding var height: Float
@@ -111,7 +112,7 @@ struct ResultMeasureView: View {
                         .frame(width: 34, height:34)
                     
                     Image(systemName: "xmark")
-                        .foregroundColor(.black)
+                        .foregroundColor(.primary)
                         .font(.title3)
                 }
                 .onTapGesture {
@@ -119,11 +120,12 @@ struct ResultMeasureView: View {
                 }
                 //  MARK: -
             }
-
-            Text("\(person.name)'s\n Height")
+            
+            Text(String(format: NSLocalizedString("%@'s\n Height", comment: ""), person.name))
                 .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 34)
             Text("\(height, specifier: "%.2f")cm")
                 .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 60)
+                .foregroundColor(Color.girinYellow)
             
             Spacer()
             
@@ -135,7 +137,7 @@ struct ResultMeasureView: View {
                             .frame(maxWidth: .infinity, maxHeight: 50)
                             .foregroundColor(Color(.secondarySystemBackground))
                         
-                        Text("retry")
+                        Text("retry".localized())
                             .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17)
                     }
                 }.buttonStyle(PlainButtonStyle())
@@ -145,6 +147,7 @@ struct ResultMeasureView: View {
                 Button(action: {
                     person.records.append(Record(recordDate: Date(), height: height, text: ""))
 //                    print(person.records.count)
+                    girinVM.save() //
                     dismissOuter()
                 }) {
                     ZStack {
@@ -152,7 +155,7 @@ struct ResultMeasureView: View {
                             .frame(maxWidth: .infinity, maxHeight: 50)
                             .foregroundColor(Color.primary)
                         
-                        Text("Save")
+                        Text("save".localized())
                             .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17)
                             .foregroundColor(Color(.systemBackground))
                     }

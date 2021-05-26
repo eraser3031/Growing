@@ -99,7 +99,7 @@ struct NewCameraUIView: View {
                             //  MARK: - Person Change Button
                             Picker(selection: $person,
                                    label:
-                                    Text("\(person.name == "" ? "Select Kid" : person.name)")
+                                    Text("\(person.name == "" ? "Select Kid".localized() : person.name)")
                                     .font(.system(size: 12, weight: .bold, design: .default))
                                     .foregroundColor(.primary)
                                     .minimumScaleFactor(1)
@@ -208,7 +208,8 @@ struct NewCameraUIView: View {
                             Text("\(placeSet.isPlaced.floor ? "1" : "0") / 2")
                                 .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 13)
                                 .foregroundColor(.girinOrange)
-                            Text("Finding \(placeSet.isPlaced.floor ? "Wall" : "Floor")")
+                            
+                            Text(placeSet.isPlaced.floor ? "Finding Wall".localized() : "Finding Floor".localized())
                                 .scaledFont(name: CustomFont.Gilroy_Light.rawValue, size: 20)
                         }
                         .ignoresSafeArea()
@@ -257,7 +258,7 @@ struct NewCameraUIView: View {
                                     .clipShape(Circle())
                             )
                         
-                        Text("Wait a second...")
+                        Text("Wait a second...".localized())
                             .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17)
                     }
                 }
@@ -334,7 +335,7 @@ struct SelectModelView: View {
                         }
                     })
             }
-            .navigationTitle(Text("Height Chart"))
+            .navigationTitle(Text("Height Chart".localized()))
             .navigationViewStyle(StackNavigationViewStyle())
             .padding(.top, 28)
         }

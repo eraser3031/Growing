@@ -35,6 +35,7 @@
 		21E57198265DE1A500FA127E /* DinoChartModel.reality in Resources */ = {isa = PBXBuildFile; fileRef = 21E57197265DE1A500FA127E /* DinoChartModel.reality */; };
 		21E5719A265DE1B200FA127E /* GiraffeChartModel.reality in Resources */ = {isa = PBXBuildFile; fileRef = 21E57199265DE1B200FA127E /* GiraffeChartModel.reality */; };
 		21E5719C265DE1C600FA127E /* SpaceshipChartModel.reality in Resources */ = {isa = PBXBuildFile; fileRef = 21E5719B265DE1C500FA127E /* SpaceshipChartModel.reality */; };
+		21E571A6265E5D3100FA127E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 21E571A8265E5D3100FA127E /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +71,8 @@
 		21E57197265DE1A500FA127E /* DinoChartModel.reality */ = {isa = PBXFileReference; lastKnownFileType = file; name = DinoChartModel.reality; path = ../../../../../../../Downloads/DinoChartModel.reality; sourceTree = "<group>"; };
 		21E57199265DE1B200FA127E /* GiraffeChartModel.reality */ = {isa = PBXFileReference; lastKnownFileType = file; name = GiraffeChartModel.reality; path = ../../../../../../../Downloads/GiraffeChartModel.reality; sourceTree = "<group>"; };
 		21E5719B265DE1C500FA127E /* SpaceshipChartModel.reality */ = {isa = PBXFileReference; lastKnownFileType = file; name = SpaceshipChartModel.reality; path = ../../../../../../../Downloads/SpaceshipChartModel.reality; sourceTree = "<group>"; };
+		21E571A7265E5D3100FA127E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		21E571A9265E5D4700FA127E /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +110,7 @@
 				21B93C2325EA49B200878B47 /* AppDelegate.swift */,
 				21B93C2525EA49B200878B47 /* ContentView.swift */,
 				214D7B0426497C710066C06F /* ReadyMeasureView.swift */,
+				21E571A8265E5D3100FA127E /* Localizable.strings */,
 				21C3F6122604B82B00B41F47 /* CameraUiView.swift */,
 				21E57191265D6B4C00FA127E /* QuestionView.swift */,
 				216CBC562610A6660006F182 /* SubView.swift */,
@@ -188,6 +192,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = 21B93C1725EA49B200878B47;
 			packageReferences = (
@@ -208,6 +213,7 @@
 			files = (
 				21B93C3025EA49B600878B47 /* LaunchScreen.storyboard in Resources */,
 				21E57194265DE14100FA127E /* StarChartModel.reality in Resources */,
+				21E571A6265E5D3100FA127E /* Localizable.strings in Resources */,
 				21E5719A265DE1B200FA127E /* GiraffeChartModel.reality in Resources */,
 				21B93C2D25EA49B600878B47 /* Preview Assets.xcassets in Resources */,
 				21E57198265DE1A500FA127E /* DinoChartModel.reality in Resources */,
@@ -258,6 +264,15 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		21E571A8265E5D3100FA127E /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				21E571A7265E5D3100FA127E /* en */,
+				21E571A9265E5D4700FA127E /* ko */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -265,6 +280,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -326,6 +342,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -394,7 +411,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.eraser.Growing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -415,7 +432,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.eraser.Growing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

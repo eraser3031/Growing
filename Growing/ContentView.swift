@@ -19,9 +19,7 @@ class PlaceSetting: ObservableObject {
     var testCancellable: AnyCancellable?
     
     var arView: ARCustomView?
-    
-    @Published var info = ""
-    @Published var info2 = ""
+
     @Published var measureHeight: Float = 0
     
     @Published var selectModel: Model = Model.giraffe
@@ -76,11 +74,6 @@ struct ContentView : View {
                 presentationMode.wrappedValue.dismiss()
                 placeSet.clear()
             }
-            
-            VStack {
-                Text(placeSet.info)
-                Text(placeSet.info2)
-            }.font(.callout)
         }
     }
 }

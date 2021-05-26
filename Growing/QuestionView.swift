@@ -44,7 +44,7 @@ struct QuestionView: View {
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 50)
                             
-                            Text("OK")
+                            Text("OK".localized())
                                 .bold()
                                 .foregroundColor(Color(.systemBackground))
                         }
@@ -68,10 +68,8 @@ struct PageOne: View {
     @Binding var start: Bool
     var body: some View {
         VStack(spacing: 32){
-            Text("Move your phone looking around the edge where the floor meets the wall.")
-                .bold()
-                .font(.body)
-                .lineLimit(3)
+            Text("Move your phone looking around the edge where the floor meets the wall.".localized())
+                .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17)
             
             PageOneShape(start: $start)
             
@@ -83,8 +81,8 @@ struct PageOne: View {
 struct PageTwo: View {
     var body: some View {
         VStack(spacing: 72){
-            Text("It's hard to recognize if the surroundings are too bright or dark.")
-                .bold()
+            Text("It's hard to recognize if the surroundings are too bright or dark.".localized())
+                .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17)
             
             
             HStack{
@@ -103,8 +101,8 @@ struct PageTwo: View {
 struct PageThree: View {
     var body: some View {
         VStack(spacing: 40){
-            Text("The position becomes more accurate as the model moves even after it is displayed. Nevertheless, if the key chart is in an odd position, it is recommended to initialize it by pressing the button.")
-                .bold()
+            Text("The position becomes more accurate as the model moves even after it is displayed. Nevertheless, if the key chart is in an odd position, it is recommended to initialize it by pressing the button.".localized())
+                .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17)
             
             Image(systemName: "move.3d")
                 .font(.system(size: 40))
@@ -117,8 +115,8 @@ struct PageThree: View {
 struct PageFour: View {
     var body: some View {
         VStack(spacing: 40){
-            Text("That's enough explanation. Now enjoy it!")
-                .bold()
+            Text("That's enough explanation. Now enjoy it!".localized())
+                .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17)
             Image(systemName: "face.smiling.fill")
                 .font(.system(size: 60))
                 .background(Circle().fill(Color.black).padding())

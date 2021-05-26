@@ -1,0 +1,32 @@
+/* 
+  Localizable.strings
+  Growing
+
+  Created by Kimyaehoon on 26/05/2021.
+  
+*/
+"Measure" = "측정";
+"Put your iphone on top of your head and Press the Circle" = "아이폰을 머리 위에 수평으로 올려놓고 원형 버튼을 눌러주세요.";
+
+"%@'s\n Height" = "%@의 키";
+"retry" = "다시 측정";
+"save" = "저장";
+"Select Kid" = "아이를 선택해주세요";
+"Wait a second..." = "잠시만 기다려주세요.";
+"Height Chart" = "키재기";
+"Finding Wall" = "벽 찾는 중...";
+"Finding Floor" = "바닥 찾는 중...";
+"OK" = "확인";
+"Move your phone looking around the edge where the floor meets the wall." = "바닥과 벽이 만나는 가장자리를 바라본채 아이폰을 상하좌우로 옮겨보세요.";
+"It's hard to recognize if the surroundings are too bright or dark." = "너무 밝거나 어두운 장소에서는 AR 인식이 어려워요.";
+"The position becomes more accurate as the height chart moves even after it is displayed. Nevertheless, if the key chart is in an odd position, it is recommended to initialize it by pressing the button." = "키재기가 AR 화면에 보여지고 난 이후에도 아이폰이 이동함에 따라 좀 더 정확한 위치로 이동해요. 그럼에도 불구하고 만약 이상한 위치에 키재기가 보여진다면 아래 그림과 같은 모양의 버튼을 눌러서 키재기 위치를 초기화 해줄 수 있어요";
+"That's enough explanation. Now enjoy it!" = "설명은 이제 끝이에요. 이제 마음껏 앱을 사용해보세요!";
+"Edit Kid" = "아이 수정";
+"Profile Picture" = "프로필 사진";
+"Name" = "이름";
+"Please write kid's name." = "아이의 이름을 적어주세요.";
+"Birthday" = "생일";
+"Confrim" = "확인";
+"Add Kid" = "아이 추가";
+"Measure Height" = "키 측정하기";
+"You need at least one kid to measure the height." = "키를 측정하려면 최소 한 명 이상의 아이가 있어야 해요.";

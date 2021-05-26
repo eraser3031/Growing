@@ -27,7 +27,7 @@ struct CreatePersonView: View {
         VStack(spacing: 20) {
             
             HStack {
-                Text("Add Kid")
+                Text("Add Kid".localized())
                     .scaledFont(name: "Gilroy-ExtraBold", size: 28)
                 
                 Spacer()
@@ -38,7 +38,7 @@ struct CreatePersonView: View {
                         .frame(width: 34, height:34)
                     
                     Image(systemName: "xmark")
-                        .foregroundColor(.black)
+                        .foregroundColor(.primary)
                         .font(.title3)
                 }
                 .onTapGesture {
@@ -46,6 +46,7 @@ struct CreatePersonView: View {
                         showCreatePersonView = false
                     }
                     hideKeyboard()
+                    girinVM.save() //
                 }
                 
             }.padding(.vertical, 28)
@@ -73,15 +74,15 @@ struct CreatePersonView: View {
                         ImagePicker(image: self.$inputImage)
                     }
                 
-                Text("Profile Picture")
+                Text("Profile Picture".localized())
                     .scaledFont(name: "Gilroy-ExtraBold", size: 15)
             }
             
             VStack(alignment: .leading){
-                Text("Name")
+                Text("Name".localized())
                     .scaledFont(name: "Gilroy-ExtraBold", size: 15)
                 
-                TextField("Please write kid's name.", text: $person.name)
+                TextField("Please write kid's name.".localized(), text: $person.name)
                     .padding()
                     .frame(height: 45)
                     .background(Color.second)
@@ -89,7 +90,7 @@ struct CreatePersonView: View {
             }
             
             VStack(alignment: .leading){
-                Text("Birthday")
+                Text("Birthday".localized())
                     .scaledFont(name: "Gilroy-ExtraBold", size: 15)
                 
                 HStack(spacing: 0) {
@@ -113,8 +114,9 @@ struct CreatePersonView: View {
                     showCreatePersonView = false
                 }
                 hideKeyboard()
+                girinVM.save() //
             }) {
-                Text("Confirm")
+                Text("Confirm".localized())
                     .scaledFont(name: "Gilroy-ExtraBold", size: 17)
                     .frame(maxWidth: .infinity)
                     .frame(height: 50)
@@ -132,7 +134,7 @@ struct CreatePersonView: View {
         }
         .frame(height: 600)
         .padding(.horizontal, 20)
-        .background(Color.white)
+        .background(Color(.systemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .onReceive(Publishers.keyboardHeight){ height in
             if horizontalSizeClass == .compact {

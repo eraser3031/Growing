@@ -18,6 +18,8 @@ struct NewPersonView: View {
     
     @State var seg = "Chart"
     
+    @State var selfRecordHeight = ""
+    
     func remove() {
         person.records = []
     }
@@ -102,6 +104,7 @@ struct NewPersonView: View {
                     .alert(isPresented: $alertRemove) {
                         Alert(title: Text("기록 삭제"), message: Text("정말 모든 기록을 삭제하시겠어요?"), primaryButton: .destructive(Text("확인"), action: {
                             remove()
+                            girinVM.save() //
                         }), secondaryButton: .cancel())
                     }
                 
@@ -116,30 +119,50 @@ struct NewPersonView: View {
             .padding(.bottom, 20)
             
             if seg == "Chart" {
-                ScrollView(.vertical, showsIndicators: false) {
-                    ForEach(1..<topHeight){ index in
-                        HStack {
-                            Text("\(topHeight-index)cm")
-                                .scaledFont(name: "Gilroy-ExtraBold", size: 12)
-                                .lineLimit(1)
-                                .frame(width: 48, alignment: .leading)
-                                .opacity(start ? 1 : 0)
-                                .animation(.timingCurve(0.87, 0, 0.13, 1, duration: 1).delay(Double(topHeight-index)/Double(person.bestHeight)*0.3))
-                            makeLineView(index: topHeight-index)
-                        }.id(topHeight-index)
-                    }
-                }.padding(.horizontal, 20)
-            } else {
-                ScrollView(.vertical, showsIndicators: false) {
-                    VStack {
-                        ForEach(person.records.reversed()) { record in
-                            RecordCellView(person: $person, record: record)
+                if person.records.count != 0 {
+                    ScrollView(.vertical, showsIndicators: false) {
+                        ForEach(1..<topHeight){ index in
+                            HStack {
+                                Text("\(topHeight-index)cm")
+                                    .scaledFont(name: "Gilroy-ExtraBold", size: 12)
+                                    .lineLimit(1)
+                                    .frame(width: 48, alignment: .leading)
+                                    .opacity(start ? 1 : 0)
+                                    .animation(.timingCurve(0.87, 0, 0.13, 1, duration: 1).delay(Double(topHeight-index)/Double(person.bestHeight)*0.3))
+                                makeLineView(index: topHeight-index)
+                            }.id(topHeight-index)
                         }
+                    }.padding(.horizontal, 20)
+                } else {
+                    VStack {
+                        Spacer()
+                        Text("There's no record yet.")
+                            .scaledFont(name: "Gilroy-ExtraBold", size: 17)
+                            .foregroundColor(Color(.tertiaryLabel))
                         Spacer()
                     }
-                    .padding(.horizontal, 20)
                 }
-                
+            } else {
+                if person.records.count != 0 {
+                    ScrollView(.vertical, showsIndicators: false) {
+                        VStack {
+                            ForEach(person.records.reversed()) { record in
+                                RecordCellView(person: $person, record: record)
+                                    .environmentObject(girinVM)
+                            }
+                            Spacer()
+                        }
+                        .padding(.horizontal, 20)
+                    }
+                } else {
+                    VStack {
+                        Spacer()
+                        Text("There's no record yet.")
+                            .scaledFont(name: "Gilroy-ExtraBold", size: 17)
+                            .foregroundColor(Color(.tertiaryLabel))
+                        Spacer()
+                    }
+                }
             }
         }
         .onAppear{
@@ -154,7 +177,7 @@ extension NewPersonView {
     func makeLineView(index: Int) -> some View {
         HStack(spacing: 0) {
             Rectangle()
-                .fill(Color.black)
+                .fill(Color.primary)
                 .cornerRadius(120)
                 .frame(width: start ? (index % 2 != 0) ? CGFloat(32.44) : CGFloat(17.69) : 0, height: 2.64, alignment: .leading)
                 .animation(.timingCurve(0.87, 0, 0.13, 1, duration: 1).delay(Double(index)/Double(person.bestHeight)*0.6))
@@ -191,7 +214,7 @@ extension NewPersonView {
                     Color.clear
                     
                     Rectangle()
-                        .fill(Color.orange)
+                        .fill(Color.girinOrange)
                         .frame(maxWidth: start ? .infinity : 0, alignment: .leading)
                         .frame(height: 2.64)
                         .cornerRadius(120)
@@ -215,7 +238,7 @@ extension NewPersonView {
 
 
 struct RecordCellView: View {
-    
+    @EnvironmentObject var girinVM: GirinViewModel
     @Binding var person: Person
     var record: Record
     @State var showRemoveRecordAlert = false
@@ -249,6 +272,7 @@ struct RecordCellView: View {
                     person.records.removeAll { anyRecord in
                         anyRecord.id == record.id
                     }
+                    girinVM.save() //
                 }
             }), secondaryButton: .cancel())
         }
