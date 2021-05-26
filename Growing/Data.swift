@@ -162,12 +162,12 @@ struct Model: Codable, Identifiable {
 }
 
 extension Model {
-    static let lion = Model(name: "Lion", displayName: "LionChartModel", thumbnailName: "LionChartThumbnail")
-    static let cat = Model(name: "Cat", displayName: "CatChartModel", thumbnailName: "CatChartThumbnail")
-    static let giraffe = Model(name: "Giraffe", displayName: "GiraffeChartModel", thumbnailName: "GiraffeChartThumbnail")
-    static let star = Model(name: "Star", displayName: "StarChartModel", thumbnailName: "StarChartThumbnail")
-    static let spaceship = Model(name: "Spaceship", displayName: "SpaceshipChartModel", thumbnailName: "SpaceshipChartThumbnail")
+    static let giraffe = Model(name: "GiraffeChartModel", displayName: "Giraffe", thumbnailName: "GiraffeChartThumbnail")
+    static let dino = Model(name: "DinoChartModel", displayName: "Dino", thumbnailName: "DinoChartThumbnail")
+    static let cat = Model(name: "CatChartModel", displayName: "Cat", thumbnailName: "CatChartThumbnail")
+    static let star = Model(name: "StarChartModel", displayName: "Star", thumbnailName: "StarChartThumbnail")
+    static let spaceship = Model(name: "SpaceshipChartModel", displayName: "Spaceship", thumbnailName: "SpaceshipChartThumbnail")
     
-    static let models: [Model] = [.lion, .cat, .giraffe, .star, .spaceship]
+    static let models: [Model] = [.giraffe, .dino, .cat, .star, .spaceship]
 }
 
