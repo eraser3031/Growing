@@ -94,7 +94,7 @@ struct CreatePersonView: View {
                     .scaledFont(name: "Gilroy-ExtraBold", size: 15)
                 
                 HStack(spacing: 0) {
-                    Text("\(person.birthday.toAge()) years")
+                    Text(String(format: NSLocalizedString("%d years", comment: ""), person.birthday.toAge()))
                         .scaledFont(name: "Gilroy-ExtraBold", size: 18)
                     
                     Spacer()

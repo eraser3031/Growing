@@ -83,7 +83,7 @@ struct ReadyMeasureView: View {
             }.offset(y: -64)
             
             Spacer()
-            Text("Put your iphone on top of your head and Press the Circle".localized())
+            Text("Put your iphone on top of your head\nand Press the Circle".localized())
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
                 .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 20)

@@ -158,9 +158,9 @@ extension MainView {
             
             Image(systemName: "arkit")
                 .font(.system(size: 40))
-//                .scaleEffect(repeatAnimation ? 1.1 : 1)
-//                .onAppear{repeatAnimation = true}
-//                .animation(.easeInOut(duration: 2).repeatForever(autoreverses: true))
+            //                .scaleEffect(repeatAnimation ? 1.1 : 1)
+            //                .onAppear{repeatAnimation = true}
+            //                .animation(.easeInOut(duration: 2).repeatForever(autoreverses: true))
             
             Text("Measure Height".localized())
                 .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17)
@@ -180,7 +180,7 @@ extension MainView {
             }
         }
         .alert(isPresented: $showNoPersonAlert){
-            Alert(title: Text("Empty Data"), message: Text("You need at least one kid to measure the height.".localized()),
+            Alert(title: Text("Empty Data".localized()), message: Text("You need at least one kid to measure the height.".localized()),
                   dismissButton: .cancel())
         }
         .fullScreenCover(isPresented: $showARView){
@@ -267,39 +267,42 @@ struct SettingView: View {
     var body: some View {
         NavigationView{
             Form {
-                Section(header: Label("Info", systemImage: "info.circle.fill")) {
+                Section(header: Label("Info".localized(), systemImage: "info.circle.fill")) {
                     NavigationLink(destination: InfoView) {
-                        Label("App Info", systemImage: "questionmark.circle.fill")
+                        Label("App Info".localized(), systemImage: "questionmark.circle.fill")
                     }
                 }
                 
-                Section(header: Label("Data", systemImage: "cylinder.split.1x2.fill")) {
-//                    Button(action: {
-//                        showRecordAlert = true
-//                    }) {
-//                        Label("일기 데이터 초기화", systemImage: "text.badge.xmark")
-//                    }.buttonStyle(PlainButtonStyle())
-//                    .alert(isPresented: $showRecordAlert) {
-//                        Alert(title: Text("일기 데이터 삭제"), message: Text("정말로 모든 일기 데이터를 삭제하시겠어요??"), primaryButton: .destructive(Text("확인"), action: {
-//                            for (index, _) in girinVM.personList.enumerated() {
-//                                girinVM.personList[index].records = []
-//                            }
-//                        }), secondaryButton: .cancel())
-//                    }
+                Section(header: Label("Data".localized(), systemImage: "cylinder.split.1x2.fill")) {
+                    //                    Button(action: {
+                    //                        showRecordAlert = true
+                    //                    }) {
+                    //                        Label("일기 데이터 초기화", systemImage: "text.badge.xmark")
+                    //                    }.buttonStyle(PlainButtonStyle())
+                    //                    .alert(isPresented: $showRecordAlert) {
+                    //                        Alert(title: Text("일기 데이터 삭제"), message: Text("정말로 모든 일기 데이터를 삭제하시겠어요??"), primaryButton: .destructive(Text("확인"), action: {
+                    //                            for (index, _) in girinVM.personList.enumerated() {
+                    //                                girinVM.personList[index].records = []
+                    //                            }
+                    //                        }), secondaryButton: .cancel())
+                    //                    }
                     
                     Button(action: {
                         showEveryAlert = true
                     }) {
-                        Label("Remove All Data", systemImage: "xmark.circle.fill")
+                        Label("Remove All Data".localized(), systemImage: "xmark.circle.fill")
                     }.buttonStyle(PlainButtonStyle())
                     .alert(isPresented: $showEveryAlert) {
-                        Alert(title: Text("Remove All Data"), message: Text("Are you sure you want to delete all data including your kid's information?"), primaryButton: .destructive(Text("OK"), action: {
-                            girinVM.personList = []
-                            girinVM.save() //
-                        }), secondaryButton: .cancel())
+                        Alert(title: Text("Remove All Data".localized()),
+                              message: Text("Are you sure you want to delete all data including your kid's information?".localized()),
+                              primaryButton: .destructive(Text("OK".localized()),
+                                                          action: {
+                                                            girinVM.personList = []
+                                                            girinVM.save() //
+                                                          }), secondaryButton: .cancel())
                     }
                 }
-            }.navigationTitle("Setting")
+            }.navigationTitle("Setting".localized())
             .accentColor(.girinOrange)
             .navigationBarTitleDisplayMode(.large)
         }
@@ -404,7 +407,8 @@ struct PersonCardView : View {
                         .scaledFont(name: "Gilroy-ExtraBold", size: 20)
                     
                     HStack{
-                        Text("\(person.birthday.toAge()) years")
+                        
+                        Text(String(format: NSLocalizedString("%d years", comment: ""), person.birthday.toAge()))
                             .font(.subheadline).bold()
                         
                         Text("\(person.nowHeight, specifier: "%.1f")cm")
@@ -423,21 +427,24 @@ struct PersonCardView : View {
                     .actionSheet(isPresented: $showActionSheet) {
                         ActionSheet(title: Text("\(person.name)"), message: nil,
                                     buttons: [
-                                        .default(Text("Edit")){
+                                        .default(Text("Edit".localized())){
                                             withAnimation(.spring()) {
                                                 editPerson = person
                                             }
                                         },
-                                        .default(Text("Remove")){alertRemove = true},
-                                        .cancel(Text("Cancel"))
+                                        .default(Text("Remove".localized())){alertRemove = true},
+                                        .cancel(Text("Cancel".localized()))
                                     ])
                     }
                     .onTapGesture { showActionSheet = true }
                     .alert(isPresented: $alertRemove) {
-                        Alert(title: Text("Data remove"), message: Text("Are you sure you want to delete the kid's data?"), primaryButton: .destructive(Text("OK"), action: {
-                            remove()
-                            girinVM.save()
-                        }), secondaryButton: .cancel())
+                        Alert(title: Text("Remove data".localized()),
+                              message: Text("Are you sure you want to delete the kid's data?".localized()),
+                              primaryButton: .destructive(Text("OK".localized()),
+                                                          action: {
+                                                            remove()
+                                                            girinVM.save()
+                                                          }), secondaryButton: .cancel())
                     }
                 //  MARK: -
             }.frame(width: width)

@@ -93,16 +93,19 @@ struct NewPersonView: View {
                     .actionSheet(isPresented: $showActionSheet) {
                         ActionSheet(title: Text("\(person.name)"), message: nil,
                                     buttons: [
-                                        .default(Text("수정")){
+                                        .default(Text("Edit".localized())){
                                             presentationMode.wrappedValue.dismiss()
                                             editPerson = person
                                         },
-                                        .default(Text("기록 초기화")){alertRemove = true},
-                                        .cancel(Text("취소"))
+                                        .default(Text("Reset records".localized())){alertRemove = true},
+                                        .cancel(Text("Cancel".localized()))
                                     ])
                     }
                     .alert(isPresented: $alertRemove) {
-                        Alert(title: Text("기록 삭제"), message: Text("정말 모든 기록을 삭제하시겠어요?"), primaryButton: .destructive(Text("확인"), action: {
+                        Alert(title: Text("Reset records".localized()),
+                              message: Text("Are you sure you want to delete all the records?".localized()),
+                              primaryButton: .destructive(Text("OK".localized()),
+                              action: {
                             remove()
                             girinVM.save() //
                         }), secondaryButton: .cancel())
@@ -112,8 +115,8 @@ struct NewPersonView: View {
             .padding(.bottom, 20)
             
             Picker(selection: $seg, label: EmptyView()) {
-                Text("Chart").scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17).tag("Chart")
-                Text("Record").scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17).tag("Record")
+                Text("Chart".localized()).scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17).tag("Chart")
+                Text("Record".localized()).scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17).tag("Record")
             }.pickerStyle(SegmentedPickerStyle())
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
@@ -136,7 +139,7 @@ struct NewPersonView: View {
                 } else {
                     VStack {
                         Spacer()
-                        Text("There's no record yet.")
+                        Text("There's no record yet.".localized())
                             .scaledFont(name: "Gilroy-ExtraBold", size: 17)
                             .foregroundColor(Color(.tertiaryLabel))
                         Spacer()
@@ -157,7 +160,7 @@ struct NewPersonView: View {
                 } else {
                     VStack {
                         Spacer()
-                        Text("There's no record yet.")
+                        Text("There's no record yet.".localized())
                             .scaledFont(name: "Gilroy-ExtraBold", size: 17)
                             .foregroundColor(Color(.tertiaryLabel))
                         Spacer()
@@ -267,7 +270,10 @@ struct RecordCellView: View {
         .background(RoundedRectangle(cornerRadius: 12, style: .continuous)
                         .foregroundColor(Color(.secondarySystemBackground)), alignment: .center)
         .alert(isPresented: $showRemoveRecordAlert) {
-            Alert(title: Text("Remove Record"), message: Text("Are you sure you want to delete this record?"), primaryButton: .destructive(Text("OK"), action: {
+            Alert(title: Text("Remove Record".localized()),
+                  message: Text("Are you sure you want to delete this record?".localized()),
+                  primaryButton: .destructive(Text("OK".localized()),
+                  action: {
                 withAnimation(.spring()) {
                     person.records.removeAll { anyRecord in
                         anyRecord.id == record.id

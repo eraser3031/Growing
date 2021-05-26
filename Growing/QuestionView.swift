@@ -101,7 +101,7 @@ struct PageTwo: View {
 struct PageThree: View {
     var body: some View {
         VStack(spacing: 40){
-            Text("The position becomes more accurate as the model moves even after it is displayed. Nevertheless, if the key chart is in an odd position, it is recommended to initialize it by pressing the button.".localized())
+            Text("The position becomes more accurate as the height chart moves even after it is displayed. Nevertheless, if the key chart is in an odd position, it is recommended to initialize it by pressing the button.".localized())
                 .scaledFont(name: CustomFont.Gilroy_ExtraBold.rawValue, size: 17)
             
             Image(systemName: "move.3d")
