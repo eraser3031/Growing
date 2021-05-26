@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "21B93C1F25EA49B200878B47"
-               BuildableName = "Growing.app"
-               BlueprintName = "Growing"
-               ReferencedContainer = "container:Growing.xcodeproj">
+               BuildableName = "Girin.app"
+               BlueprintName = "Girin"
+               ReferencedContainer = "container:Girin.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "21B93C1F25EA49B200878B47"
-            BuildableName = "Growing.app"
-            BlueprintName = "Growing"
-            ReferencedContainer = "container:Growing.xcodeproj">
+            BuildableName = "Girin.app"
+            BlueprintName = "Girin"
+            ReferencedContainer = "container:Girin.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "21B93C1F25EA49B200878B47"
-            BuildableName = "Growing.app"
-            BlueprintName = "Growing"
-            ReferencedContainer = "container:Growing.xcodeproj">
+            BuildableName = "Girin.app"
+            BlueprintName = "Girin"
+            ReferencedContainer = "container:Girin.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

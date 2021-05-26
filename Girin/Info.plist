@@ -2,17 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string></string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string></string>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Gilroy-Light.otf</string>
-		<string>Gilroy-ExtraBold.otf</string>
-		<string>SpoqaHanSansNeo-Bold.otf</string>
-		<string>SpoqaHanSansNeo-Regular.otf</string>
-	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -35,6 +24,17 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string></string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string></string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string></string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Gilroy-Light.otf</string>
+		<string>Gilroy-ExtraBold.otf</string>
+		<string>SpoqaHanSansNeo-Bold.otf</string>
+		<string>SpoqaHanSansNeo-Regular.otf</string>
+	</array>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
