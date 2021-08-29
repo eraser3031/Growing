@@ -25,10 +25,10 @@ class PlaceSetting: ObservableObject {
     @Published var selectModel: Model = Model.giraffe
     
     func clear() {
-        updateCancellable = nil
-        placeCancellable = nil
-        modelCancellable = nil
-        testCancellable = nil
+        updateCancellable?.cancel()
+        placeCancellable?.cancel()
+        modelCancellable?.cancel()
+        testCancellable?.cancel()
     }
     
     func startSetting(_ arView: ARCustomView) {
@@ -71,8 +71,9 @@ struct ContentView : View {
                 .ignoresSafeArea()
             
             NewCameraUIView(placeSet: placeSet) {
-                presentationMode.wrappedValue.dismiss()
                 placeSet.clear()
+                presentationMode.wrappedValue.dismiss()
+                
             }
         }
     }
@@ -102,11 +103,14 @@ struct ARViewContainer: UIViewRepresentable {
     }
     
     func loadModel(model: Model){
-        let loadRequest = Entity.loadAsync(named: model.name)
-        placeSet.testCancellable = loadRequest.sink(receiveCompletion: { completion in
+        placeSet.testCancellable = Entity.loadAsync(named: model.name)
+            .sink(receiveCompletion: { completion in
+            print ("completion: \(completion)")
         }, receiveValue: { model in
+            print(model)
             model.name = "standard"
             placeSet.arView!.wallEntity!.addChild(model)
+            placeSet.testCancellable?.cancel()
         })
     }
     
@@ -160,7 +164,9 @@ struct ARViewContainer: UIViewRepresentable {
             .sink{ model in
                 if placeSet.isPlaced == (true, true) {
                     let oldModel = placeSet.arView!.wallEntity!.findEntity(named: "standard")
-                    placeSet.arView!.wallEntity!.removeChild(oldModel!)
+                    if oldModel != nil {
+                        placeSet.arView!.wallEntity!.removeChild(oldModel!)
+                    }
                     loadModel(model: model)
                     updateTransform(placeSet.arView!, name: "standard")
                 }

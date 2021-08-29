@@ -39,7 +39,7 @@ struct EditPersonView: View {
                         .frame(width: 34, height:34)
                     
                     Image(systemName: "xmark")
-                        .foregroundColor(.black)
+                        .foregroundColor(.primary)
                         .font(.title3)
                 }
                 .onTapGesture {
@@ -135,7 +135,7 @@ struct EditPersonView: View {
         }
         .frame(height: 600)
         .padding(.horizontal, 20)
-        .background(Color.white)
+        .background(Color(.systemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .onReceive(Publishers.keyboardHeight){ height in
             if horizontalSizeClass == .compact {

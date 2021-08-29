@@ -10,6 +10,11 @@
 		21023A342631862D00AB7472 /* Gilroy-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 21023A312631860100AB7472 /* Gilroy-Light.otf */; };
 		21023A352631862D00AB7472 /* Gilroy-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 21023A322631860500AB7472 /* Gilroy-ExtraBold.otf */; };
 		211367BE260351DD00B95348 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211367BD260351DD00B95348 /* RecordView.swift */; };
+		2114E3C426D0F5FE00565275 /* GiraffeChartModel.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 2114E3C226D0F5FD00565275 /* GiraffeChartModel.usdz */; };
+		2114E3C526D0F5FE00565275 /* DinoChartModel.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 2114E3C326D0F5FE00565275 /* DinoChartModel.usdz */; };
+		2114E3C926D0F6C300565275 /* StarChartModel.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 2114E3C626D0F6C200565275 /* StarChartModel.usdz */; };
+		2114E3CA26D0F6C300565275 /* SpaceshipChartModel.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 2114E3C726D0F6C200565275 /* SpaceshipChartModel.usdz */; };
+		2114E3CB26D0F6C300565275 /* CatChartModel.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 2114E3C826D0F6C300565275 /* CatChartModel.usdz */; };
 		21182E2425F78BAD00F3A41C /* PersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21182E2325F78BAD00F3A41C /* PersonView.swift */; };
 		212112E725F23D95000B5CC9 /* Extra.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212112E625F23D95000B5CC9 /* Extra.swift */; };
 		214D7B0526497C720066C06F /* ReadyMeasureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 214D7B0426497C710066C06F /* ReadyMeasureView.swift */; };
@@ -26,15 +31,9 @@
 		21B93C2825EA49B200878B47 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 21B93C2725EA49B200878B47 /* Experience.rcproject */; };
 		21B93C2A25EA49B600878B47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21B93C2925EA49B600878B47 /* Assets.xcassets */; };
 		21B93C2D25EA49B600878B47 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21B93C2C25EA49B600878B47 /* Preview Assets.xcassets */; };
-		21B93C3025EA49B600878B47 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21B93C2E25EA49B600878B47 /* LaunchScreen.storyboard */; };
 		21C3F6132604B82B00B41F47 /* CameraUiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C3F6122604B82B00B41F47 /* CameraUiView.swift */; };
 		21C5A0332613657A00ECAEB2 /* CreatePersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C5A0322613657A00ECAEB2 /* CreatePersonView.swift */; };
 		21E57192265D6B4C00FA127E /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E57191265D6B4C00FA127E /* QuestionView.swift */; };
-		21E57194265DE14100FA127E /* StarChartModel.reality in Resources */ = {isa = PBXBuildFile; fileRef = 21E57193265DE14100FA127E /* StarChartModel.reality */; };
-		21E57196265DE15500FA127E /* CatChartModel.reality in Resources */ = {isa = PBXBuildFile; fileRef = 21E57195265DE15500FA127E /* CatChartModel.reality */; };
-		21E57198265DE1A500FA127E /* DinoChartModel.reality in Resources */ = {isa = PBXBuildFile; fileRef = 21E57197265DE1A500FA127E /* DinoChartModel.reality */; };
-		21E5719A265DE1B200FA127E /* GiraffeChartModel.reality in Resources */ = {isa = PBXBuildFile; fileRef = 21E57199265DE1B200FA127E /* GiraffeChartModel.reality */; };
-		21E5719C265DE1C600FA127E /* SpaceshipChartModel.reality in Resources */ = {isa = PBXBuildFile; fileRef = 21E5719B265DE1C500FA127E /* SpaceshipChartModel.reality */; };
 		21E571A6265E5D3100FA127E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 21E571A8265E5D3100FA127E /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +41,11 @@
 		21023A312631860100AB7472 /* Gilroy-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-Light.otf"; sourceTree = "<group>"; };
 		21023A322631860500AB7472 /* Gilroy-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-ExtraBold.otf"; sourceTree = "<group>"; };
 		211367BD260351DD00B95348 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
+		2114E3C226D0F5FD00565275 /* GiraffeChartModel.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = GiraffeChartModel.usdz; sourceTree = "<group>"; };
+		2114E3C326D0F5FE00565275 /* DinoChartModel.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = DinoChartModel.usdz; sourceTree = "<group>"; };
+		2114E3C626D0F6C200565275 /* StarChartModel.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = StarChartModel.usdz; sourceTree = "<group>"; };
+		2114E3C726D0F6C200565275 /* SpaceshipChartModel.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = SpaceshipChartModel.usdz; sourceTree = "<group>"; };
+		2114E3C826D0F6C300565275 /* CatChartModel.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = CatChartModel.usdz; sourceTree = "<group>"; };
 		21182E2325F78BAD00F3A41C /* PersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonView.swift; sourceTree = "<group>"; };
 		212112E625F23D95000B5CC9 /* Extra.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extra.swift; sourceTree = "<group>"; };
 		214D7B0426497C710066C06F /* ReadyMeasureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyMeasureView.swift; sourceTree = "<group>"; };
@@ -61,16 +65,10 @@
 		21B93C2725EA49B200878B47 /* Experience.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Experience.rcproject; sourceTree = "<group>"; };
 		21B93C2925EA49B600878B47 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		21B93C2C25EA49B600878B47 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		21B93C2F25EA49B600878B47 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		21B93C3125EA49B600878B47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		21C3F6122604B82B00B41F47 /* CameraUiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraUiView.swift; sourceTree = "<group>"; };
 		21C5A0322613657A00ECAEB2 /* CreatePersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePersonView.swift; sourceTree = "<group>"; };
 		21E57191265D6B4C00FA127E /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
-		21E57193265DE14100FA127E /* StarChartModel.reality */ = {isa = PBXFileReference; lastKnownFileType = file; name = StarChartModel.reality; path = ../../../../../../../Downloads/StarChartModel.reality; sourceTree = "<group>"; };
-		21E57195265DE15500FA127E /* CatChartModel.reality */ = {isa = PBXFileReference; lastKnownFileType = file; name = CatChartModel.reality; path = ../../../../../../../Downloads/CatChartModel.reality; sourceTree = "<group>"; };
-		21E57197265DE1A500FA127E /* DinoChartModel.reality */ = {isa = PBXFileReference; lastKnownFileType = file; name = DinoChartModel.reality; path = ../../../../../../../Downloads/DinoChartModel.reality; sourceTree = "<group>"; };
-		21E57199265DE1B200FA127E /* GiraffeChartModel.reality */ = {isa = PBXFileReference; lastKnownFileType = file; name = GiraffeChartModel.reality; path = ../../../../../../../Downloads/GiraffeChartModel.reality; sourceTree = "<group>"; };
-		21E5719B265DE1C500FA127E /* SpaceshipChartModel.reality */ = {isa = PBXFileReference; lastKnownFileType = file; name = SpaceshipChartModel.reality; path = ../../../../../../../Downloads/SpaceshipChartModel.reality; sourceTree = "<group>"; };
 		21E571A7265E5D3100FA127E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		21E571A9265E5D4700FA127E /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -121,20 +119,19 @@
 				21B418CC263F92B1008ECE6A /* CustomScrollView.swift */,
 				21B408D226161F43006DFE8A /* PosComponent.swift */,
 				21182E2325F78BAD00F3A41C /* PersonView.swift */,
+				2114E3C826D0F6C300565275 /* CatChartModel.usdz */,
+				2114E3C726D0F6C200565275 /* SpaceshipChartModel.usdz */,
+				2114E3C626D0F6C200565275 /* StarChartModel.usdz */,
+				2114E3C326D0F5FE00565275 /* DinoChartModel.usdz */,
+				2114E3C226D0F5FD00565275 /* GiraffeChartModel.usdz */,
 				211367BD260351DD00B95348 /* RecordView.swift */,
 				21023A312631860100AB7472 /* Gilroy-Light.otf */,
 				21023A322631860500AB7472 /* Gilroy-ExtraBold.otf */,
 				212112E625F23D95000B5CC9 /* Extra.swift */,
 				218258B525F4D70000A31EB7 /* Data.swift */,
-				21E5719B265DE1C500FA127E /* SpaceshipChartModel.reality */,
-				21E57199265DE1B200FA127E /* GiraffeChartModel.reality */,
-				21E57197265DE1A500FA127E /* DinoChartModel.reality */,
-				21E57195265DE15500FA127E /* CatChartModel.reality */,
-				21E57193265DE14100FA127E /* StarChartModel.reality */,
 				218258B825F4DAD900A31EB7 /* Storage.swift */,
 				21B93C2725EA49B200878B47 /* Experience.rcproject */,
 				21B93C2925EA49B600878B47 /* Assets.xcassets */,
-				21B93C2E25EA49B600878B47 /* LaunchScreen.storyboard */,
 				21B93C3125EA49B600878B47 /* Info.plist */,
 				21B93C2B25EA49B600878B47 /* Preview Content */,
 			);
@@ -212,17 +209,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				21B93C3025EA49B600878B47 /* LaunchScreen.storyboard in Resources */,
-				21E57194265DE14100FA127E /* StarChartModel.reality in Resources */,
+				2114E3C526D0F5FE00565275 /* DinoChartModel.usdz in Resources */,
+				2114E3CB26D0F6C300565275 /* CatChartModel.usdz in Resources */,
 				21E571A6265E5D3100FA127E /* Localizable.strings in Resources */,
-				21E5719A265DE1B200FA127E /* GiraffeChartModel.reality in Resources */,
+				2114E3C426D0F5FE00565275 /* GiraffeChartModel.usdz in Resources */,
 				21B93C2D25EA49B600878B47 /* Preview Assets.xcassets in Resources */,
-				21E57198265DE1A500FA127E /* DinoChartModel.reality in Resources */,
+				2114E3C926D0F6C300565275 /* StarChartModel.usdz in Resources */,
 				21B93C2A25EA49B600878B47 /* Assets.xcassets in Resources */,
+				2114E3CA26D0F6C300565275 /* SpaceshipChartModel.usdz in Resources */,
 				21023A342631862D00AB7472 /* Gilroy-Light.otf in Resources */,
 				21023A352631862D00AB7472 /* Gilroy-ExtraBold.otf in Resources */,
-				21E5719C265DE1C600FA127E /* SpaceshipChartModel.reality in Resources */,
-				21E57196265DE15500FA127E /* CatChartModel.reality in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,14 +253,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		21B93C2E25EA49B600878B47 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				21B93C2F25EA49B600878B47 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
 		21E571A8265E5D3100FA127E /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -401,6 +389,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Girin/Preview Content\"";
 				DEVELOPMENT_TEAM = VT69ZW2DRC;
 				ENABLE_PREVIEWS = YES;
@@ -409,7 +398,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.eraser.girin;
+				MARKETING_VERSION = 1.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.eraser.Growing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -422,6 +412,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Girin/Preview Content\"";
 				DEVELOPMENT_TEAM = VT69ZW2DRC;
 				ENABLE_PREVIEWS = YES;
@@ -430,7 +421,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.eraser.girin;
+				MARKETING_VERSION = 1.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.eraser.Growing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

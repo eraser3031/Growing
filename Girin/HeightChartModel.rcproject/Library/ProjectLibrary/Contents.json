@@ -1,0 +1,52 @@
+[
+  {
+    "libraryIdentifier" : "434b8f01634a897df274d29f1e089002",
+    "format" : "image",
+    "displayName" : "TestSize2.png"
+  },
+  {
+    "libraryIdentifier" : "8a87afb426c479745953e5b8914d0d2a",
+    "format" : "image",
+    "displayName" : "161508ea9ee4ca039336f9845af843f9f845c2b08ae8a295ecd8bf418083045366d8ebf3ca30b43e694e7aaeed5f7c3a7650e4ff7921278c4c01841e9c5469ba81ce31a5945d01286cc1b86f9cd8fa44489dfe75a5dc39611d07eb89aa2953361278c47bde60d1b8ecabb0ad1972e9a8.png"
+  },
+  {
+    "libraryIdentifier" : "084714c246c2ca76ba24fc7d3c6e1fe8",
+    "format" : "image",
+    "displayName" : "GiraffeChartModel.png"
+  },
+  {
+    "libraryIdentifier" : "f5974ddb220a8367a53d4a8c52d9b1a0",
+    "format" : "image",
+    "displayName" : "GiraffeChartModel@2x.png"
+  },
+  {
+    "libraryIdentifier" : "7781f40b18c0d8ccf9a511659ff4ad54",
+    "format" : "image",
+    "displayName" : "DinoChartModel@2x.png"
+  },
+  {
+    "libraryIdentifier" : "ae517dbde14e8badd6ed6de282993e82",
+    "format" : "image",
+    "displayName" : "DinoChartModel@2x.png"
+  },
+  {
+    "libraryIdentifier" : "3fc93e0b44e6191474ff45109abb1514",
+    "format" : "image",
+    "displayName" : "StarChartModel@2x.png"
+  },
+  {
+    "libraryIdentifier" : "f4ce32f0037be95cd2e3dc3a6b68e483",
+    "format" : "image",
+    "displayName" : "StarChartModel@2x.png"
+  },
+  {
+    "libraryIdentifier" : "128056559cba525a94957e655e0199a3",
+    "format" : "image",
+    "displayName" : "SpaceshipChartModel@2x.png"
+  },
+  {
+    "libraryIdentifier" : "5ee18bc9ba14274d1c66f4040783a66f",
+    "format" : "image",
+    "displayName" : "CatChartModel@2x.png"
+  }
+]

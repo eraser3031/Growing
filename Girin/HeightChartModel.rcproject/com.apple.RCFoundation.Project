@@ -1,0 +1,702 @@
+{
+  "__content" : [
+    {
+      "scenes" : [
+        {
+          "__content" : [
+            {
+              "arAnchorSpecification" : {
+                "alignment" : "vertical",
+                "name" : "surface"
+              },
+              "behaviors" : [
+
+              ],
+              "gravity" : [
+                0,
+                0,
+                9.8000001907348633
+              ],
+              "identifier" : "FBF557C8-4112-47F8-968A-06486B43D89D",
+              "material" : "concrete",
+              "overrides" : {
+                "children" : {
+                  "5C39C403-79FC-4912-95B5-A8C942D448E9" : null,
+                  "14DFF494-A155-4CBE-8DE7-97B92A4D174D" : null,
+                  "975E674F-EF4A-4281-A198-5D3E2B001444" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "doubleSided",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ],
+                        [
+                          "image",
+                          {
+                            "typeName" : "String",
+                            "value" : "image:f5974ddb220a8367a53d4a8c52d9b1a0\/GiraffeChartModel@2x.png"
+                          }
+                        ],
+                        [
+                          "maxDimension",
+                          {
+                            "typeName" : "Double",
+                            "value" : 0.59399999999999997
+                          }
+                        ]
+                      ],
+                      "factory" : {
+                        "identifier" : "com.apple.rc.af.CoreAssetFactories.PosterAssetFactory",
+                        "version" : "1.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "58D4A254-28FF-41F6-A1F0-D6FD5785779D"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        2.5,
+                        0,
+                        0,
+                        0,
+                        0,
+                        2.5,
+                        0,
+                        0,
+                        0,
+                        0,
+                        2.5,
+                        0,
+                        0,
+                        0,
+                        -0.75,
+                        1
+                      ]
+                    }
+                  },
+                  "28000B9B-CF3A-44B8-AF38-340AF1DE8CBA" : null,
+                  "95563C8A-B537-40FD-8D74-C0734CA56CF4" : null,
+                  "B2689D14-1816-4DD7-907D-E300EF162EEA" : null
+                },
+                "factory" : null,
+                "runtimeAttributes" : [
+                  [
+                    "isAccessibilityEnabled",
+                    {
+                      "typeName" : "Bool",
+                      "value" : false
+                    }
+                  ]
+                ]
+              },
+              "physicsMode" : "grid",
+              "title" : "GiraffeChartModel",
+              "viewTransform" : {
+                "cameraTransform" : [
+                  0.99701237678527832,
+                  3.7252902984619141e-09,
+                  0.077240966260433197,
+                  0,
+                  -0.0055243922397494316,
+                  0.99743902683258057,
+                  0.071307778358459473,
+                  0,
+                  -0.077043153345584869,
+                  -0.071521520614624023,
+                  0.99445909261703491,
+                  0,
+                  0.43964844942092896,
+                  0.66588342189788818,
+                  5.329369068145752,
+                  1
+                ],
+                "sceneTransform" : [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0.99999994039535522,
+                  0,
+                  0,
+                  -0.99999994039535522,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              }
+            }
+          ],
+          "__version" : 5
+        },
+        {
+          "__content" : [
+            {
+              "arAnchorSpecification" : {
+                "alignment" : "vertical",
+                "name" : "surface"
+              },
+              "behaviors" : [
+
+              ],
+              "gravity" : [
+                0,
+                0,
+                9.8000001907348633
+              ],
+              "identifier" : "EFEC8EBB-1458-4BCD-ADD2-C8D90E0E5188",
+              "material" : "concrete",
+              "overrides" : {
+                "children" : {
+                  "17E1E6CD-EBE9-4419-8AEE-C64B52A8839C" : null,
+                  "71DCFE06-1410-4DAD-8744-4A74E5A16C60" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "doubleSided",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ],
+                        [
+                          "image",
+                          {
+                            "typeName" : "String",
+                            "value" : "image:ae517dbde14e8badd6ed6de282993e82\/DinoChartModel@2x.png"
+                          }
+                        ],
+                        [
+                          "maxDimension",
+                          {
+                            "typeName" : "Double",
+                            "value" : 0.59399999999999997
+                          }
+                        ]
+                      ],
+                      "factory" : {
+                        "identifier" : "com.apple.rc.af.CoreAssetFactories.PosterAssetFactory",
+                        "version" : "1.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "0A299FA4-1587-42F4-A7FF-EB383A65C720"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        2.5,
+                        0,
+                        0,
+                        0,
+                        0,
+                        2.5,
+                        0,
+                        0,
+                        0,
+                        0,
+                        2.5,
+                        0,
+                        0.20000000298023224,
+                        0,
+                        -0.75,
+                        1
+                      ]
+                    }
+                  }
+                },
+                "factory" : null,
+                "runtimeAttributes" : [
+                  [
+                    "isAccessibilityEnabled",
+                    {
+                      "typeName" : "Bool",
+                      "value" : false
+                    }
+                  ]
+                ]
+              },
+              "physicsMode" : "grid",
+              "title" : "DinoChartModel",
+              "viewTransform" : {
+                "cameraTransform" : [
+                  0.99701237678527832,
+                  7.4505801528346183e-09,
+                  0.077240951359272003,
+                  0,
+                  0.036875244230031967,
+                  0.87868314981460571,
+                  -0.47597908973693848,
+                  0,
+                  -0.067870333790779114,
+                  0.4774053692817688,
+                  0.87605804204940796,
+                  0,
+                  -0.37424963712692261,
+                  3.4883697032928467,
+                  3.8127090930938721,
+                  1
+                ],
+                "sceneTransform" : [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0.99999994039535522,
+                  0,
+                  0,
+                  -0.99999994039535522,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              }
+            }
+          ],
+          "__version" : 5
+        },
+        {
+          "__content" : [
+            {
+              "arAnchorSpecification" : {
+                "alignment" : "vertical",
+                "name" : "surface"
+              },
+              "behaviors" : [
+
+              ],
+              "gravity" : [
+                0,
+                0,
+                9.8000001907348633
+              ],
+              "identifier" : "3C9EFAB4-6BEC-4272-AAA2-6BF450F97E36",
+              "material" : "concrete",
+              "overrides" : {
+                "children" : {
+                  "58FC797C-94F7-4BA6-B345-E7B1B041F12D" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "doubleSided",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ],
+                        [
+                          "image",
+                          {
+                            "typeName" : "String",
+                            "value" : "image:f4ce32f0037be95cd2e3dc3a6b68e483\/StarChartModel@2x.png"
+                          }
+                        ],
+                        [
+                          "maxDimension",
+                          {
+                            "typeName" : "Double",
+                            "value" : 0.59399999999999997
+                          }
+                        ]
+                      ],
+                      "factory" : {
+                        "identifier" : "com.apple.rc.af.CoreAssetFactories.PosterAssetFactory",
+                        "version" : "1.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "25D29798-F854-4B21-9CF9-F7956E2462FE"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        3,
+                        0,
+                        0,
+                        0,
+                        0,
+                        3,
+                        0,
+                        0,
+                        0,
+                        0,
+                        3,
+                        0,
+                        0,
+                        0,
+                        -0.89800000190734863,
+                        1
+                      ]
+                    }
+                  },
+                  "C95FB1B0-0B34-4B01-95C7-D0CB1949D0D7" : null
+                },
+                "factory" : null,
+                "runtimeAttributes" : [
+                  [
+                    "isAccessibilityEnabled",
+                    {
+                      "typeName" : "Bool",
+                      "value" : false
+                    }
+                  ]
+                ]
+              },
+              "physicsMode" : "grid",
+              "title" : "StarChartModel",
+              "viewTransform" : {
+                "cameraTransform" : [
+                  0.99910873174667358,
+                  7.4505823732806675e-09,
+                  0.042210415005683899,
+                  0,
+                  -0.012690807692706585,
+                  0.95373272895812988,
+                  0.30038774013519287,
+                  0,
+                  -0.040257424116134644,
+                  -0.30065581202507019,
+                  0.95288264751434326,
+                  0,
+                  -0.060937404632568359,
+                  -0.52177733182907104,
+                  3.2368028163909912,
+                  1
+                ],
+                "sceneTransform" : [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0.99999994039535522,
+                  0,
+                  0,
+                  -0.99999994039535522,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              }
+            }
+          ],
+          "__version" : 5
+        },
+        {
+          "__content" : [
+            {
+              "arAnchorSpecification" : {
+                "alignment" : "vertical",
+                "name" : "surface"
+              },
+              "behaviors" : [
+
+              ],
+              "gravity" : [
+                0,
+                0,
+                9.8000001907348633
+              ],
+              "identifier" : "2BF51295-4383-48F4-860A-E282BD7D34C9",
+              "material" : "concrete",
+              "overrides" : {
+                "children" : {
+                  "CCBF27FD-781D-487F-98B4-2C2BADF7A3E2" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "doubleSided",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ],
+                        [
+                          "image",
+                          {
+                            "typeName" : "String",
+                            "value" : "image:128056559cba525a94957e655e0199a3\/SpaceshipChartModel@2x.png"
+                          }
+                        ],
+                        [
+                          "maxDimension",
+                          {
+                            "typeName" : "Double",
+                            "value" : 0.59399999999999997
+                          }
+                        ]
+                      ],
+                      "factory" : {
+                        "identifier" : "com.apple.rc.af.CoreAssetFactories.PosterAssetFactory",
+                        "version" : "1.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "B939E923-C47B-496E-868A-32DBE593A47A"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        3.5,
+                        0,
+                        0,
+                        0,
+                        0,
+                        3.5,
+                        0,
+                        0,
+                        0,
+                        0,
+                        3.5,
+                        0,
+                        0,
+                        0,
+                        -1.0399999618530273,
+                        1
+                      ]
+                    }
+                  }
+                },
+                "factory" : null,
+                "runtimeAttributes" : [
+                  [
+                    "isAccessibilityEnabled",
+                    {
+                      "typeName" : "Bool",
+                      "value" : false
+                    }
+                  ]
+                ]
+              },
+              "physicsMode" : "grid",
+              "title" : "SpaceshipChartModel",
+              "viewTransform" : {
+                "cameraTransform" : [
+                  0.99942433834075928,
+                  3.7252900764173091e-09,
+                  0.033925168216228485,
+                  0,
+                  -0.0020670024678111076,
+                  0.99814212322235107,
+                  0.060892816632986069,
+                  0,
+                  -0.033862143754959106,
+                  -0.060927901417016983,
+                  0.99756759405136108,
+                  0,
+                  -0.0097465664148330688,
+                  0.48198229074478149,
+                  3.4824919700622559,
+                  1
+                ],
+                "sceneTransform" : [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0.99999994039535522,
+                  0,
+                  0,
+                  -0.99999994039535522,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              }
+            }
+          ],
+          "__version" : 5
+        },
+        {
+          "__content" : [
+            {
+              "arAnchorSpecification" : {
+                "alignment" : "vertical",
+                "name" : "surface"
+              },
+              "behaviors" : [
+
+              ],
+              "gravity" : [
+                0,
+                0,
+                9.8000001907348633
+              ],
+              "identifier" : "0034C95D-991C-40F8-B04F-CD17C916029D",
+              "material" : "concrete",
+              "overrides" : {
+                "children" : {
+                  "8BBBB263-9BBB-4AEC-B1ED-06DF12D83F21" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "doubleSided",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ],
+                        [
+                          "image",
+                          {
+                            "typeName" : "String",
+                            "value" : "image:5ee18bc9ba14274d1c66f4040783a66f\/CatChartModel@2x.png"
+                          }
+                        ],
+                        [
+                          "maxDimension",
+                          {
+                            "typeName" : "Double",
+                            "value" : 0.59399999999999997
+                          }
+                        ]
+                      ],
+                      "factory" : {
+                        "identifier" : "com.apple.rc.af.CoreAssetFactories.PosterAssetFactory",
+                        "version" : "1.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "B55163F2-10EC-4E2B-ACC3-2FD39EFF3D14"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        4,
+                        0,
+                        0,
+                        0,
+                        0,
+                        4,
+                        0,
+                        0,
+                        0,
+                        0,
+                        4,
+                        0,
+                        0,
+                        0,
+                        -1.190000057220459,
+                        1
+                      ]
+                    }
+                  },
+                  "4427DBAF-272C-4B8B-86A1-E5BCF82663B0" : null
+                },
+                "factory" : null,
+                "runtimeAttributes" : [
+                  [
+                    "isAccessibilityEnabled",
+                    {
+                      "typeName" : "Bool",
+                      "value" : false
+                    }
+                  ]
+                ]
+              },
+              "physicsMode" : "grid",
+              "title" : "CatChartModel",
+              "viewTransform" : {
+                "cameraTransform" : [
+                  0.99942433834075928,
+                  8.3819022833608869e-09,
+                  0.033925160765647888,
+                  0,
+                  0.016195489093661308,
+                  0.87869209051132202,
+                  -0.47711405158042908,
+                  0,
+                  -0.029809774830937386,
+                  0.47738882899284363,
+                  0.87818628549575806,
+                  0,
+                  -0.098161190748214722,
+                  2.9451253414154053,
+                  4.0800633430480957,
+                  1
+                ],
+                "sceneTransform" : [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0.99999994039535522,
+                  0,
+                  0,
+                  -0.99999994039535522,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ]
+              }
+            }
+          ],
+          "__version" : 5
+        }
+      ],
+      "tags" : {
+        "__content" : [
+          {
+            "tagsStore" : {
+
+            }
+          }
+        ],
+        "__version" : 1
+      }
+    }
+  ],
+  "__version" : 1
+}

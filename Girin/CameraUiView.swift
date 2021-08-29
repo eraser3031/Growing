@@ -123,7 +123,9 @@ struct NewCameraUIView: View {
                                 Button(action: {
                                     withAnimation(.spring()){
                                         let model = placeSet.arView!.wallEntity!.findEntity(named: "standard")
-                                        placeSet.arView!.wallEntity!.removeChild(model!)
+                                        if model != nil {
+                                            placeSet.arView!.wallEntity!.removeChild(model!)
+                                        }
                                         placeSet.startSetting(placeSet.arView!)
                                     }
                                     //                                showClearAxisAlert = true
