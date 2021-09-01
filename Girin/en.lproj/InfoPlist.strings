@@ -1,0 +1,11 @@
+/* 
+  InfoPlist.strings
+  Girin
+
+  Created by Kimyaehoon on 01/09/2021.
+  
+*/
+CFBundleDisplayName = "Girin";
+NSPhotoLibraryAddUsageDescription = "This app requires access to the photo library to get kid's profile photo";
+NSPhotoLibraryUsageDescription = "This app requires access to the photo library to get kid's profile photo";
+NSCameraUsageDescription = "Please press the Allow button to load AR contents";

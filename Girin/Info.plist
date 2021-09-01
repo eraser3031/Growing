@@ -23,11 +23,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string></string>
+	<string>Please press the Allow button to load AR contents</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string></string>
+	<string>This app requires access to the photo library to get kid's profile photo</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string></string>
+	<string>This app requires access to the photo library to get kid's profile photo</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Gilroy-Light.otf</string>

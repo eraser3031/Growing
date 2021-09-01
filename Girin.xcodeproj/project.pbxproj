@@ -21,6 +21,7 @@
 		215618492618AF460069DE27 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215618482618AF460069DE27 /* ImagePicker.swift */; };
 		216CBC572610A6660006F182 /* SubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216CBC562610A6660006F182 /* SubView.swift */; };
 		216CBC5A2610AC610006F182 /* EditPersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216CBC592610AC610006F182 /* EditPersonView.swift */; };
+		2178165326DF3ED700052557 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2178165526DF3ED700052557 /* InfoPlist.strings */; };
 		218258B625F4D70000A31EB7 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218258B525F4D70000A31EB7 /* Data.swift */; };
 		218258B925F4DAD900A31EB7 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218258B825F4DAD900A31EB7 /* Storage.swift */; };
 		218258BC25F5163100A31EB7 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218258BB25F5163100A31EB7 /* MainView.swift */; };
@@ -54,6 +55,8 @@
 		216CBC592610AC610006F182 /* EditPersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPersonView.swift; sourceTree = "<group>"; };
 		2171FBFE26367FA300499441 /* SpoqaHanSansNeo-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Bold.otf"; sourceTree = "<group>"; };
 		2171FC0126367FC300499441 /* SpoqaHanSansNeo-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SpoqaHanSansNeo-Regular.otf"; sourceTree = "<group>"; };
+		2178165426DF3ED700052557 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2178165626DF3EDB00052557 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		218258B525F4D70000A31EB7 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		218258B825F4DAD900A31EB7 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		218258BB25F5163100A31EB7 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -109,6 +112,7 @@
 				21B93C2525EA49B200878B47 /* ContentView.swift */,
 				214D7B0426497C710066C06F /* ReadyMeasureView.swift */,
 				21E571A8265E5D3100FA127E /* Localizable.strings */,
+				2178165526DF3ED700052557 /* InfoPlist.strings */,
 				21C3F6122604B82B00B41F47 /* CameraUiView.swift */,
 				21E57191265D6B4C00FA127E /* QuestionView.swift */,
 				216CBC562610A6660006F182 /* SubView.swift */,
@@ -218,6 +222,7 @@
 				21B93C2A25EA49B600878B47 /* Assets.xcassets in Resources */,
 				2114E3CA26D0F6C300565275 /* SpaceshipChartModel.usdz in Resources */,
 				21023A342631862D00AB7472 /* Gilroy-Light.otf in Resources */,
+				2178165326DF3ED700052557 /* InfoPlist.strings in Resources */,
 				21023A352631862D00AB7472 /* Gilroy-ExtraBold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -253,6 +258,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		2178165526DF3ED700052557 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2178165426DF3ED700052557 /* ko */,
+				2178165626DF3EDB00052557 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		21E571A8265E5D3100FA127E /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -301,6 +315,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -363,6 +378,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -389,7 +405,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Girin/Preview Content\"";
 				DEVELOPMENT_TEAM = VT69ZW2DRC;
 				ENABLE_PREVIEWS = YES;
@@ -412,7 +428,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Girin/Preview Content\"";
 				DEVELOPMENT_TEAM = VT69ZW2DRC;
 				ENABLE_PREVIEWS = YES;
